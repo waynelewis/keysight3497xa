@@ -17,6 +17,7 @@ Keysight3497xA_DBD += base.dbd
 
 # Include dbd files from all support applications:
 Keysight3497xA_DBD += asyn.dbd
+Keysight3497xA_DBD += drvAsynIPPort.dbd
 Keysight3497xA_DBD += stream.dbd
 
 # Add all the support libraries needed by this IOC
