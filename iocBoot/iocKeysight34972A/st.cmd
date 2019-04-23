@@ -1,6 +1,6 @@
-#!../../bin/linux-x86_64/Keysight34972A
+#!../../bin/linux-x86_64/Keysight3497xA
 
-## You may have to change Keysight34972A to something else
+## You may have to change Keysight3497xA to something else
 ## everywhere it appears in this file
 
 < envPaths
@@ -8,8 +8,8 @@
 cd "${TOP}"
 
 ## Register all support components
-dbLoadDatabase "dbd/Keysight34972A.dbd"
-Keysight34972A_registerRecordDeviceDriver pdbbase
+dbLoadDatabase "dbd/Keysight3497xA.dbd"
+Keysight3497xA_registerRecordDeviceDriver pdbbase
 
 ## Load record instances
 #dbLoadRecords("db/xxx.db","user=wlewis")
