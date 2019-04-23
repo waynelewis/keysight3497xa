@@ -5,6 +5,9 @@
 # Wayne Lewis
 # 2019-04-23
 
+OutTerminator = LF;
+InTerminator = LF;
+
 getError {
    out ":SYST:ERR?";
    in  ":SYST:ERR %80c";
