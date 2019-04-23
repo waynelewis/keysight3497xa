@@ -16,10 +16,12 @@ DBD += Keysight3497xA.dbd
 Keysight3497xA_DBD += base.dbd
 
 # Include dbd files from all support applications:
-#Keysight3497xA_DBD += xxx.dbd
+Keysight3497xA_DBD += asyn.dbd
+Keysight3497xA_DBD += stream.dbd
 
 # Add all the support libraries needed by this IOC
-#Keysight3497xA_LIBS += xxx
+Keysight3497xA_LIBS += asyn
+Keysight3497xA_LIBS += stream
 
 # Keysight3497xA_registerRecordDeviceDriver.cpp derives from Keysight3497xA.dbd
 Keysight3497xA_SRCS += Keysight3497xA_registerRecordDeviceDriver.cpp
