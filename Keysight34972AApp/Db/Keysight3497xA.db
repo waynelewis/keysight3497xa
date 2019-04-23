@@ -1,0 +1,24 @@
+# Keysight3497xA.db
+
+# Database file for Keysight 3497xA pressure controller
+
+# Wayne Lewis
+# 2019-04-23
+
+record(waveform,"$(P)$(R)Model_RBV") {
+    field(DTYP, "stream")
+    field(INP,  "@Keysight3497xA.proto getModel $(PORT)")
+    field(FTVL, "CHAR")
+    field(NELM, "256")
+    field(PINI, "YES")
+}
+
+record(stringin,"$(P)$(R)Error_RBV") {
+    field(DTYP, "stream")
+    field(INP,  "@Keysight3497xA.proto getError $(PORT)")
+}
+
+record(asyn,"$(P)$(R)Asyn") {
+    field(PORT, "$(PORT)")
+}
+

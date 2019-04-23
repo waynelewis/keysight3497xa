@@ -1,0 +1,17 @@
+# Keysight3497xA.proto
+
+# stream protocol file for Keysight 3497xA multiplexer
+
+# Wayne Lewis
+# 2019-04-23
+
+getError {
+   out ":SYST:ERR?";
+   in  ":SYST:ERR %80c";
+}
+
+getModel {
+   out "*IDN?";
+   in  "*IDN %80c";
+}
+
