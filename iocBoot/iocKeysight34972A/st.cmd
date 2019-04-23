@@ -5,14 +5,24 @@
 
 < envPaths
 
+epicsEnvSet("STREAM_PROTOCOL_PATH", "$(TOP)/Keysight3497xAApp/Db")
+epicsEnvSet("DEV_IP_ADDRESS", "192.168.1.41")
+epicsEnvSet("DEV_ASYN_PORT", "MUX1")
+
 cd "${TOP}"
 
 ## Register all support components
 dbLoadDatabase "dbd/Keysight3497xA.dbd"
 Keysight3497xA_registerRecordDeviceDriver pdbbase
 
+## Establish the connection to the 34972A
+drvAsynIPPortConfigure("$(DEV_ASYN_PORT)",  "$(DEV_IP_ADDRESS):5025", 0, 0, 0)
+
 ## Load record instances
-#dbLoadRecords("db/xxx.db","user=wlewis")
+dbLoadRecords("db/Keysight3497xA.db","P=MMT:,R=MUX1:,PORT=$(DEV_ASYN_PORT)")
+
+#asynSetTraceMask("$(DEV_ASYN_PORT)", -1, 0xFF)
+#asynSetTraceIOMask("$(DEV_ASYN_PORT)", -1, 0xFF)
 
 cd "${TOP}/iocBoot/${IOC}"
 iocInit
