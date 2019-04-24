@@ -6,6 +6,7 @@
 # 2019-04-23
 
 record(waveform,"$(P)$(R)Model_RBV") {
+    field(DESC, "ID string")
     field(DTYP, "stream")
     field(INP,  "@Keysight3497xA.proto getModel $(PORT)")
     field(FTVL, "CHAR")
@@ -13,9 +14,69 @@ record(waveform,"$(P)$(R)Model_RBV") {
     field(PINI, "YES")
 }
 
+record(stringin,"$(P)$(R)SN_RBV") {
+    field(DESC, "Serial number")
+    field(DTYP, "stream")
+    field(INP,  "@Keysight3497xA.proto getSN $(PORT)")
+    field(PINI, "YES")
+    field(SCAN, "10 second")
+}
+
 record(stringin,"$(P)$(R)Error_RBV") {
     field(DTYP, "stream")
     field(INP,  "@Keysight3497xA.proto getError $(PORT)")
+}
+
+record(ai,"$(P)$(R)NumDataPoints_RBV") {
+    field(DESC, "Number of saved data points")
+    field(DTYP, "stream")
+    field(INP,  "@Keysight3497xA.proto getDataPoints $(PORT)")
+}
+
+record(mbbo, "$(P)$(R)TrigSrc") {
+    field(DESC, "Trigger source")
+    field(DTYP, "stream")
+    field(OUT,  "@Keysight3497xA.proto setTrigSource $(PORT)")
+    field(ZRVL, "0")
+    field(ZRST, "BUS")
+    field(ONVL, "1")
+    field(ONST, "IMM")
+    field(TWVL, "2")
+    field(TWST, "EXT")
+    field(THVL, "3")
+    field(THST, "ALAR1")
+    field(FRVL, "4")
+    field(FRST, "ALAR2")
+    field(FVVL, "5")
+    field(FVST, "ALAR3")
+    field(SXVL, "6")
+    field(SXST, "ALAR4")
+    field(SVVL, "7")
+    field(SVST, "TIM")
+    field(FLNK, "$(P)$(R)TrigSrc_RBV")
+}
+
+record(mbbi, "$(P)$(R)TrigSrc_RBV") {
+    field(DESC, "Trigger source")
+    field(DTYP, "stream")
+    field(PINI, "YES")
+    field(INP,  "@Keysight3497xA.proto getTrigSource $(PORT)")
+    field(ZRVL, "0")
+    field(ZRST, "BUS")
+    field(ONVL, "1")
+    field(ONST, "IMM")
+    field(TWVL, "2")
+    field(TWST, "EXT")
+    field(THVL, "3")
+    field(THST, "ALAR1")
+    field(FRVL, "4")
+    field(FRST, "ALAR2")
+    field(FVVL, "5")
+    field(FVST, "ALAR3")
+    field(SXVL, "6")
+    field(SXST, "ALAR4")
+    field(SVVL, "7")
+    field(SVST, "TIM")
 }
 
 record(asyn,"$(P)$(R)Asyn") {

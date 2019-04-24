@@ -10,11 +10,29 @@ InTerminator = LF;
 
 getError {
    out ":SYST:ERR?";
-   in  ":SYST:ERR %80c";
+   in  "%80c";
 }
 
 getModel {
    out "*IDN?";
-   in  "*IDN %80c";
+   in  "%80c";
 }
 
+getSN {
+   out "*IDN?";
+   in  "%*[a-zA-Z ],3497%cA,%[MY0-9],%*[0-9.-]";
+}
+
+getDataPoints {
+    out "DATA:POINTS?";
+    in "%d";
+}
+
+getTrigSource {
+    out "TRIG:SOUR?";
+    in "%{BUS|IMM|EXT|ALAR1|ALAR2|ALAR3|ALAR4|TIM}";
+}
+
+setTrigSource {
+    out "TRIG:SOUR? %{BUS|IMM|EXT|ALAR1|ALAR2|ALAR3|ALAR4|TIM}";
+}
