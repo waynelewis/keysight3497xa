@@ -1,4 +1,4 @@
-/* Keysight3497xAMain.cpp */
+/* KS3497xAAppMain.cpp */
 /* Author:  Marty Kraimer Date:    17MAR2000 */
 
 #include <stddef.h>

@@ -5,37 +5,47 @@ include $(TOP)/configure/CONFIG
 #  ADD MACRO DEFINITIONS AFTER THIS LINE
 #=============================
 
+# Build the library
+LIBRARY_IOC += KS3497xA
+
+DBD += KS3497xASupport.dbd
+
+KS3497xA_SRCS += KS3497xA.cpp
+
+KS3497xA_LIBS += asyn
+KS3497xA_LIBS += $(EPICS_BASE_IOC_LIBS)
+
 #=============================
 # Build the IOC application
 
-PROD_IOC = Keysight3497xA
-# Keysight3497xA.dbd will be created and installed
-DBD += Keysight3497xA.dbd
+PROD_IOC = KS3497xAApp
+# KS3497xAApp.dbd will be created and installed
+DBD += KS3497xAApp.dbd
 
-# Keysight3497xA.dbd will be made up from these files:
-Keysight3497xA_DBD += base.dbd
+# KS3497xAApp.dbd will be made up from these files:
+KS3497xAApp_DBD += base.dbd
 
 # Include dbd files from all support applications:
-Keysight3497xA_DBD += asyn.dbd
-Keysight3497xA_DBD += drvAsynIPPort.dbd
-Keysight3497xA_DBD += stream.dbd
+KS3497xAApp_DBD += asyn.dbd
+KS3497xAApp_DBD += drvAsynIPPort.dbd
+KS3497xAApp_DBD += stream.dbd
 
 # Add all the support libraries needed by this IOC
-Keysight3497xA_LIBS += asyn
-Keysight3497xA_LIBS += stream
+KS3497xAApp_LIBS += asyn
+KS3497xAApp_LIBS += stream
 
-# Keysight3497xA_registerRecordDeviceDriver.cpp derives from Keysight3497xA.dbd
-Keysight3497xA_SRCS += Keysight3497xA_registerRecordDeviceDriver.cpp
+# KS3497xAApp_registerRecordDeviceDriver.cpp derives from KS3497xAApp.dbd
+KS3497xAApp_SRCS += KS3497xAApp_registerRecordDeviceDriver.cpp
 
 # Build the main IOC entry point on workstation OSs.
-Keysight3497xA_SRCS_DEFAULT += Keysight3497xAMain.cpp
-Keysight3497xA_SRCS_vxWorks += -nil-
+KS3497xAApp_SRCS_DEFAULT += KS3497xAAppMain.cpp
+KS3497xAApp_SRCS_vxWorks += -nil-
 
 # Add support from base/src/vxWorks if needed
-#Keysight3497xA_OBJS_vxWorks += $(EPICS_BASE_BIN)/vxComLibrary
+#KS3497xAApp_OBJS_vxWorks += $(EPICS_BASE_BIN)/vxComLibrary
 
 # Finally link to the EPICS Base libraries
-Keysight3497xA_LIBS += $(EPICS_BASE_IOC_LIBS)
+KS3497xAApp_LIBS += $(EPICS_BASE_IOC_LIBS)
 
 #===========================
 
