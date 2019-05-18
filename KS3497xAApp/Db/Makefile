@@ -10,7 +10,7 @@ include $(TOP)/configure/CONFIG
 #----------------------------------------------------
 # Create and install (or just install) into <top>/db
 # databases, templates, substitutions like this
-DB += Keysight3497xA.db
+DB += KS3497xA.db
 
 #----------------------------------------------------
 # If <anyname>.db template is not named <anyname>*.template add
