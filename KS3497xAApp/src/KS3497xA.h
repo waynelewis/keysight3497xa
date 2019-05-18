@@ -5,12 +5,12 @@
 #include <epicsExport.h>
 #include <asynPortDriver.h>
 
-#define KS3497xASerialNumberString      "SerialNumber"      // asynOctet
-#define KS3497xAManufacturerString      "Manufacturer"		// asynOctet
-#define KS3497xAModelString      	    "Model"      		// asynOctet
-#define KS3497xAIDNString      	        "IDN"      		    // asynOctet
-#define KS3497xATriggerSourceString     "TriggerSource"     // asynInt32    
-#define KS3497xANumDataPointsString     "NumDataPoints"     // asynInt32    
+#define KS3497xASerialNumberString      "SerialNumber"
+#define KS3497xAManufacturerString      "Manufacturer"
+#define KS3497xAModelString             "Model"
+#define KS3497xAIDNString               "IDN"
+#define KS3497xATriggerSourceString     "TriggerSource"
+#define KS3497xANumDataPointsString     "NumDataPoints"
 
 #define MAX_RESPONSE_LENGTH             255
 #define MAX_COMMAND_LENGTH              32
@@ -21,12 +21,9 @@ public:
     KS3497xA(const char *portName, const char *devicePortName, int pollTime);
     
     /* These are the methods that we override from asynPortDriver */
-    virtual asynStatus readInt32(asynUser *pasynUser, epicsInt32 *value);
-    virtual asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
-    virtual asynStatus readFloat64(asynUser *pasynUser, epicsFloat64 *value);
-    virtual asynStatus writeFloat64(asynUser *pasynUser, epicsFloat64 value);
-    virtual asynStatus writeOctet(asynUser *pasynUser, const char *value, size_t maxChars, size_t *nActual);
-    virtual asynStatus readOctet(asynUser *pasynUser, const char *value, size_t maxChars, size_t *nActual, int *eomReason);
+    //virtual asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
+    //virtual asynStatus writeFloat64(asynUser *pasynUser, epicsFloat64 value);
+    //virtual asynStatus writeOctet(asynUser *pasynUser, const char *value, size_t maxChars, size_t *nActual);
     virtual void pollerThread(void);
 
 protected:
@@ -44,6 +41,7 @@ private:
     asynUser *pasynUserKS;
 
     void read_metadata(void);
+    void read_data(void);
 
 
 };

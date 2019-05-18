@@ -8,7 +8,7 @@ include $(TOP)/configure/CONFIG
 # Build the library
 LIBRARY_IOC += KS3497xA
 
-DBD += KS3497xASupport.dbd
+#DBD += KS3497xASupport.dbd
 
 KS3497xA_SRCS += KS3497xA.cpp
 
@@ -28,11 +28,16 @@ KS3497xAApp_DBD += base.dbd
 # Include dbd files from all support applications:
 KS3497xAApp_DBD += asyn.dbd
 KS3497xAApp_DBD += drvAsynIPPort.dbd
-KS3497xAApp_DBD += stream.dbd
+KS3497xAApp_DBD += devEpics.dbd
+
+# Include DBD file for this device
+KS3497xAApp_DBD += KS3497xASupport.dbd
 
 # Add all the support libraries needed by this IOC
 KS3497xAApp_LIBS += asyn
-KS3497xAApp_LIBS += stream
+
+# Include the library for the KS3497xA
+KS3497xAApp_LIBS += KS3497xA
 
 # KS3497xAApp_registerRecordDeviceDriver.cpp derives from KS3497xAApp.dbd
 KS3497xAApp_SRCS += KS3497xAApp_registerRecordDeviceDriver.cpp

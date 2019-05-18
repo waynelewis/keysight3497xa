@@ -8,17 +8,29 @@
 record(stringin,"$(P)$(R)Model_RBV") {
     field(DESC, "ID string")
     field(SCAN, "I/O Intr")
-    field(DTYP, "asynOctet")
-    field(INP,  "@asyn($(PORT),$(ADDR))Model")
-    #field(PINI, "YES")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT) $(ADDR=0) 1)Model")
 }
 
 record(stringin,"$(P)$(R)SN_RBV") {
     field(DESC, "Serial number")
-    #field(DTYP, "stream")
-    #field(INP,  "@Keysight3497xA.proto getSN $(PORT)")
-    #field(PINI, "YES")
-    #field(SCAN, "10 second")
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT) $(ADDR=0) 1)SerialNumber")
+}
+
+record(stringin,"$(P)$(R)Manufacturer_RBV") {
+    field(DESC, "Manufacturer")
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT) $(ADDR=0) 1)Manufacturer")
+}
+
+record(stringin,"$(P)$(R)IDN_RBV") {
+    field(DESC, "IDN response")
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT) $(ADDR=0) 1)IDN")
 }
 
 record(stringin,"$(P)$(R)Error_RBV") {
@@ -28,8 +40,9 @@ record(stringin,"$(P)$(R)Error_RBV") {
 
 record(ai,"$(P)$(R)NumDataPoints_RBV") {
     field(DESC, "Number of saved data points")
-    #field(DTYP, "stream")
-    #field(INP,  "@Keysight3497xA.proto getDataPoints $(PORT)")
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR=0))NumDataPoints")
 }
 
 record(mbbo, "$(P)$(R)TrigSrc") {
