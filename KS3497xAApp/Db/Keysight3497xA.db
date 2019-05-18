@@ -7,9 +7,10 @@
 
 record(stringin,"$(P)$(R)Model_RBV") {
     field(DESC, "ID string")
+    field(SCAN, "I/O Intr")
     field(DTYP, "asynOctet")
     field(INP,  "@asyn($(PORT),$(ADDR))Model")
-    field(PINI, "YES")
+    #field(PINI, "YES")
 }
 
 record(stringin,"$(P)$(R)SN_RBV") {
