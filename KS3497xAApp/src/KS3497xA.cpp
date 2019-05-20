@@ -69,11 +69,15 @@ KS3497xA::KS3497xA(const char *portName, const char *devicePortName, int pollTim
     createParam(KS3497xACard1TypeString,            asynParamOctet,     &KS3497xACard1Type);
     createParam(KS3497xACard2TypeString,            asynParamOctet,     &KS3497xACard2Type);
     createParam(KS3497xACard3TypeString,            asynParamOctet,     &KS3497xACard3Type);
-    createParam(KS3497xACardInput01_16SelectString, asynParamInt32,     &KS3497xACardInput01_16Select);
     createParam(KS3497xACardMonSelectString,        asynParamInt32,     &KS3497xACardMonSelect);
-    createParam(KS3497xACardMonOnOffString,         asynParamInt32,     &KS3497xACardMonOnOff);
+    createParam(KS3497xAMonOnOffString,             asynParamInt32,     &KS3497xAMonOnOff);
     createParam(KS3497xAInput101ValueString,        asynParamFloat64,   &KS3497xAInput101Value);
     createParam(KS3497xANumDataPointsString,        asynParamInt32,     &KS3497xANumDataPoints);
+
+    // Create the parameters for the cards
+    for (int i = 1; i < 4; i++) {
+    createParam(i, KS3497xACardInput01_16SelectString, asynParamInt32,     &KS3497xACardInput01_16Select);
+    }
 
     std::cout << "KS3497xASerialNumber = " << KS3497xASerialNumber << std::endl;
     std::cout << "KS3497xANumDataPoints = " << KS3497xANumDataPoints << std::endl;
@@ -94,6 +98,9 @@ KS3497xA::KS3497xA(const char *portName, const char *devicePortName, int pollTim
         return;
     }
 
+    pasynOctetSyncIO->setInputEos(this->pasynUserKS, "\n", 1);
+    pasynOctetSyncIO->setOutputEos(this->pasynUserKS, "\n" ,1);
+            
     // Request an initial read of metadata
     read_metadata_request = true;
 
@@ -114,45 +121,43 @@ void KS3497xA::pollerThread()
         // Read data from KS3497xA here
         if (read_metadata_request == true)
             read_metadata();
-        read_data();
+        //read_data();
         unlock();
         epicsThreadSleep(pollTime_);
     }
 }
 
-void KS3497xA::read_data(void)
+asynStatus KS3497xA::read_data(void)
 {
+    asynStatus status = asynSuccess;
     static const char *functionName = "read_data";
+
+    asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+        "%s:%s: [%s]: entering\n",
+        driverName, functionName, this->portName);
+
+    return status;
 }
 
-void KS3497xA::read_metadata(void)
+asynStatus KS3497xA::read_metadata(void)
 {
-    size_t nWrite;
-    asynStatus status;
-    double timeout = 1.0;
-    int eomReason;
+    asynStatus status = asynSuccess;
     char command[MAX_COMMAND_LENGTH];
     char response[MAX_COMMAND_LENGTH];
     std::string response_buf;
     std::string substring;
     std::string separator = ",";
-    size_t response_length;
     static const char *functionName = "read_metadata";
 
-    // Read the model information
-    sprintf(command, "*IDN?\n");
+    asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+        "%s:%s: [%s]: entering\n",
+        driverName, functionName, this->portName);
 
-    status = pasynOctetSyncIO->writeRead(
-        this->pasynUserKS,
-        command,
-        strlen(command),
-        response,
-        MAX_RESPONSE_LENGTH,
-        timeout,
-        &nWrite,
-        &response_length,
-        &eomReason);
-     
+    // Read the model information
+    sprintf(command, "*IDN?");
+
+    status = writeread_command(command, response);
+
     setStringParam(KS3497xAIDN, response);
 
     // Split up the response to get the individual parts
@@ -180,19 +185,10 @@ void KS3497xA::read_metadata(void)
         substring.c_str());
 
     // Get the card type for slot 1
-    sprintf(command, "SYST:CTYPE? 100\n");
+    sprintf(command, "SYST:CTYPE? 100");
 
-    status = pasynOctetSyncIO->writeRead(
-        this->pasynUserKS,
-        command,
-        strlen(command),
-        response,
-        MAX_RESPONSE_LENGTH,
-        timeout,
-        &nWrite,
-        &response_length,
-        &eomReason);
-     
+    status = writeread_command(command, response);
+
     response_buf = response;
 
     response_buf.erase(
@@ -207,18 +203,9 @@ void KS3497xA::read_metadata(void)
         substring.c_str());
 
     // Get the card type for slot 2
-    sprintf(command, "SYST:CTYPE? 200\n");
+    sprintf(command, "SYST:CTYPE? 200");
 
-    status = pasynOctetSyncIO->writeRead(
-        this->pasynUserKS,
-        command,
-        strlen(command),
-        response,
-        MAX_RESPONSE_LENGTH,
-        timeout,
-        &nWrite,
-        &response_length,
-        &eomReason);
+    status = writeread_command(command, response);
      
     // Split up the response
     response_buf = response;
@@ -238,18 +225,9 @@ void KS3497xA::read_metadata(void)
         response_buf.find(separator) + separator.length());
 
     // Get the card type for slot 3
-    sprintf(command, "SYST:CTYPE? 300\n");
+    sprintf(command, "SYST:CTYPE? 300");
 
-    status = pasynOctetSyncIO->writeRead(
-        this->pasynUserKS,
-        command,
-        strlen(command),
-        response,
-        MAX_RESPONSE_LENGTH,
-        timeout,
-        &nWrite,
-        &response_length,
-        &eomReason);
+    status = writeread_command(command, response);
      
     // Split up the response
     response_buf = response;
@@ -268,6 +246,16 @@ void KS3497xA::read_metadata(void)
     // Disable future metadata reads
     read_metadata_request = false;
 
+    if (status != asynSuccess)
+        asynPrint(
+            this->pasynUserSelf, 
+            ASYN_TRACE_ERROR,
+            "%s:%s: error reading metadata\n",
+            driverName, functionName);
+            
+    callParamCallbacks();
+
+    return status;
 }
 
 asynStatus KS3497xA::writeInt32(asynUser *pasynUser, epicsInt32 value)
@@ -280,14 +268,18 @@ asynStatus KS3497xA::writeInt32(asynUser *pasynUser, epicsInt32 value)
 
     pasynManager->getAddr(pasynUser, &card);
 
-    asynPrint(pasynUser, ASYN_TRACE_ERROR,
+    asynPrint(pasynUser, ASYN_TRACE_FLOW,
         "%s:%s: [%s]: function=%d value=%d, card=%d\n",
         driverName, functionName, this->portName, function, value, card);
 
-    if (function == KS3497xACardMonSelect) {
+    if (function == KS3497xACardInput01_16Select) {
+	offset = 0;
+        select_inputs(card, offset, value);
+    }
+    else if (function == KS3497xACardMonSelect) {
         select_monitor(card, value);
     }
-    else if (function == KS3497xACardMonOnOff) {
+    else if (function == KS3497xAMonOnOff) {
         start_stop_monitor(value);
     }
     else {
@@ -315,45 +307,40 @@ asynStatus KS3497xA::writeOctet(asynUser *pasynUser, const char *value, size_t m
 void KS3497xA::select_inputs(int card, int offset, int flags) {
     int i;
     int flag;
-
     
     // Populate the local channel selection info
-    for (i == 0; i < 16; i++) {
+    for (i = 0; i < 16; i++) {
         // Mask out each flag in turn
         flag = flags & (1 << i);
         card_input_active[card][i + offset] = flag;
     }
 }
 
-void KS3497xA::select_monitor(int card, int channel) {
-    int i;
-    int flag;
-
+asynStatus KS3497xA::select_monitor(int card, int channel) {
+    asynStatus status = asynSuccess;
     char command[MAX_COMMAND_LENGTH];
 
-    sprintf(command, "ROUT:MON (@%d%02d)\n", card, channel);
+    sprintf(command, "ROUT:MON (@%d%02d)", card, channel);
 
-    send_command(command);
+    status = write_command(command);
+    return status;
 }
 
-void KS3497xA::start_stop_monitor(int value) {
-    int i;
-    int flag;
-    int status;
-
+asynStatus KS3497xA::start_stop_monitor(int value) {
+    asynStatus status = asynSuccess;
     char command[MAX_COMMAND_LENGTH];
 
     sprintf(command, "ROUT:MON:STATE %s\n", (value==0?"OFF":"ON"));
 
-    send_command(command);
+    status = write_command(command);
+    return status;
 }
 
-void KS3497xA::send_command(const char *command) {
-
-    int status;
+asynStatus KS3497xA::write_command(const char *command) {
+    asynStatus status = asynSuccess;
     double timeout = 1.0;
     size_t nWrite;
-    const char *functionName = "send_command";
+    const char *functionName = "write_command";
 
     status = pasynOctetSyncIO->write(
         this->pasynUserKS,
@@ -370,8 +357,54 @@ void KS3497xA::send_command(const char *command) {
         asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR,
             "%s:%s: error sending command %s\n",
             driverName, functionName, command);
-        return;
+        return(asynError);
     }
+    return status;
+}
+
+asynStatus KS3497xA::writeread_command(const char *command, char *response) {
+    asynStatus status = asynSuccess;
+    double timeout = 1.0;
+    size_t nWrite;
+    size_t response_length;
+    int eomReason;
+    const char *functionName = "writeread_command";
+
+    status = pasynOctetSyncIO->writeRead(
+            this->pasynUserKS,
+            command,
+            strlen(command),
+            response,
+            MAX_RESPONSE_LENGTH,
+            timeout,
+            &nWrite,
+            &response_length,
+            &eomReason);
+
+    if (status != asynSuccess) {
+        asynPrint(
+                this->pasynUserSelf,
+                ASYN_TRACE_ERROR,
+                "%s:%s comms status = %d, command = %s, response length = %lu, eomReason = %d\n", 
+                driverName, 
+                functionName,
+                status,
+                command,
+                response_length,
+                eomReason);
+        this->comms_status = status;
+        return(asynError);
+    }
+
+    asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+            "%s:%s: command = %s\n",
+            driverName, functionName, command);
+
+    asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+            "%s:%s: response = %s\n",
+            driverName, functionName, response);
+
+    return status;
 }
 
 extern "C" int initKS3497xA(const char *portName, const char *devicePortName, int pollTime)
@@ -384,9 +417,9 @@ static const iocshArg initArg0 = {"Port Nmae", iocshArgString};
 static const iocshArg initArg1 = {"Device Port Nmae", iocshArgString};
 static const iocshArg initArg2 = {"Poll time (ms)", iocshArgInt};
 static const iocshArg *const initArgs[] = {&initArg0, 
-                                                 &initArg1,
-                                                 &initArg2
-                                                };
+    &initArg1,
+    &initArg2
+};
 static const iocshFuncDef initFuncDef = {"initKS3497xA", 3, initArgs};
 
 static void initCallFunc(const iocshArgBuf *args)

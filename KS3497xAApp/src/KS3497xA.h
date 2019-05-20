@@ -15,7 +15,7 @@
 #define KS3497xACard3TypeString             "Card3Type"
 #define KS3497xACardInput01_16SelectString  "CardInput01_16Select"
 #define KS3497xACardMonSelectString         "CardMonSelect"
-#define KS3497xACardMonOnOffString          "CardMonOnOff"
+#define KS3497xAMonOnOffString              "MonOnOff"
 #define KS3497xAInput101ValueString         "Input101Value"
 #define KS3497xANumDataPointsString         "NumDataPoints"
 
@@ -48,7 +48,7 @@ protected:
     int KS3497xACard3Type;
     int KS3497xACardInput01_16Select;
     int KS3497xACardMonSelect;
-    int KS3497xACardMonOnOff;
+    int KS3497xAMonOnOff;
     int KS3497xAInput101Value;
     int KS3497xANumDataPoints;
     #define LAST_KS3497XA_PARAM KS3497xANumDataPoints
@@ -57,15 +57,17 @@ private:
     double pollTime_;
     bool read_metadata_request;
     asynUser *pasynUserKS;
+    asynStatus comms_status;
 
     bool card_input_active[MAX_CARDS][MAX_INPUTS];
 
-    void read_metadata(void);
-    void read_data(void);
+    asynStatus read_metadata(void);
+    asynStatus read_data(void);
     void select_inputs(int card, int offset, int flags);
-    void select_monitor(int card, int channel);
-    void start_stop_monitor(int value);
-    void send_command(const char *command);
+    asynStatus select_monitor(int card, int channel);
+    asynStatus start_stop_monitor(int value);
+    asynStatus write_command(const char *command);
+    asynStatus writeread_command(const char *command, char *response);
 
 };
 

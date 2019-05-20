@@ -102,7 +102,7 @@ record(mbbo, "$(P)$(R)Card1MonSelect01_16") {
 record(bo, "$(P)$(R)Monitor") {
     field(DESC, "Monitor control")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),$(CARD=1))CardMonOnOff")
+    field(OUT,  "@asyn($(PORT),$(ADDR=0))CardMonOnOff")
     field(ZNAM, "Off")
     field(ONAM, "On")
 }
