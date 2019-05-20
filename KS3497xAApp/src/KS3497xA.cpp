@@ -71,6 +71,7 @@ KS3497xA::KS3497xA(const char *portName, const char *devicePortName, int pollTim
     createParam(KS3497xACard3TypeString,            asynParamOctet,     &KS3497xACard3Type);
     createParam(KS3497xACardMonSelectString,        asynParamInt32,     &KS3497xACardMonSelect);
     createParam(KS3497xAMonOnOffString,             asynParamInt32,     &KS3497xAMonOnOff);
+    createParam(KS3497xAMonValString,               asynParamFloat64,   &KS3497xAMonVal);
     createParam(KS3497xAInput101ValueString,        asynParamFloat64,   &KS3497xAInput101Value);
     createParam(KS3497xANumDataPointsString,        asynParamInt32,     &KS3497xANumDataPoints);
 
@@ -121,7 +122,8 @@ void KS3497xA::pollerThread()
         // Read data from KS3497xA here
         if (read_metadata_request == true)
             read_metadata();
-        //read_data();
+        if (monitoring)
+            read_data();
         unlock();
         epicsThreadSleep(pollTime_);
     }
@@ -135,6 +137,8 @@ asynStatus KS3497xA::read_data(void)
     asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
         "%s:%s: [%s]: entering\n",
         driverName, functionName, this->portName);
+
+    status = read_monitor_data();
 
     return status;
 }
@@ -332,8 +336,34 @@ asynStatus KS3497xA::start_stop_monitor(int value) {
 
     sprintf(command, "ROUT:MON:STATE %s\n", (value==0?"OFF":"ON"));
 
+    monitoring = value;
+
     status = write_command(command);
     return status;
+}
+
+asynStatus KS3497xA::read_monitor_data(void) {
+    asynStatus status = asynSuccess;
+    double value;
+    char command[MAX_COMMAND_LENGTH];
+    char response[MAX_COMMAND_LENGTH];
+    const char *functionName = "read_monitor_data";
+
+    sprintf(command, "ROUT:MON:DATA?\n");
+
+    status = writeread_command(command, response);
+    
+    value = atof(response);
+
+    asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+            "%s:%s: response = %s, value = %f\n",
+            driverName, functionName, response, value);
+    
+    setDoubleParam(KS3497xAMonVal, value);
+    callParamCallbacks();
+    
+    return status;
+
 }
 
 asynStatus KS3497xA::write_command(const char *command) {

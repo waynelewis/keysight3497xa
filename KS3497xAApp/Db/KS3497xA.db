@@ -99,12 +99,20 @@ record(mbbo, "$(P)$(R)Card1MonSelect01_16") {
     field(ONVL, "2")
 }
 
-record(bo, "$(P)$(R)Monitor") {
+record(bo, "$(P)$(R)Monitor_CMD") {
     field(DESC, "Monitor control")
     field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),$(ADDR=0))CardMonOnOff")
+    field(OUT,  "@asyn($(PORT),$(ADDR=0))MonOnOff")
     field(ZNAM, "Off")
     field(ONAM, "On")
+}
+
+record(ai, "$(P)$(R)Monitor_RBV") {
+    field(DESC, "Monitor value")
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynFloat64")
+    field(INP,  "@asyn($(PORT),$(ADDR=0))MonVal")
+    field(PREC, "4")
 }
 
 record(mbbi, "$(P)$(R)TrigSrc_RBV") {

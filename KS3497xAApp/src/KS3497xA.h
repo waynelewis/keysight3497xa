@@ -16,6 +16,7 @@
 #define KS3497xACardInput01_16SelectString  "CardInput01_16Select"
 #define KS3497xACardMonSelectString         "CardMonSelect"
 #define KS3497xAMonOnOffString              "MonOnOff"
+#define KS3497xAMonValString                "MonVal"
 #define KS3497xAInput101ValueString         "Input101Value"
 #define KS3497xANumDataPointsString         "NumDataPoints"
 
@@ -49,6 +50,7 @@ protected:
     int KS3497xACardInput01_16Select;
     int KS3497xACardMonSelect;
     int KS3497xAMonOnOff;
+    int KS3497xAMonVal;
     int KS3497xAInput101Value;
     int KS3497xANumDataPoints;
     #define LAST_KS3497XA_PARAM KS3497xANumDataPoints
@@ -60,9 +62,11 @@ private:
     asynStatus comms_status;
 
     bool card_input_active[MAX_CARDS][MAX_INPUTS];
+    bool monitoring;
 
     asynStatus read_metadata(void);
     asynStatus read_data(void);
+    asynStatus read_monitor_data(void);
     void select_inputs(int card, int offset, int flags);
     asynStatus select_monitor(int card, int channel);
     asynStatus start_stop_monitor(int value);
