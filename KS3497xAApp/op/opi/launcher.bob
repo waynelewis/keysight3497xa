@@ -197,7 +197,7 @@
     <name>Action Button_10</name>
     <actions>
       <action type="open_display">
-        <file>dmm_hp3458a.bob</file>
+        <file>KS3497xA.bob</file>
         <macros>
           <P>MMT:</P>
           <R>MUX1:</R>
