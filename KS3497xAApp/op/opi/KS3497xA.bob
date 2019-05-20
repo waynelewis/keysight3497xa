@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <display version="2.0.0">
   <name>Display</name>
+  <height>1200</height>
+  <widget type="rectangle" version="2.0.0">
+    <name>Rectangle_1</name>
+    <x>20</x>
+    <y>580</y>
+    <width>350</width>
+    <height>80</height>
+    <line_width>1</line_width>
+    <line_color>
+      <color name="Grid" red="128" green="128" blue="128">
+      </color>
+    </line_color>
+    <background_color>
+      <color name="Button_Background" red="210" green="210" blue="210">
+      </color>
+    </background_color>
+    <corner_width>5</corner_width>
+    <corner_height>5</corner_height>
+  </widget>
   <widget type="label" version="2.0.0">
     <name>Label</name>
     <class>TITLE</class>
@@ -46,8 +65,13 @@
     <text>Monitor</text>
     <x>30</x>
     <y>60</y>
-    <width>47</width>
+    <width>330</width>
     <height>16</height>
+    <font>
+      <font family="Liberation Sans" style="BOLD" size="14.0">
+      </font>
+    </font>
+    <horizontal_alignment>1</horizontal_alignment>
     <auto_size>true</auto_size>
   </widget>
   <widget type="label" version="2.0.0">
@@ -126,5 +150,37 @@
     <width>52</width>
     <height>16</height>
     <auto_size>true</auto_size>
+  </widget>
+  <widget type="action_button" version="3.0.0">
+    <name>Action Button</name>
+    <actions>
+      <action type="open_display">
+        <file>common/asynRecord.opi</file>
+        <macros>
+          <P>$(P)</P>
+          <R>$(R)Asyn</R>
+        </macros>
+        <target>tab</target>
+        <description>Open Display</description>
+      </action>
+    </actions>
+    <text>asyn record...</text>
+    <x>40</x>
+    <y>620</y>
+    <width>120</width>
+    <height>20</height>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_6</name>
+    <text>Miscellaneous</text>
+    <x>30</x>
+    <y>590</y>
+    <width>330</width>
+    <height>16</height>
+    <font>
+      <font family="Liberation Sans" style="BOLD" size="14.0">
+      </font>
+    </font>
+    <horizontal_alignment>1</horizontal_alignment>
   </widget>
 </display>
