@@ -65,4 +65,20 @@
     <width>90</width>
     <height>20</height>
   </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_3</name>
+    <text>Value</text>
+    <x>30</x>
+    <y>120</y>
+    <width>36</width>
+    <height>16</height>
+    <auto_size>true</auto_size>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update</name>
+    <pv_name>$(P)$(R)Monitor_RBV</pv_name>
+    <x>120</x>
+    <y>120</y>
+    <width>90</width>
+  </widget>
 </display>
