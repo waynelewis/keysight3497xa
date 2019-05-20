@@ -28,7 +28,7 @@
     <x>20</x>
     <y>50</y>
     <width>350</width>
-    <height>220</height>
+    <height>510</height>
     <line_width>1</line_width>
     <line_color>
       <color name="Grid" red="128" green="128" blue="128">
@@ -82,5 +82,49 @@
     <x>120</x>
     <y>120</y>
     <width>90</width>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_4</name>
+    <text>Select</text>
+    <x>30</x>
+    <y>150</y>
+    <width>39</width>
+    <height>16</height>
+    <auto_size>true</auto_size>
+  </widget>
+  <widget type="radio" version="2.0.0">
+    <name>Radio Button</name>
+    <pv_name>$(P)$(R)Card1MonSelect01_16</pv_name>
+    <x>120</x>
+    <y>170</y>
+    <width>120</width>
+    <height>390</height>
+    <items>
+      <item>Channel 1</item>
+      <item>Channel 2</item>
+      <item>Channel 3</item>
+      <item>Channel 4</item>
+      <item>Channel 5</item>
+      <item>Channel 6</item>
+      <item>Channel 7</item>
+      <item>Channel 8</item>
+      <item>Channel 9</item>
+      <item>Channel 10</item>
+      <item>Channel 11</item>
+      <item>Channel 12</item>
+      <item>Channel 13</item>
+      <item>Channel 14</item>
+      <item>Channel 15</item>
+      <item>Channel 16</item>
+    </items>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_5</name>
+    <text>Slot 100</text>
+    <x>120</x>
+    <y>150</y>
+    <width>52</width>
+    <height>16</height>
+    <auto_size>true</auto_size>
   </widget>
 </display>
