@@ -9,28 +9,49 @@ record(stringin,"$(P)$(R)Model_RBV") {
     field(DESC, "ID string")
     field(SCAN, "I/O Intr")
     field(DTYP, "asynOctetRead")
-    field(INP,  "@asyn($(PORT) $(ADDR=0) 1)Model")
+    field(INP,  "@asyn($(PORT),$(ADDR=0))Model")
 }
 
 record(stringin,"$(P)$(R)SN_RBV") {
     field(DESC, "Serial number")
     field(SCAN, "I/O Intr")
     field(DTYP, "asynOctetRead")
-    field(INP,  "@asyn($(PORT) $(ADDR=0) 1)SerialNumber")
+    field(INP,  "@asyn($(PORT),$(ADDR=0))SerialNumber")
 }
 
 record(stringin,"$(P)$(R)Manufacturer_RBV") {
     field(DESC, "Manufacturer")
     field(SCAN, "I/O Intr")
     field(DTYP, "asynOctetRead")
-    field(INP,  "@asyn($(PORT) $(ADDR=0) 1)Manufacturer")
+    field(INP,  "@asyn($(PORT),$(ADDR=0))Manufacturer")
 }
 
 record(stringin,"$(P)$(R)IDN_RBV") {
     field(DESC, "IDN response")
     field(SCAN, "I/O Intr")
     field(DTYP, "asynOctetRead")
-    field(INP,  "@asyn($(PORT) $(ADDR=0) 1)IDN")
+    field(INP,  "@asyn($(PORT),$(ADDR=0))IDN")
+}
+
+record(stringin,"$(P)$(R)CARD1TYPE_RBV") {
+    field(DESC, "Card 1 type")
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR=0))Card1Type")
+}
+
+record(stringin,"$(P)$(R)CARD2TYPE_RBV") {
+    field(DESC, "Card 2 type")
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR=0))Card2Type")
+}
+
+record(stringin,"$(P)$(R)CARD3TYPE_RBV") {
+    field(DESC, "Card 3 type")
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR=0))Card3Type")
 }
 
 record(stringin,"$(P)$(R)Error_RBV") {
@@ -66,6 +87,24 @@ record(mbbo, "$(P)$(R)TrigSrc") {
     field(SVVL, "7")
     field(SVST, "TIM")
     field(FLNK, "$(P)$(R)TrigSrc_RBV")
+}
+
+record(mbbo, "$(P)$(R)Card1MonSelect01_16") {
+    field(DESC, "Card 1 monitor 1-16 selection")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(CARD=1))CardMonSelect")
+    field(ZRST, "Channel 1")
+    field(ZRVL, "1")
+    field(ONST, "Channel 2")
+    field(ONVL, "2")
+}
+
+record(bo, "$(P)$(R)Monitor") {
+    field(DESC, "Monitor control")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(CARD=1))CardMonOnOff")
+    field(ZNAM, "Off")
+    field(ONAM, "On")
 }
 
 record(mbbi, "$(P)$(R)TrigSrc_RBV") {

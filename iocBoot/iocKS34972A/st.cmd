@@ -26,6 +26,7 @@ initKS3497xA("$(DEV_SUP_ASYN_PORT)", "$(DEV_ASYN_PORT)", 1000)
 dbLoadRecords("db/KS3497xA.db","P=MMT:,R=MUX1:,PORT=$(DEV_SUP_ASYN_PORT)")
 
 #asynSetTraceMask("$(DEV_ASYN_PORT)", -1, 0xFF)
+asynSetTraceMask("$(DEV_SUP_ASYN_PORT)", -1, 0x11)
 #asynSetTraceIOMask("$(DEV_ASYN_PORT)", -1, 0xFF)
 
 cd "${TOP}/iocBoot/${IOC}"
