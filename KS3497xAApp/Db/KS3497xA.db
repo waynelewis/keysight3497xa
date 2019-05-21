@@ -137,8 +137,3 @@ record(mbbi, "$(P)$(R)TrigSrc_RBV") {
     field(SVVL, "7")
     field(SVST, "TIM")
 }
-
-record(asyn,"$(P)$(R)Asyn") {
-    field(PORT, "$(PORT)")
-}
-
