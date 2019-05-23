@@ -11,7 +11,6 @@ include $(TOP)/configure/CONFIG
 # Create and install (or just install) into <top>/db
 # databases, templates, substitutions like this
 DB += KS3497xA.db
-DB_INSTALLS += $(ASYN)/db/asynRecord.db
 
 #----------------------------------------------------
 # If <anyname>.db template is not named <anyname>*.template add
