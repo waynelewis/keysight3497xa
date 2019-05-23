@@ -155,7 +155,7 @@
     <name>Action Button</name>
     <actions>
       <action type="open_display">
-        <file>common/asynRecord.opi</file>
+        <file>/usr/local/epics/R3.15.4/modules/soft/synApps_5_8/support/asyn4-30/opi/boy/asynRecord.opi</file>
         <macros>
           <P>$(P)</P>
           <R>$(R)Asyn</R>
