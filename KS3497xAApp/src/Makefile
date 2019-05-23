@@ -8,7 +8,7 @@ include $(TOP)/configure/CONFIG
 # Build the library
 LIBRARY_IOC += KS3497xA
 
-#DBD += KS3497xASupport.dbd
+DBD += KS3497xASupport.dbd
 
 KS3497xA_SRCS += KS3497xA.cpp
 
