@@ -74,6 +74,8 @@ KS3497xA::KS3497xA(const char *portName, const char *devicePortName, int pollTim
     createParam(KS3497xAMonValString,               asynParamFloat64,   &KS3497xAMonVal);
     createParam(KS3497xAInput101ValueString,        asynParamFloat64,   &KS3497xAInput101Value);
     createParam(KS3497xANumDataPointsString,        asynParamInt32,     &KS3497xANumDataPoints);
+    createParam(KS3497xAErrorMessageString,   		asynParamOctet,     &KS3497xAErrorMessage);
+    createParam(KS3497xAErrorCodeString,        	asynParamInt32,     &KS3497xAErrorCode);
 
     // Create the parameters for the cards
     for (int i = 1; i < 4; i++) {
@@ -119,6 +121,8 @@ void KS3497xA::pollerThread()
 
     while(1) {
         lock();
+		// Check for errors
+		check_status();
         // Read data from KS3497xA here
         if (read_metadata_request == true)
             read_metadata();
@@ -127,6 +131,36 @@ void KS3497xA::pollerThread()
         unlock();
         epicsThreadSleep(pollTime_);
     }
+}
+
+asynStatus KS3497xA::check_status(void)
+{
+    asynStatus status = asynSuccess;
+    char command[MAX_COMMAND_LENGTH];
+    char response[MAX_COMMAND_LENGTH];
+    std::string response_buf;
+    std::string substring;
+    std::string separator = ",";
+	int error_code;
+    static const char *functionName = "check_status";
+
+    asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+        "%s:%s: [%s]: entering\n",
+        driverName, functionName, this->portName);
+
+    sprintf(command, "SYST:ERR?");
+
+    status = writeread_command(command, response);
+
+	setStringParam(KS3497xAErrorMessage, response);
+
+	response_buf = response;
+    substring = response_buf.substr(0, response_buf.find(separator));
+	// TODO: Add validity checking here
+	error_code = std::stoi(substring, nullptr, 10);
+
+	setIntegerParam(KS3497xAErrorCode, error_code);
+    return status;
 }
 
 asynStatus KS3497xA::read_data(void)

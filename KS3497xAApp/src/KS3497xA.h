@@ -19,6 +19,8 @@
 #define KS3497xAMonValString                "MonVal"
 #define KS3497xAInput101ValueString         "Input101Value"
 #define KS3497xANumDataPointsString         "NumDataPoints"
+#define KS3497xAErrorMessageString         	"ErrorMessage"
+#define KS3497xAErrorCodeString         	"ErrorCode"
 
 #define MAX_RESPONSE_LENGTH             255
 #define MAX_COMMAND_LENGTH              255
@@ -53,7 +55,9 @@ protected:
     int KS3497xAMonVal;
     int KS3497xAInput101Value;
     int KS3497xANumDataPoints;
-    #define LAST_KS3497XA_PARAM KS3497xANumDataPoints
+    int KS3497xAErrorMessage;
+    int KS3497xAErrorCode;
+    #define LAST_KS3497XA_PARAM KS3497xAErrorCode
 
 private:
     double pollTime_;
@@ -64,6 +68,7 @@ private:
     bool card_input_active[MAX_CARDS][MAX_INPUTS];
     bool monitoring;
 
+    asynStatus check_status(void);
     asynStatus read_metadata(void);
     asynStatus read_data(void);
     asynStatus read_monitor_data(void);
