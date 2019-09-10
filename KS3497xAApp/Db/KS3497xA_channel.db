@@ -1,0 +1,85 @@
+# Keysight3497xA_channel.db
+
+# Database file for one channel of the Keysight 3497xA temperature monitor
+
+# Wayne Lewis
+# 2019-09-10
+
+record(mbbo,"$(P)$(R)Ch$(C)Type_SEL") {
+	field(DESC, "Channel $(C) input type selection")
+	field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(C))InputTypeSelect")
+	field(PINI, "YES")
+	field(ZRVL, "0")
+	field(ZRST, "Thermocouple")
+	field(ONVL, "1")
+	field(ONST, "RTD")
+	field(TWVL, "2")
+	field(TWST, "Thermistor")
+
+	info(autosaveFields, "VAL")
+}
+
+record(mbbo, "$(P)$(R)Ch$(C)TC_Type_SEL") {
+	field(DESC, "Channel $(C) thermocouple type selection")
+	field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(C))TCTypeSelect")
+	field(PINI, "YES")
+	field(ZRVL, "0")
+	field(ZRST, "B")
+	field(ONVL, "1")
+	field(ONST, "E")
+	field(TWVL, "2")
+	field(TWST, "J")
+	field(THVL, "3")
+	field(THST, "K")
+	field(FRVL, "4")
+	field(FRST, "N")
+	field(FVVL, "5")
+	field(FVST, "R")
+	field(SXVL, "6")
+	field(SXST, "S")
+	field(SVVL, "7")
+	field(SVST, "T")
+
+	info(autosaveFields, "VAL")
+}
+
+record(bo, "$(P)$(R)Ch$(C)RTD_Type_SEL") {
+	field(DESC, "Channel $(C) RTD alpha value")
+	field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(C))RTDAlphaSelect")
+	field(PINI, "YES")
+	field(ZNAM, "0.00385")
+	field(ONAM, "0.00391")
+
+	info(autosaveFields, "VAL")
+}
+
+record(ao, "$(P)$(R)Ch$(C)RTD_R_SEL") {
+	field(DESC, "Channel $(C) RTD resistance value")
+	field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(C))RTDRSelect")
+	field(PINI, "YES")
+	field(EGU, "ohms")
+	field(PREC, "0")
+	info(autosaveFields, "VAL")
+}
+
+record(mbbo, "$(P)$(R)Ch$(C)Thermistor_Type_SEL") {
+	field(DESC, "Channel $(C) thermistor type selection")
+	field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(C))ThermistorTypeSelect")
+	field(PINI, "YES")
+	field(ZRVL, "0")
+	field(ZRST, "2.2 kohm")
+	field(ONVL, "1")
+	field(ONST, "5 kohm")
+	field(TWVL, "2")
+	field(TWST, "10 kohm")
+
+	info(autosaveFields, "VAL")
+}
+
+
+
