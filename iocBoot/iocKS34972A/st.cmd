@@ -30,7 +30,8 @@ dbLoadRecords("db/KS3497xA.db","P=$(PREFIX),R=$(DEVICE),PORT=$(DEV_SUP_ASYN_PORT
 dbLoadRecords("db/asynRecord.db","P=$(PREFIX),R=$(DEVICE)Asyn,PORT=$(DEV_ASYN_PORT),OMAX=80,IMAX=80,ADDR=0")
 
 #asynSetTraceMask("$(DEV_ASYN_PORT)", -1, 0xFF)
-asynSetTraceMask("$(DEV_SUP_ASYN_PORT)", -1, 0x11)
+#asynSetTraceMask("$(DEV_SUP_ASYN_PORT)", -1, 0x11)
+asynSetTraceMask("$(DEV_SUP_ASYN_PORT)", -1, 0x01)
 #asynSetTraceIOMask("$(DEV_ASYN_PORT)", -1, 0xFF)
 
 cd "${TOP}/iocBoot/${IOC}"

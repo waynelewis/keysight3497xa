@@ -19,6 +19,8 @@
 #define KS3497xAMonValString                "MonVal"
 #define KS3497xAInput101ValueString         "Input101Value"
 #define KS3497xANumDataPointsString         "NumDataPoints"
+#define KS3497xALastErrorMessageString      "LastErrorMessage"
+#define KS3497xALastErrorCodeString         "LastErrorCode"
 #define KS3497xAErrorMessageString         	"ErrorMessage"
 #define KS3497xAErrorCodeString         	"ErrorCode"
 
@@ -26,6 +28,8 @@
 #define MAX_COMMAND_LENGTH              255
 #define MAX_CARDS                       3
 #define MAX_INPUTS                      40
+
+#define NO_ERROR_CODE					0
 
 class KS3497xA : public asynPortDriver {
 
@@ -55,6 +59,8 @@ protected:
     int KS3497xAMonVal;
     int KS3497xAInput101Value;
     int KS3497xANumDataPoints;
+    int KS3497xALastErrorMessage;
+    int KS3497xALastErrorCode;
     int KS3497xAErrorMessage;
     int KS3497xAErrorCode;
     #define LAST_KS3497XA_PARAM KS3497xAErrorCode

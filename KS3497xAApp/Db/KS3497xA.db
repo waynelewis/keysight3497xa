@@ -1,6 +1,6 @@
 # Keysight3497xA.db
 
-# Database file for Keysight 3497xA pressure controller
+# Database file for Keysight 3497xA temperature monitor
 
 # Wayne Lewis
 # 2019-04-23
@@ -54,9 +54,32 @@ record(stringin,"$(P)$(R)CARD3TYPE_RBV") {
     field(INP,  "@asyn($(PORT),$(ADDR=0))Card3Type")
 }
 
-record(stringin,"$(P)$(R)Error_RBV") {
-    #field(DTYP, "stream")
-    #field(INP,  "@Keysight3497xA.proto getError $(PORT)")
+record(stringin,"$(P)$(R)LastErrorMessage_RBV") {
+    field(DESC, "Last error")
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR=0))LastErrorMessage")
+}
+
+record(longin,"$(P)$(R)LastErrorCode_RBV") {
+    field(DESC, "Last error code")
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR=0))LastErrorCode")
+}
+
+record(stringin,"$(P)$(R)ErrorMessage_RBV") {
+    field(DESC, "Current error")
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynOctetRead")
+    field(INP,  "@asyn($(PORT),$(ADDR=0))ErrorMessage")
+}
+
+record(longin,"$(P)$(R)ErrorCode_RBV") {
+    field(DESC, "Current error code")
+    field(SCAN, "I/O Intr")
+    field(DTYP, "asynInt32")
+    field(INP,  "@asyn($(PORT),$(ADDR=0))ErrorCode")
 }
 
 record(ai,"$(P)$(R)NumDataPoints_RBV") {

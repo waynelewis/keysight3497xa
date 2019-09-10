@@ -53,18 +53,14 @@ KS3497xA::KS3497xA(const char *portName, const char *devicePortName, int pollTim
     int status = asynSuccess;
     const char *functionName = "KS3497xA";
 
-    std::cout << "number of parameters = " << NUM_KS3497xA_PARAMS << std::endl;
-    std::cout << "KS3497xASerialNumber = " << KS3497xASerialNumber << std::endl;
-    std::cout << "KS3497xANumDataPoints = " << KS3497xANumDataPoints << std::endl;
-
     if (pollTime == 0) pollTime = 1000;
     this->pollTime_ = pollTime / 1000.;
     
     /* Create parameters */
     createParam(KS3497xASerialNumberString,         asynParamOctet,     &KS3497xASerialNumber);
     createParam(KS3497xAManufacturerString,         asynParamOctet,     &KS3497xAManufacturer);
-    createParam(KS3497xAModelString,     	        asynParamOctet,     &KS3497xAModel);
-    createParam(KS3497xAIDNString,     	            asynParamOctet,     &KS3497xAIDN);
+    createParam(KS3497xAModelString,                asynParamOctet,     &KS3497xAModel);
+    createParam(KS3497xAIDNString,                  asynParamOctet,     &KS3497xAIDN);
     createParam(KS3497xATriggerSourceString,        asynParamInt32,     &KS3497xATriggerSource);
     createParam(KS3497xACard1TypeString,            asynParamOctet,     &KS3497xACard1Type);
     createParam(KS3497xACard2TypeString,            asynParamOctet,     &KS3497xACard2Type);
@@ -74,8 +70,10 @@ KS3497xA::KS3497xA(const char *portName, const char *devicePortName, int pollTim
     createParam(KS3497xAMonValString,               asynParamFloat64,   &KS3497xAMonVal);
     createParam(KS3497xAInput101ValueString,        asynParamFloat64,   &KS3497xAInput101Value);
     createParam(KS3497xANumDataPointsString,        asynParamInt32,     &KS3497xANumDataPoints);
-    createParam(KS3497xAErrorMessageString,   		asynParamOctet,     &KS3497xAErrorMessage);
-    createParam(KS3497xAErrorCodeString,        	asynParamInt32,     &KS3497xAErrorCode);
+    createParam(KS3497xALastErrorMessageString,     asynParamOctet,     &KS3497xALastErrorMessage);
+    createParam(KS3497xALastErrorCodeString,        asynParamInt32,     &KS3497xALastErrorCode);
+    createParam(KS3497xAErrorMessageString,         asynParamOctet,     &KS3497xAErrorMessage);
+    createParam(KS3497xAErrorCodeString,            asynParamInt32,     &KS3497xAErrorCode);
 
     // Create the parameters for the cards
     for (int i = 1; i < 4; i++) {
@@ -121,8 +119,8 @@ void KS3497xA::pollerThread()
 
     while(1) {
         lock();
-		// Check for errors
-		check_status();
+        // Check for errors
+        check_status();
         // Read data from KS3497xA here
         if (read_metadata_request == true)
             read_metadata();
@@ -141,7 +139,7 @@ asynStatus KS3497xA::check_status(void)
     std::string response_buf;
     std::string substring;
     std::string separator = ",";
-	int error_code;
+    int error_code;
     static const char *functionName = "check_status";
 
     asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
@@ -152,14 +150,26 @@ asynStatus KS3497xA::check_status(void)
 
     status = writeread_command(command, response);
 
-	setStringParam(KS3497xAErrorMessage, response);
-
-	response_buf = response;
+    response_buf = response;
     substring = response_buf.substr(0, response_buf.find(separator));
-	// TODO: Add validity checking here
-	error_code = std::stoi(substring, nullptr, 10);
+    // TODO: Add validity checking here
+    error_code = atoi(substring.c_str());
 
-	setIntegerParam(KS3497xAErrorCode, error_code);
+    // If the error code is non-zero, update the last error code
+    // latching PVs
+    if (error_code != NO_ERROR_CODE) {
+        setStringParam(
+                KS3497xALastErrorMessage, 
+                response);
+
+        setIntegerParam(
+                KS3497xALastErrorCode, 
+                error_code);
+    }
+        
+    setStringParam(KS3497xAErrorMessage, response);
+    setIntegerParam(KS3497xAErrorCode, error_code);
+    callParamCallbacks();
     return status;
 }
 
@@ -311,7 +321,7 @@ asynStatus KS3497xA::writeInt32(asynUser *pasynUser, epicsInt32 value)
         driverName, functionName, this->portName, function, value, card);
 
     if (function == KS3497xACardInput01_16Select) {
-	offset = 0;
+    offset = 0;
         select_inputs(card, offset, value);
     }
     else if (function == KS3497xACardMonSelect) {
