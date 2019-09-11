@@ -19,6 +19,11 @@
 #define KS3497xAMonValString                "MonVal"
 #define KS3497xAInput101ValueString         "Input101Value"
 #define KS3497xANumDataPointsString         "NumDataPoints"
+#define KS3497xAInputTypeSelectString       "InputTypeSelect"
+#define KS3497xATCTypeSelectString       	"TCTypeSelect"
+#define KS3497xARTDTypeSelectString       	"RTDTypeSelect"
+#define KS3497xARTDRValueString       		"RTDRValue"
+#define KS3497xAThermistorTypeSelectString  "ThermistorTypeSelect"
 #define KS3497xALastErrorMessageString      "LastErrorMessage"
 #define KS3497xALastErrorCodeString         "LastErrorCode"
 #define KS3497xAErrorMessageString         	"ErrorMessage"
@@ -59,6 +64,11 @@ protected:
     int KS3497xAMonVal;
     int KS3497xAInput101Value;
     int KS3497xANumDataPoints;
+	int KS3497xAInputTypeSelect;
+	int KS3497xATCTypeSelect;
+	int KS3497xARTDTypeSelect;
+	int KS3497xARTDRValue;
+	int KS3497xAThermistorTypeSelect;
     int KS3497xALastErrorMessage;
     int KS3497xALastErrorCode;
     int KS3497xAErrorMessage;
@@ -78,11 +88,21 @@ private:
     asynStatus read_metadata(void);
     asynStatus read_data(void);
     asynStatus read_monitor_data(void);
-    void select_inputs(int card, int offset, int flags);
+    void select_inputs(int card, int flags);
+    asynStatus set_input_type(int addr);
     asynStatus select_monitor(int card, int channel);
     asynStatus start_stop_monitor(int value);
     asynStatus write_command(const char *command);
     asynStatus writeread_command(const char *command, char *response);
+
+	enum input_types {input_type_tc, input_type_rtd, input_type_thermistor};
+	const std::string TEMPERATURE_INPUT_TYPE_STRINGS[3] {"TC", "RTD", "Thermistor"};
+	const std::string TC_TYPES[8] = {"B", "E", "J", "K", "N", "R", "S", "T"};
+
+	const int RTD_TYPES[2] = {85, 91};
+	const int THERMISTOR_TYPES[3] = {2200, 5000, 10000};
+
+
 
 };
 

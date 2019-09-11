@@ -70,6 +70,11 @@ KS3497xA::KS3497xA(const char *portName, const char *devicePortName, int pollTim
     createParam(KS3497xAMonValString,               asynParamFloat64,   &KS3497xAMonVal);
     createParam(KS3497xAInput101ValueString,        asynParamFloat64,   &KS3497xAInput101Value);
     createParam(KS3497xANumDataPointsString,        asynParamInt32,     &KS3497xANumDataPoints);
+    createParam(KS3497xAInputTypeSelectString,      asynParamInt32,     &KS3497xAInputTypeSelect);
+    createParam(KS3497xATCTypeSelectString,         asynParamInt32,     &KS3497xATCTypeSelect);
+    createParam(KS3497xARTDTypeSelectString,        asynParamInt32,     &KS3497xARTDTypeSelect);
+    createParam(KS3497xARTDRValueString,            asynParamInt32,     &KS3497xARTDRValue);
+    createParam(KS3497xAThermistorTypeSelectString, asynParamInt32,     &KS3497xAThermistorTypeSelect);
     createParam(KS3497xALastErrorMessageString,     asynParamOctet,     &KS3497xALastErrorMessage);
     createParam(KS3497xALastErrorCodeString,        asynParamInt32,     &KS3497xALastErrorCode);
     createParam(KS3497xAErrorMessageString,         asynParamOctet,     &KS3497xAErrorMessage);
@@ -310,25 +315,30 @@ asynStatus KS3497xA::writeInt32(asynUser *pasynUser, epicsInt32 value)
 {
     asynStatus status = asynSuccess;
     int function = pasynUser->reason;
-    int card;
-    int offset;
+    int addr;
     const char* functionName = "writeInt32";
 
-    pasynManager->getAddr(pasynUser, &card);
+    pasynManager->getAddr(pasynUser, &addr);
 
     asynPrint(pasynUser, ASYN_TRACE_FLOW,
         "%s:%s: [%s]: function=%d value=%d, card=%d\n",
-        driverName, functionName, this->portName, function, value, card);
+        driverName, functionName, this->portName, function, value, addr);
 
     if (function == KS3497xACardInput01_16Select) {
-    offset = 0;
-        select_inputs(card, offset, value);
+        select_inputs(addr, value);
     }
     else if (function == KS3497xACardMonSelect) {
-        select_monitor(card, value);
+        status = select_monitor(addr, value);
     }
     else if (function == KS3497xAMonOnOff) {
-        start_stop_monitor(value);
+        status = start_stop_monitor(value);
+    }
+    else if (function == KS3497xAInputTypeSelect
+            || function == KS3497xATCTypeSelect
+            || function == KS3497xARTDTypeSelect
+            || function == KS3497xARTDRValue
+            || function == KS3497xAThermistorTypeSelect) {
+        status = set_input_type(addr);
     }
     else {
         asynPrint(this->pasynUserSelf,ASYN_TRACE_ERROR,"%s:%s got illegal function %d\n", driverName, functionName,  function);
@@ -352,7 +362,7 @@ asynStatus KS3497xA::writeOctet(asynUser *pasynUser, const char *value, size_t m
 }
 */
 
-void KS3497xA::select_inputs(int card, int offset, int flags) {
+void KS3497xA::select_inputs(int card, int flags) {
     int i;
     int flag;
     
@@ -360,7 +370,7 @@ void KS3497xA::select_inputs(int card, int offset, int flags) {
     for (i = 0; i < 16; i++) {
         // Mask out each flag in turn
         flag = flags & (1 << i);
-        card_input_active[card][i + offset] = flag;
+        card_input_active[card][i] = flag;
     }
 }
 
@@ -383,6 +393,61 @@ asynStatus KS3497xA::start_stop_monitor(int value) {
     monitoring = value;
 
     status = write_command(command);
+    return status;
+}
+
+asynStatus KS3497xA::set_input_type(int channel) {
+    asynStatus status = asynSuccess;
+    char command[MAX_COMMAND_LENGTH];
+    int temperature_type;
+
+    getIntegerParam(KS3497xAInputTypeSelect, &temperature_type);
+
+    switch(temperature_type) {
+        case KS3497xA::input_type_tc :
+            int tc_type;
+            getIntegerParam(KS3497xATCTypeSelect, &tc_type);
+
+            sprintf(command, "CONF:TEMP TC,%s,(@%d)\n", 
+                    KS3497xA::TC_TYPES[tc_type].c_str(),
+                    channel);
+            status = write_command(command);
+            break;
+
+        case KS3497xA::input_type_rtd :
+            int rtd_type;
+            int rtd_resistance;
+            getIntegerParam(KS3497xARTDTypeSelect, &rtd_type);
+            getIntegerParam(KS3497xARTDRValue, &rtd_resistance);
+
+            // TODO: Add some sanity checking on values we've received
+
+            sprintf(command, "CONF:TEMP RTD,%d,(@%d)\n",
+                    KS3497xA::RTD_TYPES[rtd_type],
+                    channel);
+            status = write_command(command);
+
+            if (status != asynSuccess)
+                break;
+
+            std::fill(command, command+MAX_COMMAND_LENGTH, '\0');
+
+            sprintf(command, "SENS:TEMP:TRAN:FRTD:RES %d,(@%d)\n", 
+                    rtd_resistance,
+                    channel);
+            break;
+
+        case KS3497xA::input_type_thermistor :
+            int thermistor_type;
+            getIntegerParam(KS3497xAThermistorTypeSelect, &thermistor_type);
+
+            sprintf(command, "CONF:TEMP THER,%d,(@%d)\n",
+                    KS3497xA::THERMISTOR_TYPES[thermistor_type],
+                    channel);
+            status = write_command(command);
+            break;
+    }
+
     return status;
 }
 
