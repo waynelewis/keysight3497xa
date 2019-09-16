@@ -1,6 +1,7 @@
-# Keysight3497xA_channel.db
+# KS3497xA_channel.template
 
-# Database file for one channel of the Keysight 3497xA temperature monitor
+# Database template file for one channel of the Keysight 3497xA temperature 
+# monitor
 
 # Wayne Lewis
 # 2019-09-10
@@ -59,7 +60,7 @@ record(bo, "$(P)$(R)Ch$(C)RTD_Type_SEL") {
 record(ao, "$(P)$(R)Ch$(C)RTD_R_SEL") {
 	field(DESC, "Channel $(C) RTD resistance value")
 	field(DTYP, "asynInt32")
-    field(OUT,  "@asyn($(PORT),$(C))RTDRSelect")
+    field(OUT,  "@asyn($(PORT),$(C))RTDRValue")
 	field(PINI, "YES")
 	field(EGU, "ohms")
 	field(PREC, "0")
