@@ -1,0 +1,19 @@
+# File: KS3497xA_channels.substitutions
+# Author: Wayne Lewis <wlewis@lbl.gov>
+# Date: 2019-09-16
+#
+# Description:
+# Substitutions file to load database for multiple channels
+#
+# Revisions:
+#
+# Copyright:
+# Lawrence Berkeley National Laboratory
+#
+# Licence:
+# TBD
+
+file "KS3497xA_channel.template" {
+pattern	{"C"}
+		{"101"}
+}
