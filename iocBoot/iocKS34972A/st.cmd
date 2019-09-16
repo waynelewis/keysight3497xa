@@ -27,6 +27,7 @@ initKS3497xA("$(DEV_SUP_ASYN_PORT)", "$(DEV_ASYN_PORT)", 1000)
 
 ## Load record instances
 dbLoadRecords("db/KS3497xA.db","P=$(PREFIX),R=$(DEVICE),PORT=$(DEV_SUP_ASYN_PORT)")
+dbLoadRecords("db/KS3497xA_channels.db","P=$(PREFIX),R=$(DEVICE),PORT=$(DEV_SUP_ASYN_PORT)")
 dbLoadRecords("db/asynRecord.db","P=$(PREFIX),R=$(DEVICE)Asyn,PORT=$(DEV_ASYN_PORT),OMAX=80,IMAX=80,ADDR=0")
 
 #asynSetTraceMask("$(DEV_ASYN_PORT)", -1, 0xFF)
