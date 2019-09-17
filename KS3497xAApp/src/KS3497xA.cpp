@@ -518,12 +518,13 @@ asynStatus KS3497xA::get_input_type(int channel) {
 
 		std::cout << "get_input_type: index = " << index << std::endl;
 
-		setIntegerParam(KS3497xAInputTypeRead, index);
+		setIntegerParam(channel, KS3497xAInputTypeRead, index);
 		status = asynSuccess;
 	}
 	else {
 		std::cout << "get_input_type: didn't find match for " << input_type << std::endl;
 		status = asynError;
+		return status;
 	}
 
 	std::cout 
@@ -541,10 +542,22 @@ asynStatus KS3497xA::get_input_type(int channel) {
 		<< input_type.compare(KS3497xA::INPUT_TYPE_STRINGS[1]) 
 		<< std::endl;
 	
+	// Check if this input is configured for temperature 
 	if (input_type.compare(KS3497xA::INPUT_TYPE_STRINGS[1]) == 0) {
 		std::string comma = ",";
 		temperature_input_type = temperature_conf_string.substr(
 				0, temperature_conf_string.find(comma));
+
+		it = std::find(
+				KS3497xA::TEMP_TYPE_STRINGS.begin(), 
+				KS3497xA::TEMP_TYPE_STRINGS.end(), 
+				temperature_input_type);
+
+		if (it != KS3497xA::TEMP_TYPE_STRINGS.end()) {
+			index = std::distance(
+					KS3497xA::TEMP_TYPE_STRINGS.begin(),
+					it);
+		}
 
 		std::cout << "get_input_type: temperature_input_type = " << temperature_input_type << std::endl;
 
@@ -565,139 +578,141 @@ asynStatus KS3497xA::get_input_type(int channel) {
 						KS3497xA::TC_TYPES.begin(),
 						it);
 
-				std::cout << "get_input_type: index = " << index << std::endl;
-				setIntegerParam(KS3497xATCTypeRead, index);
+				std::cout << "get_input_type: tc type index = " << index << std::endl;
+				setIntegerParam(channel, KS3497xATCTypeRead, index);
 				status = asynSuccess;
 			}
 			else {
 				std::cout << "get_input_type: didn't find match for " << tc_type << std::endl;
 				status = asynError;
+				return status;
 			}
 		}
+	}
+	callParamCallbacks(channel, channel);
+	return status;
+}
+
+asynStatus KS3497xA::read_monitor_data(void) {
+	asynStatus status = asynSuccess;
+	double value;
+	char command[MAX_COMMAND_LENGTH];
+	char response[MAX_COMMAND_LENGTH];
+	const char *functionName = "read_monitor_data";
+
+	sprintf(command, "ROUT:MON:DATA?\n");
+
+	status = writeread_command(command, response);
+
+	value = atof(response);
+
+	asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+			"%s:%s: response = %s, value = %f\n",
+			driverName, functionName, response, value);
+
+	setDoubleParam(KS3497xAMonVal, value);
+	callParamCallbacks();
+
+	return status;
+
+}
+
+asynStatus KS3497xA::write_command(const char *command) {
+	asynStatus status = asynSuccess;
+	double timeout = 1.0;
+	size_t nWrite;
+	const char *functionName = "write_command";
+
+	status = pasynOctetSyncIO->write(
+			this->pasynUserKS,
+			command,
+			strlen(command),
+			timeout,
+			&nWrite);
+
+	asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+			"%s:%s: command = %s\n",
+			driverName, functionName, command);
+
+	if (status != asynSuccess) {
+		asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR,
+				"%s:%s: error sending command %s\n",
+				driverName, functionName, command);
+		return(asynError);
 	}
 	return status;
 }
 
-	asynStatus KS3497xA::read_monitor_data(void) {
-		asynStatus status = asynSuccess;
-		double value;
-		char command[MAX_COMMAND_LENGTH];
-		char response[MAX_COMMAND_LENGTH];
-		const char *functionName = "read_monitor_data";
+asynStatus KS3497xA::writeread_command(const char *command, char *response) {
+	asynStatus status = asynSuccess;
+	double timeout = 1.0;
+	size_t nWrite;
+	size_t response_length;
+	int eomReason;
+	const char *functionName = "writeread_command";
 
-		sprintf(command, "ROUT:MON:DATA?\n");
+	status = pasynOctetSyncIO->writeRead(
+			this->pasynUserKS,
+			command,
+			strlen(command),
+			response,
+			MAX_RESPONSE_LENGTH,
+			timeout,
+			&nWrite,
+			&response_length,
+			&eomReason);
 
-		status = writeread_command(command, response);
-
-		value = atof(response);
-
-		asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
-				"%s:%s: response = %s, value = %f\n",
-				driverName, functionName, response, value);
-
-		setDoubleParam(KS3497xAMonVal, value);
-		callParamCallbacks();
-
-		return status;
-
-	}
-
-	asynStatus KS3497xA::write_command(const char *command) {
-		asynStatus status = asynSuccess;
-		double timeout = 1.0;
-		size_t nWrite;
-		const char *functionName = "write_command";
-
-		status = pasynOctetSyncIO->write(
-				this->pasynUserKS,
+	if (status != asynSuccess) {
+		asynPrint(
+				this->pasynUserSelf,
+				ASYN_TRACE_ERROR,
+				"%s:%s comms status = %d, command = %s, response length = %lu, eomReason = %d\n", 
+				driverName, 
+				functionName,
+				status,
 				command,
-				strlen(command),
-				timeout,
-				&nWrite);
-
-		asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
-				"%s:%s: command = %s\n",
-				driverName, functionName, command);
-
-		if (status != asynSuccess) {
-			asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR,
-					"%s:%s: error sending command %s\n",
-					driverName, functionName, command);
-			return(asynError);
-		}
-		return status;
+				response_length,
+				eomReason);
+		this->comms_status = status;
+		return(asynError);
 	}
 
-	asynStatus KS3497xA::writeread_command(const char *command, char *response) {
-		asynStatus status = asynSuccess;
-		double timeout = 1.0;
-		size_t nWrite;
-		size_t response_length;
-		int eomReason;
-		const char *functionName = "writeread_command";
+	asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+			"%s:%s: command = %s\n",
+			driverName, functionName, command);
 
-		status = pasynOctetSyncIO->writeRead(
-				this->pasynUserKS,
-				command,
-				strlen(command),
-				response,
-				MAX_RESPONSE_LENGTH,
-				timeout,
-				&nWrite,
-				&response_length,
-				&eomReason);
+	asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+			"%s:%s: response = %s\n",
+			driverName, functionName, response);
 
-		if (status != asynSuccess) {
-			asynPrint(
-					this->pasynUserSelf,
-					ASYN_TRACE_ERROR,
-					"%s:%s comms status = %d, command = %s, response length = %lu, eomReason = %d\n", 
-					driverName, 
-					functionName,
-					status,
-					command,
-					response_length,
-					eomReason);
-			this->comms_status = status;
-			return(asynError);
-		}
+	return status;
+}
 
-		asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
-				"%s:%s: command = %s\n",
-				driverName, functionName, command);
+extern "C" int initKS3497xA(const char *portName, const char *devicePortName, int pollTime)
+{
+	new KS3497xA(portName, devicePortName, pollTime);
+	return (asynSuccess);
+}
 
-		asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
-				"%s:%s: response = %s\n",
-				driverName, functionName, response);
+static const iocshArg initArg0 = {"Port Nmae", iocshArgString};
+static const iocshArg initArg1 = {"Device Port Nmae", iocshArgString};
+static const iocshArg initArg2 = {"Poll time (ms)", iocshArgInt};
+static const iocshArg *const initArgs[] = {&initArg0, 
+	&initArg1,
+	&initArg2
+};
+static const iocshFuncDef initFuncDef = {"initKS3497xA", 3, initArgs};
 
-		return status;
-	}
+static void initCallFunc(const iocshArgBuf *args)
+{
+	initKS3497xA(args[0].sval, args[1].sval, args[2].ival);
+}
 
-	extern "C" int initKS3497xA(const char *portName, const char *devicePortName, int pollTime)
-	{
-		new KS3497xA(portName, devicePortName, pollTime);
-		return (asynSuccess);
-	}
+void KS3497xARegister(void) 
+{
+	iocshRegister(&initFuncDef, initCallFunc);
+}
 
-	static const iocshArg initArg0 = {"Port Nmae", iocshArgString};
-	static const iocshArg initArg1 = {"Device Port Nmae", iocshArgString};
-	static const iocshArg initArg2 = {"Poll time (ms)", iocshArgInt};
-	static const iocshArg *const initArgs[] = {&initArg0, 
-		&initArg1,
-		&initArg2
-	};
-	static const iocshFuncDef initFuncDef = {"initKS3497xA", 3, initArgs};
-
-	static void initCallFunc(const iocshArgBuf *args)
-	{
-		initKS3497xA(args[0].sval, args[1].sval, args[2].ival);
-	}
-
-	void KS3497xARegister(void) 
-	{
-		iocshRegister(&initFuncDef, initCallFunc);
-	}
-
-	extern "C" {
-		epicsExportRegistrar(KS3497xARegister);
-	}
+extern "C" {
+	epicsExportRegistrar(KS3497xARegister);
+}
