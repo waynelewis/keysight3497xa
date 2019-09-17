@@ -16,4 +16,5 @@
 file "KS3497xA_channel.template" {
 pattern	{"C"}
 		{"101"}
+		{"102"}
 }
