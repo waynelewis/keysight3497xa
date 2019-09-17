@@ -11,6 +11,10 @@
 #define KS3497xAModelString                 "Model"
 #define KS3497xAIDNString                   "IDN"
 #define KS3497xATriggerSourceString         "TriggerSource"
+#define KS3497xAScanIntervalString          "ScanInterval"
+#define KS3497xAScanCountString             "ScanCount"
+#define KS3497xAScanStartString             "ScanStart"
+#define KS3497xAScanAbortString             "ScanAbort"
 #define KS3497xACard1TypeString             "Card1Type"
 #define KS3497xACard2TypeString             "Card2Type"
 #define KS3497xACard3TypeString             "Card3Type"
@@ -18,7 +22,6 @@
 #define KS3497xACardMonSelectString         "CardMonSelect"
 #define KS3497xAMonOnOffString              "MonOnOff"
 #define KS3497xAMonValString                "MonVal"
-#define KS3497xAInput101ValueString         "Input101Value"
 #define KS3497xANumDataPointsString         "NumDataPoints"
 #define KS3497xAInputTypeSelectString       "InputTypeSelect"
 #define KS3497xATCTypeSelectString          "TCTypeSelect"
@@ -41,6 +44,9 @@
 
 #define NO_ERROR_CODE                   0
 
+#define SCAN_START                      1
+#define SCAN_ABORT                      1
+
 class KS3497xA : public asynPortDriver {
 
 public:
@@ -48,8 +54,7 @@ public:
     
     /* These are the methods that we override from asynPortDriver */
     virtual asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
-    //virtual asynStatus writeInt32(asynUser *pasynUser, epicsInt32 value);
-    //virtual asynStatus writeFloat64(asynUser *pasynUser, epicsFloat64 value);
+    virtual asynStatus writeFloat64(asynUser *pasynUser, epicsFloat64 value);
     //virtual asynStatus writeOctet(asynUser *pasynUser, const char *value, size_t maxChars, size_t *nActual);
     virtual void pollerThread(void);
 
@@ -60,6 +65,10 @@ protected:
     int KS3497xAModel;
     int KS3497xAIDN;
     int KS3497xATriggerSource;
+    int KS3497xAScanInterval;
+    int KS3497xAScanCount;
+    int KS3497xAScanStart;
+    int KS3497xAScanAbort;
     int KS3497xACard1Type;
     int KS3497xACard2Type;
     int KS3497xACard3Type;
@@ -67,7 +76,6 @@ protected:
     int KS3497xACardMonSelect;
     int KS3497xAMonOnOff;
     int KS3497xAMonVal;
-    int KS3497xAInput101Value;
     int KS3497xANumDataPoints;
     int KS3497xAInputTypeSelect;
     int KS3497xATCTypeSelect;
@@ -92,11 +100,20 @@ private:
 
     bool card_input_active[MAX_CARDS][MAX_INPUTS];
     bool monitoring;
+    bool scanning;
+    bool scan_complete;
 
     asynStatus check_status(void);
     asynStatus read_metadata(void);
     asynStatus read_data(void);
+    asynStatus read_scan_status(void);
+    asynStatus read_scan_data(void);
     asynStatus read_monitor_data(void);
+    asynStatus set_scan_interval(void);
+    asynStatus set_scan_count(void);
+    asynStatus set_trigger_source(epicsInt32 source);
+    asynStatus scan_start(void);
+    asynStatus scan_abort(void);
     void select_inputs(int card, int flags);
     asynStatus set_input_type(asynUser *pasynUser, int addr);
     asynStatus get_input_type(asynUser *pasynUser, int addr);
@@ -109,7 +126,10 @@ private:
     enum input_types {input_type_tc, input_type_rtd, input_type_thermistor};
     std::vector<std::string> INPUT_TYPE_STRINGS = {"VOLT", "TEMP"};
     std::vector<std::string> TEMP_TYPE_STRINGS = {"TC", "RTD", "THER"};
-    std::vector<std::string> TC_TYPES = {"B", "E", "J", "K", "N", "R", "S", "T"};
+    std::vector<std::string> TC_TYPES = {
+        "B", "E", "J", "K", "N", "R", "S", "T"};
+    std::vector<std::string> TRIGGER_TYPES = {
+        "BUS", "IMM", "EXT", "ALAR1", "ALAR1", "ALAR1", "ALAR1", "TIM"};
 
     const int RTD_TYPES[2] = {85, 91};
     const int THERMISTOR_TYPES[3] = {2200, 5000, 10000};

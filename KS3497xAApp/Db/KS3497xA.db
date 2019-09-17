@@ -89,27 +89,30 @@ record(ai,"$(P)$(R)NumDataPoints_RBV") {
     field(INP,  "@asyn($(PORT),$(ADDR=0))NumDataPoints")
 }
 
-record(mbbo, "$(P)$(R)TrigSrc") {
+record(mbbo, "$(P)$(R)TrigSrc_SEL") {
     field(DESC, "Trigger source")
-    #field(DTYP, "stream")
-    #field(OUT,  "@Keysight3497xA.proto setTrigSource $(PORT)")
+    field(DTYP, "asynInt32")
+    field(OUT,  "@asyn($(PORT),$(ADDR=0))TriggerSource")
+	field(PINI, "YES")
     field(ZRVL, "0")
-    field(ZRST, "BUS")
+    field(ZRST, "Bus")
     field(ONVL, "1")
-    field(ONST, "IMM")
+    field(ONST, "Immediate")
     field(TWVL, "2")
-    field(TWST, "EXT")
+    field(TWST, "External")
     field(THVL, "3")
-    field(THST, "ALAR1")
+    field(THST, "Alarm 1")
     field(FRVL, "4")
-    field(FRST, "ALAR2")
+    field(FRST, "larm 1")
     field(FVVL, "5")
-    field(FVST, "ALAR3")
+    field(FVST, "Alarm 1")
     field(SXVL, "6")
-    field(SXST, "ALAR4")
+    field(SXST, "Alarm 1")
     field(SVVL, "7")
-    field(SVST, "TIM")
+    field(SVST, "Timer")
     field(FLNK, "$(P)$(R)TrigSrc_RBV")
+
+	info(autosaveFields, "VAL")
 }
 
 record(mbbo, "$(P)$(R)Card1MonSelect01_16") {
@@ -188,3 +191,42 @@ record(mbbi, "$(P)$(R)TrigSrc_RBV") {
     field(SVVL, "7")
     field(SVST, "TIM")
 }
+
+record(ao, "$(P)$(R)ScanInterval_SP") {
+	field(DESC, "Scan interval time")
+	field(DTYP, "asynFloat64")
+	field(OUT,  "@asyn($(PORT),$(ADDR=0))ScanInterval")
+	field(EGU,  "s")
+	field(DRVL, "0")
+	field(DRVH, "359999")
+
+	info(autosaveFields, "VAL")
+}
+
+record(ao, "$(P)$(R)ScanCount_SP") {
+	field(DESC, "Scan counts")
+	field(DTYP, "asynInt32")
+	field(OUT,  "@asyn($(PORT),$(ADDR=0))ScanCount")
+
+	info(autosaveFields, "VAL")
+}
+
+record(bo, "$(P)$(R)ScanStart_CMD") {
+	field(DESC, "Scan start")
+	field(DTYP, "asynInt32")
+	field(OUT,  "@asyn($(PORT),$(ADDR=0))ScanStart")
+	field(ZNAM, "")
+	field(ONAM, "Start")
+	field(HIGH, "1")
+}
+
+record(bo, "$(P)$(R)ScanAbort_CMD") {
+	field(DESC, "Scan abort")
+	field(DTYP, "asynInt32")
+	field(OUT,  "@asyn($(PORT),$(ADDR=0))ScanAbort")
+	field(ZNAM, "")
+	field(ONAM, "Abort")
+	field(HIGH, "1")
+}
+
+

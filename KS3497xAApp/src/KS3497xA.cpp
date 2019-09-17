@@ -57,20 +57,23 @@ KS3497xA::KS3497xA(const char *portName, const char *devicePortName, int pollTim
 
     if (pollTime == 0) pollTime = 1000;
     this->pollTime_ = pollTime / 1000.;
-    
+
     /* Create parameters */
     createParam(KS3497xASerialNumberString,         asynParamOctet,     &KS3497xASerialNumber);
     createParam(KS3497xAManufacturerString,         asynParamOctet,     &KS3497xAManufacturer);
     createParam(KS3497xAModelString,                asynParamOctet,     &KS3497xAModel);
     createParam(KS3497xAIDNString,                  asynParamOctet,     &KS3497xAIDN);
     createParam(KS3497xATriggerSourceString,        asynParamInt32,     &KS3497xATriggerSource);
+    createParam(KS3497xAScanIntervalString,         asynParamFloat64,   &KS3497xAScanInterval);
+    createParam(KS3497xAScanCountString,         	asynParamInt32,     &KS3497xAScanCount);
+    createParam(KS3497xAScanStartString,         	asynParamInt32,     &KS3497xAScanStart);
+    createParam(KS3497xAScanAbortString,         	asynParamInt32,     &KS3497xAScanAbort);
     createParam(KS3497xACard1TypeString,            asynParamOctet,     &KS3497xACard1Type);
     createParam(KS3497xACard2TypeString,            asynParamOctet,     &KS3497xACard2Type);
     createParam(KS3497xACard3TypeString,            asynParamOctet,     &KS3497xACard3Type);
     createParam(KS3497xACardMonSelectString,        asynParamInt32,     &KS3497xACardMonSelect);
     createParam(KS3497xAMonOnOffString,             asynParamInt32,     &KS3497xAMonOnOff);
     createParam(KS3497xAMonValString,               asynParamFloat64,   &KS3497xAMonVal);
-    createParam(KS3497xAInput101ValueString,        asynParamFloat64,   &KS3497xAInput101Value);
     createParam(KS3497xANumDataPointsString,        asynParamInt32,     &KS3497xANumDataPoints);
     createParam(KS3497xAInputTypeSelectString,      asynParamInt32,     &KS3497xAInputTypeSelect);
     createParam(KS3497xATCTypeSelectString,         asynParamInt32,     &KS3497xATCTypeSelect);
@@ -91,7 +94,6 @@ KS3497xA::KS3497xA(const char *portName, const char *devicePortName, int pollTim
                 epicsThreadGetStackSize(epicsThreadStackMedium),
                 (EPICSTHREADFUNC)pollerThreadC,
                 this);
-    setIntegerParam(KS3497xANumDataPoints, 0);
 
     // Connect to the low level asyn port
     status = pasynOctetSyncIO->connect(devicePortName, 0, &this->pasynUserKS, NULL);
@@ -113,6 +115,11 @@ KS3497xA::KS3497xA(const char *portName, const char *devicePortName, int pollTim
     for (int i = 0; i < MAX_CARDS; i++)
         for (int j = 0; j < MAX_INPUTS; j++)
             card_input_active[i][j] = false;
+
+	// Initialize other variables
+	monitoring = false;
+	scanning = false;
+	scan_complete = false;
 }
 
 void KS3497xA::pollerThread()
@@ -129,6 +136,10 @@ void KS3497xA::pollerThread()
             read_metadata();
         if (monitoring)
             read_data();
+		if (scanning)
+			read_scan_status();
+		if (scan_complete)
+			read_scan_data();
         unlock();
         epicsThreadSleep(pollTime_);
     }
@@ -186,6 +197,43 @@ asynStatus KS3497xA::read_data(void)
         driverName, functionName, this->portName);
 
     status = read_monitor_data();
+
+    return status;
+}
+
+asynStatus KS3497xA::read_scan_status(void)
+{
+    asynStatus status = asynSuccess;
+    static const char *functionName = "read_scan_status";
+	std::string command;
+	epicsInt32 num_values;
+	char response[MAX_RESPONSE_LENGTH];
+
+    asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+        "%s:%s: [%s]: entering\n",
+        driverName, functionName, this->portName);
+
+	// Readout the number of acquired points
+	command = "DATA:POINTS?";
+
+	status = writeread_command(command.c_str(), response);
+	
+	num_values = atoi(response);
+
+	setIntegerParam(KS3497xANumDataPoints, num_values);
+	callParamCallbacks();
+
+    return status;
+}
+
+asynStatus KS3497xA::read_scan_data(void)
+{
+    asynStatus status = asynSuccess;
+    static const char *functionName = "read_scan_data";
+
+    asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+        "%s:%s: [%s]: entering\n",
+        driverName, functionName, this->portName);
 
     return status;
 }
@@ -318,6 +366,9 @@ asynStatus KS3497xA::writeInt32(asynUser *pasynUser, epicsInt32 value)
 
     pasynManager->getAddr(pasynUser, &addr);
 
+	// Store the value in the parameter list
+	setIntegerParam(addr, function, value);
+
     asynPrint(pasynUser, ASYN_TRACE_FLOW,
         "%s:%s: [%s]: function=%d value=%d, card=%d\n",
         driverName, functionName, this->portName, function, value, addr);
@@ -338,14 +389,25 @@ asynStatus KS3497xA::writeInt32(asynUser *pasynUser, epicsInt32 value)
             || function == KS3497xARTDRValueSelect
             || function == KS3497xAThermistorTypeSelect) {
 
-		// Save the value passed in
-		setIntegerParam(function, value);
-		
         status = set_input_type(pasynUser, addr);
 		if (status != asynSuccess)
 			return (status);
 
 		get_input_type(pasynUser, addr);
+    }
+	else if (function == KS3497xAScanCount) {
+		status = set_scan_count();
+	}
+    else if (function == KS3497xATriggerSource) {
+		status = set_trigger_source(value);
+	}
+    else if (function == KS3497xAScanStart) {
+		if (value == SCAN_START)
+			status = scan_start();
+    }
+    else if (function == KS3497xAScanAbort) {
+		if (value == SCAN_ABORT)
+			status = scan_abort();
     }
     else {
         asynPrint(this->pasynUserSelf,ASYN_TRACE_ERROR,
@@ -358,13 +420,38 @@ asynStatus KS3497xA::writeInt32(asynUser *pasynUser, epicsInt32 value)
 
     return status;
 }
-/*
-
 asynStatus KS3497xA::writeFloat64(asynUser *pasynUser, epicsFloat64 value)
 {
     asynStatus status = asynSuccess;
+    int function = pasynUser->reason;
+    int addr;
+    const char* functionName = "writeInt32";
+
+    pasynManager->getAddr(pasynUser, &addr);
+
+	// Store the value in the parameter list
+	setDoubleParam(addr, function, value);
+
+    asynPrint(pasynUser, ASYN_TRACE_FLOW,
+        "%s:%s: [%s]: function=%d value=%f, card=%d\n",
+        driverName, functionName, this->portName, function, value, addr);
+
+	if (function == KS3497xAScanInterval) {
+		set_scan_interval();
+	}
+    else {
+        asynPrint(this->pasynUserSelf,ASYN_TRACE_ERROR,
+				"%s:%s got illegal function %d\n", 
+				driverName, 
+				functionName,  
+				function);
+        return(asynError);
+    }
+
     return status;
 }
+
+/*
 
 asynStatus KS3497xA::writeOctet(asynUser *pasynUser, const char *value, size_t maxChars, size_t *nActual)
 {
@@ -405,7 +492,7 @@ asynStatus KS3497xA::set_input_type(asynUser *pasynUser, int channel) {
 			"%s:%s: channel = %d\n",
 			driverName, functionName, channel);
 
-    getIntegerParam(KS3497xAInputTypeSelect, &temperature_type);
+    getIntegerParam(channel, KS3497xAInputTypeSelect, &temperature_type);
 
 	asynPrint(pasynUser, ASYN_TRACE_FLOW,
 			"%s:%s: temperature_type = %d\n",
@@ -414,7 +501,7 @@ asynStatus KS3497xA::set_input_type(asynUser *pasynUser, int channel) {
     switch(temperature_type) {
         case KS3497xA::input_type_tc :
             int tc_type;
-            getIntegerParam(KS3497xATCTypeSelect, &tc_type);
+            getIntegerParam(channel, KS3497xATCTypeSelect, &tc_type);
 
 			asynPrint(pasynUser, ASYN_TRACE_FLOW,
 					"%s:%s: tc_type = %d\n",
@@ -434,8 +521,8 @@ asynStatus KS3497xA::set_input_type(asynUser *pasynUser, int channel) {
         case KS3497xA::input_type_rtd :
             int rtd_type;
             int rtd_resistance;
-            getIntegerParam(KS3497xARTDTypeSelect, &rtd_type);
-            getIntegerParam(KS3497xARTDRValueSelect, &rtd_resistance);
+            getIntegerParam(channel, KS3497xARTDTypeSelect, &rtd_type);
+            getIntegerParam(channel, KS3497xARTDRValueSelect, &rtd_resistance);
 
 			asynPrint(pasynUser, ASYN_TRACE_FLOW,
 					"%s:%s: rtd_type = %d, rtd_resistance = %d\n",
@@ -465,7 +552,7 @@ asynStatus KS3497xA::set_input_type(asynUser *pasynUser, int channel) {
 
         case KS3497xA::input_type_thermistor :
             int thermistor_type;
-            getIntegerParam(KS3497xAThermistorTypeSelect, &thermistor_type);
+            getIntegerParam(channel, KS3497xAThermistorTypeSelect, &thermistor_type);
 
             sprintf(command, "CONF:TEMP THER,%d,(@%d)\n",
                     KS3497xA::THERMISTOR_TYPES[thermistor_type],
@@ -605,6 +692,99 @@ asynStatus KS3497xA::get_input_type(asynUser *pasynUser, int channel) {
 	return status;
 }
 
+asynStatus KS3497xA::set_scan_interval(void) {
+	asynStatus status = asynSuccess;
+
+	std::string command;
+	std::stringstream command_stream;
+	epicsFloat64 scan_interval;
+	const char *functionName = "set_scan_interval";
+
+	asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+			"%s:%s: entering\n", driverName, functionName);
+
+	getDoubleParam(KS3497xAScanInterval, &scan_interval);
+	command_stream << "TRIG:TIMER ";
+	command_stream << scan_interval;
+	command = command_stream.str();
+
+	status = write_command(command.c_str());
+
+	return status;
+}
+
+asynStatus KS3497xA::set_scan_count(void) {
+	asynStatus status = asynSuccess;
+
+	std::stringstream command_stream;
+	epicsInt32 scan_count;
+	const char *functionName = "set_scan_interval";
+
+	asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+			"%s:%s: entering\n", driverName, functionName);
+
+	getIntegerParam(KS3497xAScanCount, &scan_count);
+	command_stream << "TRIG:COUNT ";
+	command_stream << scan_count;
+
+	status = write_command(command_stream.str().c_str());
+
+	return status;
+}
+
+asynStatus KS3497xA::set_trigger_source(epicsInt32 source) {
+	asynStatus status = asynSuccess;
+
+	std::stringstream command_stream;
+	const char *functionName = "set_trigger_source";
+
+	asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+			"%s:%s: entering\n", driverName, functionName);
+
+	command_stream << "TRIG:SOURCE ";
+	command_stream << KS3497xA::TRIGGER_TYPES[source];
+
+	status = write_command(command_stream.str().c_str());
+
+	return status;
+}
+
+asynStatus KS3497xA::scan_start(void) {
+	asynStatus status = asynSuccess;
+
+	std::string command;
+	const char *functionName = "scan_start";
+
+	asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+			"%s:%s: entering\n", driverName, functionName);
+
+	command = "INIT";
+
+	scanning = true;
+
+	status = write_command(command.c_str());
+
+	return status;
+}
+
+asynStatus KS3497xA::scan_abort(void) {
+	asynStatus status = asynSuccess;
+
+	std::string command;
+	const char *functionName = "scan_abort";
+
+	asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+			"%s:%s: entering\n", driverName, functionName);
+
+	command = "ABORT";
+
+	status = write_command(command.c_str());
+
+	scanning = false;
+
+	return status;
+}
+
 asynStatus KS3497xA::update_scan_list(void) {
 	asynStatus status = asynSuccess;
 
@@ -614,7 +794,8 @@ asynStatus KS3497xA::update_scan_list(void) {
 	bool first_scan_channel = true;
 	const char *functionName = "update_scan_list";
 
-	std::cout << "update_scan_list: entering" << std::endl;
+	asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+			"%s:%s: entering\n", driverName, functionName);
 
 	int i, j;
 	for (i = 0; i < MAX_CARDS; i++) {
@@ -638,9 +819,13 @@ asynStatus KS3497xA::update_scan_list(void) {
 				"%s:%s: command = %s\n",
 				driverName, functionName, command.c_str());
 
-		std::cout << "update_scan_list: command = " << command_stream.str() << std::endl;
 		command = command_stream.str();
 		status = write_command(command.c_str());
+	}
+	else {
+		asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+				"%s:%s: no channels selected for scan\n", 
+				driverName, functionName);
 	}
 
 	return status;
