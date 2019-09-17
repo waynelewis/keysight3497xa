@@ -96,8 +96,8 @@ private:
     asynStatus read_data(void);
     asynStatus read_monitor_data(void);
     void select_inputs(int card, int flags);
-    asynStatus set_input_type(int addr);
-    asynStatus get_input_type(int addr);
+    asynStatus set_input_type(asynUser *pasynUser, int addr);
+    asynStatus get_input_type(asynUser *pasynUser, int addr);
     asynStatus select_monitor(int card, int channel);
     asynStatus start_stop_monitor(int value);
     asynStatus write_command(const char *command);

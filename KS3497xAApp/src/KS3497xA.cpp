@@ -343,14 +343,18 @@ asynStatus KS3497xA::writeInt32(asynUser *pasynUser, epicsInt32 value)
 		// Save the value passed in
 		setIntegerParam(function, value);
 		
-        status = set_input_type(addr);
+        status = set_input_type(pasynUser, addr);
 		if (status != asynSuccess)
 			return (status);
 
-		get_input_type(addr);
+		get_input_type(pasynUser, addr);
     }
     else {
-        asynPrint(this->pasynUserSelf,ASYN_TRACE_ERROR,"%s:%s got illegal function %d\n", driverName, functionName,  function);
+        asynPrint(this->pasynUserSelf,ASYN_TRACE_ERROR,
+				"%s:%s got illegal function %d\n", 
+				driverName, 
+				functionName,  
+				function);
         return(asynError);
     }
 
@@ -405,28 +409,39 @@ asynStatus KS3497xA::start_stop_monitor(int value) {
     return status;
 }
 
-asynStatus KS3497xA::set_input_type(int channel) {
+asynStatus KS3497xA::set_input_type(asynUser *pasynUser, int channel) {
     asynStatus status = asynSuccess;
     char command[MAX_COMMAND_LENGTH];
     int temperature_type;
+	const char *functionName = "set_input_type";
 
-	std::cout << "set_input_type: channel = " << channel << std::endl;
+	asynPrint(pasynUser, ASYN_TRACE_FLOW,
+			"%s:%s: channel = %d\n",
+			driverName, functionName, channel);
 
     getIntegerParam(KS3497xAInputTypeSelect, &temperature_type);
 
-	std::cout << "set_input_type: temperature type = " << temperature_type << std::endl;
+	asynPrint(pasynUser, ASYN_TRACE_FLOW,
+			"%s:%s: temperature_type = %d\n",
+			driverName, functionName, temperature_type);
 
     switch(temperature_type) {
         case KS3497xA::input_type_tc :
             int tc_type;
             getIntegerParam(KS3497xATCTypeSelect, &tc_type);
 
-			std::cout << "set_input_type: tc_type = " << tc_type << std::endl;
+			asynPrint(pasynUser, ASYN_TRACE_FLOW,
+					"%s:%s: tc_type = %d\n",
+					driverName, functionName, tc_type);
 
             sprintf(command, "CONF:TEMP TC,%s,(@%d)\n", 
                     KS3497xA::TC_TYPES[tc_type].c_str(),
                     channel);
-			std::cout << "set_input_type: command = " << command << std::endl;
+
+			asynPrint(pasynUser, ASYN_TRACE_FLOW,
+					"%s:%s: command = %s\n",
+					driverName, functionName, command);
+
             status = write_command(command);
             break;
 
@@ -436,15 +451,20 @@ asynStatus KS3497xA::set_input_type(int channel) {
             getIntegerParam(KS3497xARTDTypeSelect, &rtd_type);
             getIntegerParam(KS3497xARTDRValueSelect, &rtd_resistance);
 
-			std::cout << "set_input_type: rtd_type = " << rtd_type << std::endl;
-			std::cout << "set_input_type: rtd_resistance = " << rtd_resistance << std::endl;
+			asynPrint(pasynUser, ASYN_TRACE_FLOW,
+					"%s:%s: rtd_type = %d, rtd_resistance = %d\n",
+					driverName, functionName, rtd_type, rtd_resistance);
 
             // TODO: Add some sanity checking on values we've received
 
             sprintf(command, "CONF:TEMP RTD,%d,(@%d)\n",
                     KS3497xA::RTD_TYPES[rtd_type],
                     channel);
-			std::cout << "set_input_type: command = " << command << std::endl;
+
+			asynPrint(pasynUser, ASYN_TRACE_FLOW,
+					"%s:%s: command = %s\n",
+					driverName, functionName, command);
+
             status = write_command(command);
 
             if (status != asynSuccess)
@@ -464,6 +484,11 @@ asynStatus KS3497xA::set_input_type(int channel) {
             sprintf(command, "CONF:TEMP THER,%d,(@%d)\n",
                     KS3497xA::THERMISTOR_TYPES[thermistor_type],
                     channel);
+
+			asynPrint(pasynUser, ASYN_TRACE_FLOW,
+					"%s:%s: command = %s\n",
+					driverName, functionName, command);
+
             status = write_command(command);
             break;
     }
@@ -471,7 +496,7 @@ asynStatus KS3497xA::set_input_type(int channel) {
     return status;
 }
 
-asynStatus KS3497xA::get_input_type(int channel) {
+asynStatus KS3497xA::get_input_type(asynUser *pasynUser, int channel) {
     asynStatus status = asynSuccess;
     char command[MAX_COMMAND_LENGTH];
     char response[MAX_COMMAND_LENGTH];
@@ -482,29 +507,31 @@ asynStatus KS3497xA::get_input_type(int channel) {
 	std::string tc_type;
 	std::string quote = "\"";
 	std::string separator = " ";
+	std::vector<std::string>::iterator it;
 	int index;
 
-	std::vector<std::string>::iterator it;
+    const char *functionName = "get_input_type";
 
 	sprintf(command, "CONF? (@%d)\n", channel);
-            status = writeread_command(command, response);
+	status = writeread_command(command, response);
+
+	asynPrint(pasynUser, ASYN_TRACE_FLOW,
+			"%s:%s: command = %s, response = %s\n",
+			driverName, functionName, command, response);
 
 	response_buf = response;
-	std::cout << "get_input_type:: response = " << response << std::endl;
 
 	// Remove the leading "
-    input_type = response_buf.substr(
+	input_type = response_buf.substr(
 			response_buf.find(quote) + 1, 
 			response_buf.find(separator) - 1);
 
 	// Get all data after the first space
 	temperature_conf_string = response_buf.substr(response_buf.find(separator) + 1);
 
-	std::cout << "get_input_type: input_type = " << input_type << std::endl;
-	std::cout << "get_input_type: temperature_conf_string = " << temperature_conf_string << std::endl;
-
-	std::cout << "get_input_type: len(input_type) = " << input_type.length() << std::endl;
-	std::cout << "get_input_type: len(TEMP) = " << KS3497xA::INPUT_TYPE_STRINGS[1].length() << std::endl;
+	asynPrint(pasynUser, ASYN_TRACE_FLOW,
+			"%s:%s: input_type = %s, temperature_conf_string = %s\n",
+			driverName, functionName, input_type.c_str(), temperature_conf_string.c_str());
 
 	it = std::find(
 			KS3497xA::INPUT_TYPE_STRINGS.begin(), 
@@ -516,32 +543,22 @@ asynStatus KS3497xA::get_input_type(int channel) {
 				KS3497xA::INPUT_TYPE_STRINGS.begin(),
 				it);
 
-		std::cout << "get_input_type: index = " << index << std::endl;
+		asynPrint(pasynUser, ASYN_TRACE_FLOW,
+				"%s:%s: index = %d\n",
+				driverName, functionName, index);
 
 		setIntegerParam(channel, KS3497xAInputTypeRead, index);
 		status = asynSuccess;
 	}
 	else {
-		std::cout << "get_input_type: didn't find match for " << input_type << std::endl;
+		
+		asynPrint(pasynUser, ASYN_TRACE_ERROR,
+				"%s:%s: couldn't find match for %s\n",
+				driverName, functionName, input_type.c_str());
 		status = asynError;
 		return status;
 	}
 
-	std::cout 
-		<< "get_input_type: KS3497xA::INPUT_TYPE_STRINGS[0] = " 
-		<< KS3497xA::INPUT_TYPE_STRINGS[0] 
-		<< std::endl;
-
-	std::cout 
-		<< "get_input_type: KS3497xA::INPUT_TYPE_STRINGS[1] = " 
-		<< KS3497xA::INPUT_TYPE_STRINGS[1] 
-		<< std::endl;
-
-	std::cout 
-		<< "get_input_type: comparison = " 
-		<< input_type.compare(KS3497xA::INPUT_TYPE_STRINGS[1]) 
-		<< std::endl;
-	
 	// Check if this input is configured for temperature 
 	if (input_type.compare(KS3497xA::INPUT_TYPE_STRINGS[1]) == 0) {
 		std::string comma = ",";
@@ -559,14 +576,18 @@ asynStatus KS3497xA::get_input_type(int channel) {
 					it);
 		}
 
-		std::cout << "get_input_type: temperature_input_type = " << temperature_input_type << std::endl;
+		asynPrint(pasynUser, ASYN_TRACE_FLOW,
+				"%s:%s: temperature_input_type = %s\n",
+				driverName, functionName, temperature_input_type.c_str());
 
 		if (temperature_input_type.compare(KS3497xA::TEMP_TYPE_STRINGS[0]) == 0) {
 			tc_type = temperature_conf_string.substr(
 					temperature_conf_string.find(comma) + 1).substr(
 					0, temperature_conf_string.find(comma) - 1);
 
-			std::cout << "get_input_type: tc_type = " << tc_type << std::endl;
+			asynPrint(pasynUser, ASYN_TRACE_FLOW,
+					"%s:%s: tc_type = %s\n",
+					driverName, functionName, tc_type.c_str());
 
 			it = std::find(
 					KS3497xA::TC_TYPES.begin(), 
@@ -578,12 +599,13 @@ asynStatus KS3497xA::get_input_type(int channel) {
 						KS3497xA::TC_TYPES.begin(),
 						it);
 
-				std::cout << "get_input_type: tc type index = " << index << std::endl;
 				setIntegerParam(channel, KS3497xATCTypeRead, index);
 				status = asynSuccess;
 			}
 			else {
-				std::cout << "get_input_type: didn't find match for " << tc_type << std::endl;
+				asynPrint(pasynUser, ASYN_TRACE_ERROR,
+						"%s:%s: couldn't find match for %s\n",
+						driverName, functionName, input_type.c_str());
 				status = asynError;
 				return status;
 			}
