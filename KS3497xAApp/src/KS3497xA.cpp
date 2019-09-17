@@ -16,6 +16,7 @@
 
 #include <string>
 #include <iostream>
+#include <sstream>
 #include <algorithm>
 
 #include <string.h>
@@ -75,19 +76,15 @@ KS3497xA::KS3497xA(const char *portName, const char *devicePortName, int pollTim
     createParam(KS3497xATCTypeSelectString,         asynParamInt32,     &KS3497xATCTypeSelect);
     createParam(KS3497xARTDTypeSelectString,        asynParamInt32,     &KS3497xARTDTypeSelect);
     createParam(KS3497xARTDRValueSelectString,      asynParamInt32,     &KS3497xARTDRValueSelect);
+    createParam(KS3497xAThermistorTypeSelectString, asynParamInt32,     &KS3497xAThermistorTypeSelect);
     createParam(KS3497xAInputTypeReadString,      	asynParamInt32,     &KS3497xAInputTypeRead);
     createParam(KS3497xATempTypeReadString,      	asynParamInt32,     &KS3497xATempTypeRead);
     createParam(KS3497xATCTypeReadString,         	asynParamInt32,     &KS3497xATCTypeRead);
-    createParam(KS3497xAThermistorTypeSelectString, asynParamInt32,     &KS3497xAThermistorTypeSelect);
+    createParam(KS3497xAScanSelectString,         	asynParamInt32,     &KS3497xAScanSelect);
     createParam(KS3497xALastErrorMessageString,     asynParamOctet,     &KS3497xALastErrorMessage);
     createParam(KS3497xALastErrorCodeString,        asynParamInt32,     &KS3497xALastErrorCode);
     createParam(KS3497xAErrorMessageString,         asynParamOctet,     &KS3497xAErrorMessage);
     createParam(KS3497xAErrorCodeString,            asynParamInt32,     &KS3497xAErrorCode);
-
-    // Create the parameters for the cards
-    for (int i = 1; i < 4; i++) {
-    createParam(i, KS3497xACardInput01_16SelectString, asynParamInt32,     &KS3497xACardInput01_16Select);
-    }
 
     epicsThreadCreate("KS3497xA",
                 epicsThreadPriorityMedium,
@@ -325,15 +322,16 @@ asynStatus KS3497xA::writeInt32(asynUser *pasynUser, epicsInt32 value)
         "%s:%s: [%s]: function=%d value=%d, card=%d\n",
         driverName, functionName, this->portName, function, value, addr);
 
-    if (function == KS3497xACardInput01_16Select) {
-        select_inputs(addr, value);
-    }
-    else if (function == KS3497xACardMonSelect) {
+    if (function == KS3497xACardMonSelect) {
         status = select_monitor(addr, value);
     }
     else if (function == KS3497xAMonOnOff) {
         status = start_stop_monitor(value);
     }
+	else if (function == KS3497xAScanSelect) {
+		card_input_active[addr%100][addr/100] = true;
+		update_scan_list();
+	}
     else if (function == KS3497xAInputTypeSelect
             || function == KS3497xATCTypeSelect
             || function == KS3497xARTDTypeSelect
@@ -374,18 +372,6 @@ asynStatus KS3497xA::writeOctet(asynUser *pasynUser, const char *value, size_t m
     return status;
 }
 */
-
-void KS3497xA::select_inputs(int card, int flags) {
-    int i;
-    int flag;
-    
-    // Populate the local channel selection info
-    for (i = 0; i < 16; i++) {
-        // Mask out each flag in turn
-        flag = flags & (1 << i);
-        card_input_active[card][i] = flag;
-    }
-}
 
 asynStatus KS3497xA::select_monitor(int card, int channel) {
     asynStatus status = asynSuccess;
@@ -512,6 +498,10 @@ asynStatus KS3497xA::get_input_type(asynUser *pasynUser, int channel) {
 
     const char *functionName = "get_input_type";
 
+	// Get the configuration for this channel.
+	// Response is of the form:
+	// "TEMP TC,J,+1.000000E+00,+3.000000E-06"
+	
 	sprintf(command, "CONF? (@%d)\n", channel);
 	status = writeread_command(command, response);
 
@@ -614,6 +604,53 @@ asynStatus KS3497xA::get_input_type(asynUser *pasynUser, int channel) {
 	callParamCallbacks(channel, channel);
 	return status;
 }
+
+asynStatus KS3497xA::update_scan_list(void) {
+	asynStatus status = asynSuccess;
+
+	std::string command;
+	std::stringstream command_stream("ROUT:SCAN (@");
+	bool scan_requested = false;
+	bool first_scan_channel = true;
+	const char *functionName = "update_scan_list";
+
+	std::cout << "update_scan_list: entering" << std::endl;
+
+	std::cout << "update_scan_list: MAX_CARDS = " << MAX_CARDS << std::endl;
+	std::cout << "update_scan_list: MAX_INPUTS = " << MAX_INPUTS << std::endl;
+
+	int i, j;
+	for (i = 0; i < MAX_CARDS; i++) 
+		for (j = 0; j < MAX_INPUTS; j++) {
+			std::cout << "update_scan_list: i = " << i << ", j = " << j << std::endl;
+			if (card_input_active[i][j]) {
+				scan_requested = true;
+				if (!first_scan_channel)
+					command_stream << ",";
+				else
+					first_scan_channel = false;
+				command_stream << (100 * (i + 1) + (j + 1));
+			}
+		}
+
+	command_stream << ")";
+
+	std::cout << "update_scan_list: command = " << command_stream.str() << std::endl;
+
+	command = command_stream.str();
+
+	std::cout << "update_scan_list: command = " << command << std::endl;
+
+	asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+			"%s:%s: command = %s\n",
+			driverName, functionName, command.c_str());
+
+	if (scan_requested)
+		status = write_command(command.c_str());
+
+	return status;
+}
+
 
 asynStatus KS3497xA::read_monitor_data(void) {
 	asynStatus status = asynSuccess;

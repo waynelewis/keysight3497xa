@@ -28,6 +28,7 @@
 #define KS3497xAInputTypeReadString         "InputTypeRead"
 #define KS3497xATempTypeReadString          "TempTypeRead"
 #define KS3497xATCTypeReadString            "TCTypeRead"
+#define KS3497xAScanSelectString            "ScanSelect"
 #define KS3497xALastErrorMessageString      "LastErrorMessage"
 #define KS3497xALastErrorCodeString         "LastErrorCode"
 #define KS3497xAErrorMessageString          "ErrorMessage"
@@ -76,6 +77,7 @@ protected:
     int KS3497xAInputTypeRead;
     int KS3497xATempTypeRead;
     int KS3497xATCTypeRead;
+    int KS3497xAScanSelect;
     int KS3497xALastErrorMessage;
     int KS3497xALastErrorCode;
     int KS3497xAErrorMessage;
@@ -98,6 +100,7 @@ private:
     void select_inputs(int card, int flags);
     asynStatus set_input_type(asynUser *pasynUser, int addr);
     asynStatus get_input_type(asynUser *pasynUser, int addr);
+    asynStatus update_scan_list(void);
     asynStatus select_monitor(int card, int channel);
     asynStatus start_stop_monitor(int value);
     asynStatus write_command(const char *command);

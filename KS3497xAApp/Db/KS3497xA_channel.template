@@ -131,5 +131,23 @@ record(mbbo, "$(P)$(R)Ch$(C)Thermistor_Type_SEL") {
 	info(autosaveFields, "VAL")
 }
 
+record(bo, "$(P)$(R)Ch$(C)Scan_SEL") {
+	field(DESC, "Channel $(C) include in scan")
+	field(DTYP, "asynInt32")
+	field(OUT,  "@asyn($(PORT),$(C))ScanSelect")
+	field(ZNAM, "No scan")
+	field(ONAM, "Scan")
+	field(FLNK, "$(P)$(R)Ch$(C)Scan_STS PP")
+
+	info(autosaveFields, "VAL")
+}
+
+record(bi, "$(P)$(R)Ch$(C)Scan_STS") {
+	field(DESC, "Channel $(C) included in scan")
+	field(INP,  "$(P)$(R)Ch$(C)Scan_SEL")
+	field(ZNAM, "No scan")
+	field(ONAM, "Scan")
+}
+
 
 
