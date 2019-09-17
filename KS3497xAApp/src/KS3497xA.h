@@ -21,23 +21,24 @@
 #define KS3497xAInput101ValueString         "Input101Value"
 #define KS3497xANumDataPointsString         "NumDataPoints"
 #define KS3497xAInputTypeSelectString       "InputTypeSelect"
-#define KS3497xATCTypeSelectString       	"TCTypeSelect"
-#define KS3497xARTDTypeSelectString       	"RTDTypeSelect"
-#define KS3497xARTDRValueSelectString  		"RTDRValue"
+#define KS3497xATCTypeSelectString          "TCTypeSelect"
+#define KS3497xARTDTypeSelectString         "RTDTypeSelect"
+#define KS3497xARTDRValueSelectString       "RTDRValue"
 #define KS3497xAThermistorTypeSelectString  "ThermistorTypeSelect"
-#define KS3497xAInputTypeReadString       	"InputTypeRead"
-#define KS3497xATCTypeReadString       		"TCTypeRead"
+#define KS3497xAInputTypeReadString         "InputTypeRead"
+#define KS3497xATempTypeReadString          "TempTypeRead"
+#define KS3497xATCTypeReadString            "TCTypeRead"
 #define KS3497xALastErrorMessageString      "LastErrorMessage"
 #define KS3497xALastErrorCodeString         "LastErrorCode"
-#define KS3497xAErrorMessageString         	"ErrorMessage"
-#define KS3497xAErrorCodeString         	"ErrorCode"
+#define KS3497xAErrorMessageString          "ErrorMessage"
+#define KS3497xAErrorCodeString             "ErrorCode"
 
 #define MAX_RESPONSE_LENGTH             255
 #define MAX_COMMAND_LENGTH              255
 #define MAX_CARDS                       3
 #define MAX_INPUTS                      40
 
-#define NO_ERROR_CODE					0
+#define NO_ERROR_CODE                   0
 
 class KS3497xA : public asynPortDriver {
 
@@ -67,13 +68,14 @@ protected:
     int KS3497xAMonVal;
     int KS3497xAInput101Value;
     int KS3497xANumDataPoints;
-	int KS3497xAInputTypeSelect;
-	int KS3497xATCTypeSelect;
-	int KS3497xARTDTypeSelect;
-	int KS3497xARTDRValueSelect;
-	int KS3497xAThermistorTypeSelect;
-	int KS3497xAInputTypeRead;
-	int KS3497xATCTypeRead;
+    int KS3497xAInputTypeSelect;
+    int KS3497xATCTypeSelect;
+    int KS3497xARTDTypeSelect;
+    int KS3497xARTDRValueSelect;
+    int KS3497xAThermistorTypeSelect;
+    int KS3497xAInputTypeRead;
+    int KS3497xATempTypeRead;
+    int KS3497xATCTypeRead;
     int KS3497xALastErrorMessage;
     int KS3497xALastErrorCode;
     int KS3497xAErrorMessage;
@@ -101,12 +103,13 @@ private:
     asynStatus write_command(const char *command);
     asynStatus writeread_command(const char *command, char *response);
 
-	enum input_types {input_type_tc, input_type_rtd, input_type_thermistor};
-	std::vector<std::string> INPUT_TYPE_STRINGS = {"TC", "RTD", "THER", "VOLT"};
-	std::vector<std::string> TC_TYPES = {"B", "E", "J", "K", "N", "R", "S", "T"};
+    enum input_types {input_type_tc, input_type_rtd, input_type_thermistor};
+    std::vector<std::string> INPUT_TYPE_STRINGS = {"VOLT", "TEMP"};
+    std::vector<std::string> TEMP_TYPE_STRINGS = {"TC", "RTD", "THER"};
+    std::vector<std::string> TC_TYPES = {"B", "E", "J", "K", "N", "R", "S", "T"};
 
-	const int RTD_TYPES[2] = {85, 91};
-	const int THERMISTOR_TYPES[3] = {2200, 5000, 10000};
+    const int RTD_TYPES[2] = {85, 91};
+    const int THERMISTOR_TYPES[3] = {2200, 5000, 10000};
 
 
 

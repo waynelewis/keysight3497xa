@@ -76,6 +76,7 @@ KS3497xA::KS3497xA(const char *portName, const char *devicePortName, int pollTim
     createParam(KS3497xARTDTypeSelectString,        asynParamInt32,     &KS3497xARTDTypeSelect);
     createParam(KS3497xARTDRValueSelectString,      asynParamInt32,     &KS3497xARTDRValueSelect);
     createParam(KS3497xAInputTypeReadString,      	asynParamInt32,     &KS3497xAInputTypeRead);
+    createParam(KS3497xATempTypeReadString,      	asynParamInt32,     &KS3497xATempTypeRead);
     createParam(KS3497xATCTypeReadString,         	asynParamInt32,     &KS3497xATCTypeRead);
     createParam(KS3497xAThermistorTypeSelectString, asynParamInt32,     &KS3497xAThermistorTypeSelect);
     createParam(KS3497xALastErrorMessageString,     asynParamOctet,     &KS3497xALastErrorMessage);
@@ -479,6 +480,7 @@ asynStatus KS3497xA::get_input_type(int channel) {
 	std::string temperature_input_type;
 	std::string temperature_conf_string;
 	std::string tc_type;
+	std::string quote = "\"";
 	std::string separator = " ";
 	int index;
 
@@ -490,8 +492,19 @@ asynStatus KS3497xA::get_input_type(int channel) {
 	response_buf = response;
 	std::cout << "get_input_type:: response = " << response << std::endl;
 
-    input_type = response_buf.substr(0, response_buf.find(separator));
-	temperature_conf_string = response_buf.substr(response_buf.find(separator));
+	// Remove the leading "
+    input_type = response_buf.substr(
+			response_buf.find(quote) + 1, 
+			response_buf.find(separator) - 1);
+
+	// Get all data after the first space
+	temperature_conf_string = response_buf.substr(response_buf.find(separator) + 1);
+
+	std::cout << "get_input_type: input_type = " << input_type << std::endl;
+	std::cout << "get_input_type: temperature_conf_string = " << temperature_conf_string << std::endl;
+
+	std::cout << "get_input_type: len(input_type) = " << input_type.length() << std::endl;
+	std::cout << "get_input_type: len(TEMP) = " << KS3497xA::INPUT_TYPE_STRINGS[1].length() << std::endl;
 
 	it = std::find(
 			KS3497xA::INPUT_TYPE_STRINGS.begin(), 
@@ -503,24 +516,44 @@ asynStatus KS3497xA::get_input_type(int channel) {
 				KS3497xA::INPUT_TYPE_STRINGS.begin(),
 				it);
 
+		std::cout << "get_input_type: index = " << index << std::endl;
+
 		setIntegerParam(KS3497xAInputTypeRead, index);
 		status = asynSuccess;
 	}
 	else {
+		std::cout << "get_input_type: didn't find match for " << input_type << std::endl;
 		status = asynError;
 	}
 
-	if ((input_type.compare(KS3497xA::INPUT_TYPE_STRINGS[0]) == 0) ||
-			(input_type.compare(KS3497xA::INPUT_TYPE_STRINGS[1]) == 0) ||
-			(input_type.compare(KS3497xA::INPUT_TYPE_STRINGS[2]) == 0)) {
-		separator = ",";
-		temperature_input_type = temperature_conf_string.substr(
-				0, response_buf.find(separator));
+	std::cout 
+		<< "get_input_type: KS3497xA::INPUT_TYPE_STRINGS[0] = " 
+		<< KS3497xA::INPUT_TYPE_STRINGS[0] 
+		<< std::endl;
 
-		if (temperature_input_type.compare(KS3497xA::INPUT_TYPE_STRINGS[0]) == 0) {
-			tc_type = temperature_input_type.substr(
-					temperature_input_type.find(separator)).substr(
-					0, temperature_input_type.find(separator));
+	std::cout 
+		<< "get_input_type: KS3497xA::INPUT_TYPE_STRINGS[1] = " 
+		<< KS3497xA::INPUT_TYPE_STRINGS[1] 
+		<< std::endl;
+
+	std::cout 
+		<< "get_input_type: comparison = " 
+		<< input_type.compare(KS3497xA::INPUT_TYPE_STRINGS[1]) 
+		<< std::endl;
+	
+	if (input_type.compare(KS3497xA::INPUT_TYPE_STRINGS[1]) == 0) {
+		std::string comma = ",";
+		temperature_input_type = temperature_conf_string.substr(
+				0, temperature_conf_string.find(comma));
+
+		std::cout << "get_input_type: temperature_input_type = " << temperature_input_type << std::endl;
+
+		if (temperature_input_type.compare(KS3497xA::TEMP_TYPE_STRINGS[0]) == 0) {
+			tc_type = temperature_conf_string.substr(
+					temperature_conf_string.find(comma) + 1).substr(
+					0, temperature_conf_string.find(comma) - 1);
+
+			std::cout << "get_input_type: tc_type = " << tc_type << std::endl;
 
 			it = std::find(
 					KS3497xA::TC_TYPES.begin(), 
@@ -532,10 +565,12 @@ asynStatus KS3497xA::get_input_type(int channel) {
 						KS3497xA::TC_TYPES.begin(),
 						it);
 
+				std::cout << "get_input_type: index = " << index << std::endl;
 				setIntegerParam(KS3497xATCTypeRead, index);
 				status = asynSuccess;
 			}
 			else {
+				std::cout << "get_input_type: didn't find match for " << tc_type << std::endl;
 				status = asynError;
 			}
 		}
