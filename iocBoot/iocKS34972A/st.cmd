@@ -13,7 +13,9 @@ epicsEnvSet("DEV_SUP_ASYN_PORT", "MUX1")
 epicsEnvSet("PREFIX", "MMT:")
 epicsEnvSet("DEVICE", "MUX1:")
 
-cd "${TOP}"
+epicsEnvSet("AUTOSAVE_PATH", "$(TOP)/as")
+
+cd "$(TOP)"
 
 ## Register all support components
 dbLoadDatabase "dbd/KS3497xAApp.dbd"
@@ -35,8 +37,31 @@ dbLoadRecords("db/asynRecord.db","P=$(PREFIX),R=$(DEVICE)Asyn,PORT=$(DEV_ASYN_PO
 asynSetTraceMask("$(DEV_SUP_ASYN_PORT)", -1, 0x01)
 #asynSetTraceIOMask("$(DEV_ASYN_PORT)", -1, 0xFF)
 
-cd "${TOP}/iocBoot/${IOC}"
-iocInit
+# Autosave setup
+save_restoreSet_Debug(0)
+save_restoreSet_IncompleteSetsOk(1)
+save_restoreSet_DatedBackupFiles(1)
 
-## Start any sequence programs
-#seq sncxxx,"user=wlewis"
+set_savefile_path("$(AUTOSAVE_PATH)","/save")
+set_requestfile_path("$(AUTOSAVE_PATH)","/req")
+
+system("install -m 777 -d $(AUTOSAVE_PATH)/save")
+system("install -m 777 -d $(AUTOSAVE_PATH)/req")
+
+set_pass0_restoreFile("info_positions.sav")
+set_pass0_restoreFile("info_settings.sav")
+set_pass1_restoreFile("info_settings.sav")
+
+dbLoadRecords("$(AUTOSAVE)/asApp/Db/save_restoreStatus.db","P=$(PREFIX)")
+save_restoreSet_status_prefix("$(PREFIX)")
+
+iocInit()
+
+# Autosave post-iocInit commands
+## more autosave/restore machinery
+cd $(AUTOSAVE_PATH)/req
+makeAutosaveFiles()
+create_monitor_set("info_positions.req", 5 , "")
+create_monitor_set("info_settings.req", 15 , "")
+
+cd $(TOP)

@@ -29,12 +29,15 @@ KS3497xAApp_DBD += base.dbd
 KS3497xAApp_DBD += asyn.dbd
 KS3497xAApp_DBD += drvAsynIPPort.dbd
 KS3497xAApp_DBD += devEpics.dbd
+KS3497xAApp_DBD += asSupport.dbd
+KS3497xAApp_DBD += system.dbd
 
 # Include DBD file for this device
 KS3497xAApp_DBD += KS3497xASupport.dbd
 
 # Add all the support libraries needed by this IOC
 KS3497xAApp_LIBS += asyn
+KS3497xAApp_LIBS += autosave
 
 # Include the library for the KS3497xA
 KS3497xAApp_LIBS += KS3497xA
