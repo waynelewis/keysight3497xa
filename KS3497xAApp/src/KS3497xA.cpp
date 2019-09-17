@@ -329,7 +329,7 @@ asynStatus KS3497xA::writeInt32(asynUser *pasynUser, epicsInt32 value)
         status = start_stop_monitor(value);
     }
 	else if (function == KS3497xAScanSelect) {
-		card_input_active[addr%100][addr/100] = true;
+		card_input_active[(addr/100) - 1][(addr%100) - 1] = (value == 1);
 		update_scan_list();
 	}
     else if (function == KS3497xAInputTypeSelect
@@ -609,44 +609,39 @@ asynStatus KS3497xA::update_scan_list(void) {
 	asynStatus status = asynSuccess;
 
 	std::string command;
-	std::stringstream command_stream("ROUT:SCAN (@");
+	std::stringstream command_stream;
 	bool scan_requested = false;
 	bool first_scan_channel = true;
 	const char *functionName = "update_scan_list";
 
 	std::cout << "update_scan_list: entering" << std::endl;
 
-	std::cout << "update_scan_list: MAX_CARDS = " << MAX_CARDS << std::endl;
-	std::cout << "update_scan_list: MAX_INPUTS = " << MAX_INPUTS << std::endl;
-
 	int i, j;
-	for (i = 0; i < MAX_CARDS; i++) 
+	for (i = 0; i < MAX_CARDS; i++) {
 		for (j = 0; j < MAX_INPUTS; j++) {
-			std::cout << "update_scan_list: i = " << i << ", j = " << j << std::endl;
 			if (card_input_active[i][j]) {
 				scan_requested = true;
 				if (!first_scan_channel)
 					command_stream << ",";
 				else
-					first_scan_channel = false;
+					command_stream << "ROUT:SCAN (@";
+				first_scan_channel = false;
 				command_stream << (100 * (i + 1) + (j + 1));
 			}
 		}
+	}
 
-	command_stream << ")";
+	if (scan_requested) {
+		command_stream << ")";
 
-	std::cout << "update_scan_list: command = " << command_stream.str() << std::endl;
+		asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+				"%s:%s: command = %s\n",
+				driverName, functionName, command.c_str());
 
-	command = command_stream.str();
-
-	std::cout << "update_scan_list: command = " << command << std::endl;
-
-	asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
-			"%s:%s: command = %s\n",
-			driverName, functionName, command.c_str());
-
-	if (scan_requested)
+		std::cout << "update_scan_list: command = " << command_stream.str() << std::endl;
+		command = command_stream.str();
 		status = write_command(command.c_str());
+	}
 
 	return status;
 }
