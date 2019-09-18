@@ -248,8 +248,9 @@ record(bo, "$(P)$(R)ScanAbort_CMD") {
 record(bi, "$(P)$(R)Scan_STS") {
 	field(DESC, "Scan status")
 	field(DTYP, "asynInt32")
+	field(SCAN, "I/O Intr")
 	field(INP,  "@asyn($(PORT),$(ADDR=0))ScanStatus")
-	field(ZNAM, "Not scannign")
+	field(ZNAM, "Not scanning")
 	field(ONAM, "Scanning")
 }
 
