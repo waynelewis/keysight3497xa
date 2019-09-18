@@ -728,7 +728,7 @@ asynStatus KS3497xA::set_scan_count(void) {
 	asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
 			"%s:%s: entering\n", driverName, functionName);
 
-	getIntegerParam(KS3497xAScanCount, &scan_continuous);
+	getIntegerParam(KS3497xAScanContinuous, &scan_continuous);
 
 	command_stream << "TRIG:COUNT ";
 
