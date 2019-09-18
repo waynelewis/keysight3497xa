@@ -513,10 +513,10 @@
   </widget>
   <widget type="label" version="2.0.0">
     <name>Label_19</name>
-    <text>Scan indefinitely</text>
+    <text>Scan continuously</text>
     <x>300</x>
     <y>710</y>
-    <width>102</width>
+    <width>114</width>
     <height>16</height>
     <auto_size>true</auto_size>
   </widget>
@@ -526,5 +526,21 @@
     <label></label>
     <x>420</x>
     <y>710</y>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_20</name>
+    <text>Data points stored</text>
+    <x>300</x>
+    <y>740</y>
+    <width>114</width>
+    <height>16</height>
+    <auto_size>true</auto_size>
+  </widget>
+  <widget type="textupdate" version="2.0.0">
+    <name>Text Update_11</name>
+    <pv_name>$(P)$(R)NumDataPoints_RBV</pv_name>
+    <x>420</x>
+    <y>740</y>
+    <width>90</width>
   </widget>
 </display>
