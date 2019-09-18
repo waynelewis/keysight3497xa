@@ -329,6 +329,17 @@
     <width>610</width>
     <height>20</height>
   </widget>
+  <widget type="embedded" version="2.0.0">
+    <name>Embedded Display_15</name>
+    <file>KS34902_channel.bob</file>
+    <macros>
+      <C>110</C>
+    </macros>
+    <x>320</x>
+    <y>544</y>
+    <width>610</width>
+    <height>20</height>
+  </widget>
   <widget type="group" version="2.0.0">
     <name>Group</name>
     <x>290</x>
@@ -482,17 +493,22 @@
         </font>
       </font>
     </widget>
-  </widget>
-  <widget type="embedded" version="2.0.0">
-    <name>Embedded Display_15</name>
-    <file>KS34902_channel.bob</file>
-    <macros>
-      <C>110</C>
-    </macros>
-    <x>320</x>
-    <y>544</y>
-    <width>610</width>
-    <height>20</height>
+    <widget type="led" version="2.0.0">
+      <name>LED</name>
+      <pv_name>$(P)$(R)Scan_STS</pv_name>
+      <x>130</x>
+      <y>256</y>
+      <square>true</square>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_21</name>
+      <text>Scan status</text>
+      <x>10</x>
+      <y>256</y>
+      <width>74</width>
+      <height>16</height>
+      <auto_size>true</auto_size>
+    </widget>
   </widget>
   <widget type="group" version="2.0.0">
     <name>Group</name>
