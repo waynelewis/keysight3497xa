@@ -246,9 +246,7 @@ asynStatus KS3497xA::read_scan_status(void)
 		scan_complete = true;
 	}
 
-	setIntegerParam(KS3497xAScanStatus, scanning?1:0);
-
-	callParamCallbacks();
+	update_scanning_status();
 
     return status;
 }
@@ -848,6 +846,8 @@ asynStatus KS3497xA::scan_start(void) {
 
 	scanning = true;
 
+	update_scanning_status();
+
 	status = write_command(command.c_str());
 
 	return status;
@@ -867,8 +867,17 @@ asynStatus KS3497xA::scan_abort(void) {
 	status = write_command(command.c_str());
 
 	scanning = false;
+	scan_complete = true;
+	update_scanning_status();
 
 	return status;
+}
+
+void KS3497xA::update_scanning_status(void) {
+	setIntegerParam(KS3497xAScanStatus, scanning?1:0);
+
+	callParamCallbacks();
+	return;
 }
 
 asynStatus KS3497xA::update_scan_list(void) {

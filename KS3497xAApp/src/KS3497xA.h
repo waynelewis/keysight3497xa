@@ -129,6 +129,7 @@ private:
     asynStatus start_stop_monitor(int value);
     asynStatus write_command(const char *command);
     asynStatus writeread_command(const char *command, char *response);
+	void update_scanning_status(void);
 
     enum input_types {input_type_tc, input_type_rtd, input_type_thermistor};
     std::vector<std::string> INPUT_TYPE_STRINGS = {"VOLT", "TEMP"};
