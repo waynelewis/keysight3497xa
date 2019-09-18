@@ -172,7 +172,7 @@ record(ai, "$(P)$(R)Monitor_RBV") {
 record(mbbi, "$(P)$(R)TrigSrc_RBV") {
     field(DESC, "Trigger source")
     #field(DTYP, "stream")
-    field(PINI, "YES")
+    #field(PINI, "YES")
     #field(INP,  "@Keysight3497xA.proto getTrigSource $(PORT)")
     field(ZRVL, "0")
     field(ZRST, "BUS")
@@ -196,6 +196,7 @@ record(ao, "$(P)$(R)ScanInterval_SP") {
 	field(DESC, "Scan interval time")
 	field(DTYP, "asynFloat64")
 	field(OUT,  "@asyn($(PORT),$(ADDR=0))ScanInterval")
+	field(PINI, "YES")
 	field(EGU,  "s")
 	field(PREC, "3")
 	field(DRVL, "0")
@@ -208,6 +209,7 @@ record(ao, "$(P)$(R)ScanCount_SP") {
 	field(DESC, "Scan counts")
 	field(DTYP, "asynInt32")
 	field(OUT,  "@asyn($(PORT),$(ADDR=0))ScanCount")
+	field(PINI, "YES")
 	field(SDIS, "$(P)$(R)ScanContinuous_SEL")
 	field(DISV, "1")
 
@@ -218,6 +220,7 @@ record(bo, "$(P)$(R)ScanContinuous_SEL") {
 	field(DESC, "Scan forever")
 	field(DTYP, "asynInt32")
 	field(OUT,  "@asyn($(PORT),$(ADDR=0))ScanContinuous")
+	field(PINI, "YES")
 	field(ZNAM, "Use counts")
 	field(ONAM, "Continuous scanning")
 
