@@ -522,7 +522,7 @@
   </widget>
   <widget type="checkbox" version="2.0.0">
     <name>Check Box</name>
-    <pv_name>$(P)$(R)ScanInfinite_SEL</pv_name>
+    <pv_name>$(P)$(R)ScanContinuous_SEL</pv_name>
     <label></label>
     <x>420</x>
     <y>710</y>
