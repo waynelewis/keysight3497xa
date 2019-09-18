@@ -135,6 +135,7 @@ record(bo, "$(P)$(R)Ch$(C)Scan_SEL") {
 	field(DESC, "Channel $(C) include in scan")
 	field(DTYP, "asynInt32")
 	field(OUT,  "@asyn($(PORT),$(C))ScanSelect")
+	field(PINI, "YES")
 	field(ZNAM, "No scan")
 	field(ONAM, "Scan")
 	field(FLNK, "$(P)$(R)Ch$(C)Scan_STS PP")
