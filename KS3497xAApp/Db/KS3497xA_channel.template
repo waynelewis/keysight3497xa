@@ -149,5 +149,11 @@ record(bi, "$(P)$(R)Ch$(C)Scan_STS") {
 	field(ONAM, "Scan")
 }
 
-
-
+record(ai,"$(P)$(R)Ch$(C)_RBV") {
+	field(DESC, "Channel $(C) value")
+	field(DTYP, "asynFloat64")
+	field(SCAN, "I/O Intr")
+	field(INP,  "@asyn($(PORT),$(C))ValueRead")
+	field(EGU,  "DEG C")
+	field(PREC, "3")
+}
