@@ -13,7 +13,7 @@
 #define KS3497xATriggerSourceString         "TriggerSource"
 #define KS3497xAScanIntervalString          "ScanInterval"
 #define KS3497xAScanCountString             "ScanCount"
-#define KS3497xAScanContinuousString          "ScanContinuous"
+#define KS3497xAScanContinuousString        "ScanContinuous"
 #define KS3497xAScanStartString             "ScanStart"
 #define KS3497xAScanAbortString             "ScanAbort"
 #define KS3497xACard1TypeString             "Card1Type"
@@ -23,6 +23,7 @@
 #define KS3497xACardMonSelectString         "CardMonSelect"
 #define KS3497xAMonOnOffString              "MonOnOff"
 #define KS3497xAMonValString                "MonVal"
+#define KS3497xAValueReadString             "ValueRead"
 #define KS3497xANumDataPointsString         "NumDataPoints"
 #define KS3497xAInputTypeSelectString       "InputTypeSelect"
 #define KS3497xATCTypeSelectString          "TCTypeSelect"
@@ -78,6 +79,7 @@ protected:
     int KS3497xACardMonSelect;
     int KS3497xAMonOnOff;
     int KS3497xAMonVal;
+    int KS3497xAValueRead;
     int KS3497xANumDataPoints;
     int KS3497xAInputTypeSelect;
     int KS3497xATCTypeSelect;
@@ -109,7 +111,8 @@ private:
     asynStatus read_metadata(void);
     asynStatus read_data(void);
     asynStatus read_scan_status(void);
-    asynStatus read_scan_data(void);
+    asynStatus read_current_data(void);
+    asynStatus read_buffered_data(void);
     asynStatus read_monitor_data(void);
     asynStatus set_scan_interval(void);
     asynStatus set_scan_count(void);

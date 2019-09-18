@@ -75,6 +75,7 @@ KS3497xA::KS3497xA(const char *portName, const char *devicePortName, int pollTim
     createParam(KS3497xACardMonSelectString,        asynParamInt32,     &KS3497xACardMonSelect);
     createParam(KS3497xAMonOnOffString,             asynParamInt32,     &KS3497xAMonOnOff);
     createParam(KS3497xAMonValString,               asynParamFloat64,   &KS3497xAMonVal);
+    createParam(KS3497xAValueReadString,            asynParamFloat64,   &KS3497xAValueRead);
     createParam(KS3497xANumDataPointsString,        asynParamInt32,     &KS3497xANumDataPoints);
     createParam(KS3497xAInputTypeSelectString,      asynParamInt32,     &KS3497xAInputTypeSelect);
     createParam(KS3497xATCTypeSelectString,         asynParamInt32,     &KS3497xATCTypeSelect);
@@ -135,12 +136,16 @@ void KS3497xA::pollerThread()
         // Read data from KS3497xA here
         if (read_metadata_request == true)
             read_metadata();
-        if (monitoring)
+        if (monitoring) {
             read_data();
-		if (scanning)
+		}
+		if (scanning) {
 			read_scan_status();
-		if (scan_complete)
-			read_scan_data();
+			read_current_data();
+		}
+		if (scan_complete) {
+			read_buffered_data();
+		}
         unlock();
         epicsThreadSleep(pollTime_);
     }
@@ -227,10 +232,56 @@ asynStatus KS3497xA::read_scan_status(void)
     return status;
 }
 
-asynStatus KS3497xA::read_scan_data(void)
+asynStatus KS3497xA::read_current_data(void)
 {
     asynStatus status = asynSuccess;
-    static const char *functionName = "read_scan_data";
+    static const char *functionName = "read_current_data";
+
+	std::stringstream command_stream;
+	char response[MAX_RESPONSE_LENGTH];
+
+    asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+        "%s:%s: [%s]: entering\n",
+        driverName, functionName, this->portName);
+
+	std::cout << "read_current_data: entering" << std::endl;
+
+	int i, j;
+	for (i = 0; i < MAX_CARDS; i++) {
+		for (j = 0; j < MAX_INPUTS; j++) {
+			if (card_input_active[i][j]) {
+
+				int channel = 100 * (i + 1) + j + 1;
+
+				command_stream.str(std::string());
+				command_stream << "DATA:LAST? (@";
+				command_stream << channel;
+				command_stream << ")";
+
+				memset(response, 0, sizeof(response));
+				status = writeread_command(command_stream.str().c_str(), response);
+
+				status = setDoubleParam(channel, KS3497xAValueRead, atof(response));
+
+				std::cout 
+					<< "read_current_data: channel = " 
+					<< channel 
+					<< ", value = " 
+					<< atof(response) 
+					<< std::endl;
+
+				callParamCallbacks(channel, channel);
+			}
+		}
+	}
+
+    return status;
+}
+
+asynStatus KS3497xA::read_buffered_data(void)
+{
+    asynStatus status = asynSuccess;
+    static const char *functionName = "read_buffered_data";
 
     asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
         "%s:%s: [%s]: entering\n",
