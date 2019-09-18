@@ -137,7 +137,7 @@
     <name>Rectangle_2</name>
     <x>290</x>
     <y>50</y>
-    <width>660</width>
+    <width>670</width>
     <height>540</height>
     <line_width>1</line_width>
     <line_color>
@@ -170,9 +170,9 @@
     <macros>
       <C>101</C>
     </macros>
-    <x>320</x>
+    <x>300</x>
     <y>90</y>
-    <width>610</width>
+    <width>650</width>
     <height>20</height>
   </widget>
   <widget type="embedded" version="2.0.0">
@@ -181,9 +181,9 @@
     <macros>
       <C>102</C>
     </macros>
-    <x>320</x>
+    <x>300</x>
     <y>124</y>
-    <width>610</width>
+    <width>650</width>
     <height>20</height>
   </widget>
   <widget type="embedded" version="2.0.0">
@@ -192,9 +192,9 @@
     <macros>
       <C>103</C>
     </macros>
-    <x>320</x>
+    <x>300</x>
     <y>154</y>
-    <width>610</width>
+    <width>650</width>
     <height>20</height>
   </widget>
   <widget type="embedded" version="2.0.0">
@@ -203,9 +203,9 @@
     <macros>
       <C>104</C>
     </macros>
-    <x>320</x>
+    <x>300</x>
     <y>184</y>
-    <width>610</width>
+    <width>650</width>
     <height>20</height>
   </widget>
   <widget type="embedded" version="2.0.0">
@@ -214,9 +214,9 @@
     <macros>
       <C>105</C>
     </macros>
-    <x>320</x>
+    <x>300</x>
     <y>214</y>
-    <width>610</width>
+    <width>650</width>
     <height>20</height>
   </widget>
   <widget type="embedded" version="2.0.0">
@@ -225,9 +225,9 @@
     <macros>
       <C>106</C>
     </macros>
-    <x>320</x>
+    <x>300</x>
     <y>244</y>
-    <width>610</width>
+    <width>650</width>
     <height>20</height>
   </widget>
   <widget type="embedded" version="2.0.0">
@@ -236,9 +236,9 @@
     <macros>
       <C>107</C>
     </macros>
-    <x>320</x>
+    <x>300</x>
     <y>274</y>
-    <width>610</width>
+    <width>650</width>
     <height>20</height>
   </widget>
   <widget type="embedded" version="2.0.0">
@@ -247,9 +247,9 @@
     <macros>
       <C>108</C>
     </macros>
-    <x>320</x>
+    <x>300</x>
     <y>304</y>
-    <width>610</width>
+    <width>650</width>
     <height>20</height>
   </widget>
   <widget type="embedded" version="2.0.0">
@@ -258,9 +258,9 @@
     <macros>
       <C>109</C>
     </macros>
-    <x>320</x>
+    <x>300</x>
     <y>334</y>
-    <width>610</width>
+    <width>650</width>
     <height>20</height>
   </widget>
   <widget type="embedded" version="2.0.0">
@@ -269,9 +269,9 @@
     <macros>
       <C>110</C>
     </macros>
-    <x>320</x>
+    <x>300</x>
     <y>364</y>
-    <width>610</width>
+    <width>650</width>
     <height>20</height>
   </widget>
   <widget type="embedded" version="2.0.0">
@@ -280,9 +280,9 @@
     <macros>
       <C>111</C>
     </macros>
-    <x>320</x>
+    <x>300</x>
     <y>394</y>
-    <width>610</width>
+    <width>650</width>
     <height>20</height>
   </widget>
   <widget type="embedded" version="2.0.0">
@@ -291,9 +291,9 @@
     <macros>
       <C>112</C>
     </macros>
-    <x>320</x>
+    <x>300</x>
     <y>424</y>
-    <width>610</width>
+    <width>650</width>
     <height>20</height>
   </widget>
   <widget type="embedded" version="2.0.0">
@@ -302,9 +302,9 @@
     <macros>
       <C>113</C>
     </macros>
-    <x>320</x>
+    <x>300</x>
     <y>454</y>
-    <width>610</width>
+    <width>650</width>
     <height>20</height>
   </widget>
   <widget type="embedded" version="2.0.0">
@@ -313,9 +313,9 @@
     <macros>
       <C>114</C>
     </macros>
-    <x>320</x>
+    <x>300</x>
     <y>484</y>
-    <width>610</width>
+    <width>650</width>
     <height>20</height>
   </widget>
   <widget type="embedded" version="2.0.0">
@@ -324,9 +324,9 @@
     <macros>
       <C>115</C>
     </macros>
-    <x>320</x>
+    <x>300</x>
     <y>514</y>
-    <width>610</width>
+    <width>650</width>
     <height>20</height>
   </widget>
   <widget type="embedded" version="2.0.0">
@@ -335,22 +335,22 @@
     <macros>
       <C>110</C>
     </macros>
-    <x>320</x>
+    <x>300</x>
     <y>544</y>
-    <width>610</width>
+    <width>650</width>
     <height>20</height>
   </widget>
   <widget type="group" version="2.0.0">
     <name>Group</name>
     <x>290</x>
     <y>606</y>
-    <width>660</width>
+    <width>670</width>
     <height>350</height>
     <style>3</style>
     <transparent>true</transparent>
     <widget type="rectangle" version="2.0.0">
       <name>Rectangle_3</name>
-      <width>660</width>
+      <width>670</width>
       <height>350</height>
       <line_width>1</line_width>
       <line_color>

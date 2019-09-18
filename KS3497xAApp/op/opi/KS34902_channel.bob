@@ -1,25 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <display version="2.0.0">
   <name>Display</name>
-  <width>610</width>
+  <width>650</width>
   <height>20</height>
   <widget type="combo" version="2.0.0">
     <name>Combo Box</name>
     <pv_name>$(P)$(R)Ch$(C)Type_SEL</pv_name>
+    <x>40</x>
     <width>120</width>
     <height>20</height>
   </widget>
   <widget type="combo" version="2.0.0">
     <name>Combo Box_1</name>
     <pv_name>$(P)$(R)Ch$(C)TC_Type_SEL</pv_name>
-    <x>140</x>
+    <x>180</x>
     <width>120</width>
     <height>20</height>
   </widget>
   <widget type="combo" version="2.0.0">
     <name>Combo Box_2</name>
     <pv_name>$(P)$(R)Ch$(C)Thermistor_Type_SEL</pv_name>
-    <x>280</x>
+    <x>320</x>
     <width>120</width>
     <height>20</height>
   </widget>
@@ -27,13 +28,19 @@
     <name>Check Box</name>
     <pv_name>$(P)$(R)Ch$(C)Scan_SEL</pv_name>
     <label>Scan</label>
-    <x>420</x>
+    <x>460</x>
     <width>60</width>
   </widget>
   <widget type="textupdate" version="2.0.0">
     <name>Text Update</name>
     <pv_name>$(P)$(R)Ch$(C)_RBV</pv_name>
-    <x>510</x>
+    <x>550</x>
+    <vertical_alignment>1</vertical_alignment>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label</name>
+    <text>$(C)</text>
+    <width>40</width>
     <vertical_alignment>1</vertical_alignment>
   </widget>
 </display>
