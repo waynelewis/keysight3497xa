@@ -16,6 +16,7 @@
 #define KS3497xAScanContinuousString        "ScanContinuous"
 #define KS3497xAScanStartString             "ScanStart"
 #define KS3497xAScanAbortString             "ScanAbort"
+#define KS3497xAScanStatusString             "ScanStatus"
 #define KS3497xACard1TypeString             "Card1Type"
 #define KS3497xACard2TypeString             "Card2Type"
 #define KS3497xACard3TypeString             "Card3Type"
@@ -72,6 +73,7 @@ protected:
     int KS3497xAScanContinuous;
     int KS3497xAScanStart;
     int KS3497xAScanAbort;
+    int KS3497xAScanStatus;
     int KS3497xACard1Type;
     int KS3497xACard2Type;
     int KS3497xACard3Type;
@@ -139,7 +141,7 @@ private:
     const int RTD_TYPES[2] = {85, 91};
     const int THERMISTOR_TYPES[3] = {2200, 5000, 10000};
 
-
+	const int ESR_OPERATION_COMPLETE_BIT = 0x1;
 
 };
 

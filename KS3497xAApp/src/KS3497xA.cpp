@@ -69,6 +69,7 @@ KS3497xA::KS3497xA(const char *portName, const char *devicePortName, int pollTim
     createParam(KS3497xAScanContinuousString,      	asynParamInt32,     &KS3497xAScanContinuous);
     createParam(KS3497xAScanStartString,         	asynParamInt32,     &KS3497xAScanStart);
     createParam(KS3497xAScanAbortString,         	asynParamInt32,     &KS3497xAScanAbort);
+    createParam(KS3497xAScanStatusString,         	asynParamInt32,     &KS3497xAScanStatus);
     createParam(KS3497xACard1TypeString,            asynParamOctet,     &KS3497xACard1Type);
     createParam(KS3497xACard2TypeString,            asynParamOctet,     &KS3497xACard2Type);
     createParam(KS3497xACard3TypeString,            asynParamOctet,     &KS3497xACard3Type);
@@ -213,6 +214,7 @@ asynStatus KS3497xA::read_scan_status(void)
     static const char *functionName = "read_scan_status";
 	std::string command;
 	epicsInt32 num_values;
+	int event_register;
 	char response[MAX_RESPONSE_LENGTH];
 
     asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
@@ -224,9 +226,28 @@ asynStatus KS3497xA::read_scan_status(void)
 
 	status = writeread_command(command.c_str(), response);
 	
+	if (status != asynSuccess) 
+		return asynError;
+
 	num_values = atoi(response);
 
 	setIntegerParam(KS3497xANumDataPoints, num_values);
+
+	// Check the state of the scan operation
+	command = "*ESR?";
+	status = writeread_command(command.c_str(), response);
+
+	if (status != asynSuccess) 
+		return asynError;
+
+	event_register = atoi(response);
+	if (event_register & KS3497xA::ESR_OPERATION_COMPLETE_BIT ) {
+		scanning = false;
+		scan_complete = true;
+	}
+
+	setIntegerParam(KS3497xAScanStatus, scanning?1:0);
+
 	callParamCallbacks();
 
     return status;
@@ -822,7 +843,8 @@ asynStatus KS3497xA::scan_start(void) {
 	asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
 			"%s:%s: entering\n", driverName, functionName);
 
-	command = "INIT";
+	// Start the scan and enable the monitoring state machine	
+	command = "INIT;*OPC";
 
 	scanning = true;
 

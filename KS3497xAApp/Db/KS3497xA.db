@@ -245,4 +245,12 @@ record(bo, "$(P)$(R)ScanAbort_CMD") {
 	field(HIGH, "1")
 }
 
+record(bi, "$(P)$(R)Scan_STS") {
+	field(DESC, "Scan status")
+	field(DTYP, "asynInt32")
+	field(INP,  "@asyn($(PORT),$(ADDR=0))ScanStatus")
+	field(ZNAM, "Not scannign")
+	field(ONAM, "Scanning")
+}
+
 
