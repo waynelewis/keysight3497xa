@@ -13,6 +13,7 @@
 #define KS3497xATriggerSourceString         "TriggerSource"
 #define KS3497xAScanIntervalString          "ScanInterval"
 #define KS3497xAScanCountString             "ScanCount"
+#define KS3497xAScanContinuousString          "ScanContinuous"
 #define KS3497xAScanStartString             "ScanStart"
 #define KS3497xAScanAbortString             "ScanAbort"
 #define KS3497xACard1TypeString             "Card1Type"
@@ -67,6 +68,7 @@ protected:
     int KS3497xATriggerSource;
     int KS3497xAScanInterval;
     int KS3497xAScanCount;
+    int KS3497xAScanContinuous;
     int KS3497xAScanStart;
     int KS3497xAScanAbort;
     int KS3497xACard1Type;

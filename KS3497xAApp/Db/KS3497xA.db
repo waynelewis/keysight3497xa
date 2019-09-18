@@ -33,21 +33,21 @@ record(stringin,"$(P)$(R)IDN_RBV") {
     field(INP,  "@asyn($(PORT),$(ADDR=0))IDN")
 }
 
-record(stringin,"$(P)$(R)CARD1TYPE_RBV") {
+record(stringin,"$(P)$(R)Card1Type_RBV") {
     field(DESC, "Card 1 type")
     field(SCAN, "I/O Intr")
     field(DTYP, "asynOctetRead")
     field(INP,  "@asyn($(PORT),$(ADDR=0))Card1Type")
 }
 
-record(stringin,"$(P)$(R)CARD2TYPE_RBV") {
+record(stringin,"$(P)$(R)Card2Type_RBV") {
     field(DESC, "Card 2 type")
     field(SCAN, "I/O Intr")
     field(DTYP, "asynOctetRead")
     field(INP,  "@asyn($(PORT),$(ADDR=0))Card2Type")
 }
 
-record(stringin,"$(P)$(R)CARD3TYPE_RBV") {
+record(stringin,"$(P)$(R)Card3Type_RBV") {
     field(DESC, "Card 3 type")
     field(SCAN, "I/O Intr")
     field(DTYP, "asynOctetRead")
@@ -207,6 +207,18 @@ record(ao, "$(P)$(R)ScanCount_SP") {
 	field(DESC, "Scan counts")
 	field(DTYP, "asynInt32")
 	field(OUT,  "@asyn($(PORT),$(ADDR=0))ScanCount")
+	field(SDIS, "$(P)$(R)ScanContinuous_SEL")
+	field(DISV, "1")
+
+	info(autosaveFields, "VAL")
+}
+
+record(bo, "$(P)$(R)ScanContinuous_SEL") {
+	field(DESC, "Scan forever")
+	field(DTYP, "asynInt32")
+	field(OUT,  "@asyn($(PORT),$(ADDR=0))ScanContinuous")
+	field(ZNAM, "Use counts")
+	field(ONAM, "Continuous scanning")
 
 	info(autosaveFields, "VAL")
 }

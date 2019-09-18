@@ -66,6 +66,7 @@ KS3497xA::KS3497xA(const char *portName, const char *devicePortName, int pollTim
     createParam(KS3497xATriggerSourceString,        asynParamInt32,     &KS3497xATriggerSource);
     createParam(KS3497xAScanIntervalString,         asynParamFloat64,   &KS3497xAScanInterval);
     createParam(KS3497xAScanCountString,         	asynParamInt32,     &KS3497xAScanCount);
+    createParam(KS3497xAScanContinuousString,      	asynParamInt32,     &KS3497xAScanContinuous);
     createParam(KS3497xAScanStartString,         	asynParamInt32,     &KS3497xAScanStart);
     createParam(KS3497xAScanAbortString,         	asynParamInt32,     &KS3497xAScanAbort);
     createParam(KS3497xACard1TypeString,            asynParamOctet,     &KS3497xACard1Type);
@@ -398,6 +399,9 @@ asynStatus KS3497xA::writeInt32(asynUser *pasynUser, epicsInt32 value)
 	else if (function == KS3497xAScanCount) {
 		status = set_scan_count();
 	}
+	else if (function == KS3497xAScanContinuous) {
+		status = set_scan_count();
+	}
     else if (function == KS3497xATriggerSource) {
 		status = set_trigger_source(value);
 	}
@@ -718,14 +722,23 @@ asynStatus KS3497xA::set_scan_count(void) {
 
 	std::stringstream command_stream;
 	epicsInt32 scan_count;
+	epicsInt32 scan_continuous;
 	const char *functionName = "set_scan_interval";
 
 	asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
 			"%s:%s: entering\n", driverName, functionName);
 
-	getIntegerParam(KS3497xAScanCount, &scan_count);
+	getIntegerParam(KS3497xAScanCount, &scan_continuous);
+
 	command_stream << "TRIG:COUNT ";
-	command_stream << scan_count;
+
+	if (scan_continuous == 0) {
+		getIntegerParam(KS3497xAScanCount, &scan_count);
+		command_stream << scan_count;
+	}
+	else {
+		command_stream << "INFINITY";
+	}
 
 	status = write_command(command_stream.str().c_str());
 
