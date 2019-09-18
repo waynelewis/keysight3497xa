@@ -3,24 +3,6 @@
   <name>34972A $(P)$(R)</name>
   <width>1000</width>
   <height>1200</height>
-  <widget type="rectangle" version="2.0.0">
-    <name>Rectangle_1</name>
-    <x>20</x>
-    <y>580</y>
-    <width>250</width>
-    <height>350</height>
-    <line_width>1</line_width>
-    <line_color>
-      <color name="Grid" red="128" green="128" blue="128">
-      </color>
-    </line_color>
-    <background_color>
-      <color name="Button_Background" red="210" green="210" blue="210">
-      </color>
-    </background_color>
-    <corner_width>5</corner_width>
-    <corner_height>5</corner_height>
-  </widget>
   <widget type="label" version="2.0.0">
     <name>Label</name>
     <class>TITLE</class>
@@ -48,7 +30,7 @@
     <x>20</x>
     <y>50</y>
     <width>240</width>
-    <height>510</height>
+    <height>540</height>
     <line_width>1</line_width>
     <line_color>
       <color name="Grid" red="128" green="128" blue="128">
@@ -151,43 +133,12 @@
     <height>16</height>
     <auto_size>true</auto_size>
   </widget>
-  <widget type="action_button" version="3.0.0">
-    <name>Action Button</name>
-    <actions>
-      <action type="open_display">
-        <file>/usr/local/epics/R3.15.4/modules/soft/synApps_5_8/support/asyn4-30/opi/boy/asynRecord.opi</file>
-        <macros>
-          <P>$(P)</P>
-          <R>$(R)Asyn</R>
-        </macros>
-        <target>tab</target>
-        <description>Open Display</description>
-      </action>
-    </actions>
-    <text>asyn record...</text>
-    <x>30</x>
-    <y>890</y>
-    <height>20</height>
-    <tooltip>$(actions)</tooltip>
-  </widget>
-  <widget type="label" version="2.0.0">
-    <name>Label_6</name>
-    <text>Controller</text>
-    <x>30</x>
-    <y>590</y>
-    <width>230</width>
-    <height>16</height>
-    <font>
-      <font family="Liberation Sans" style="BOLD" size="14.0">
-      </font>
-    </font>
-  </widget>
   <widget type="rectangle" version="2.0.0">
     <name>Rectangle_2</name>
     <x>290</x>
     <y>50</y>
     <width>660</width>
-    <height>510</height>
+    <height>540</height>
     <line_width>1</line_width>
     <line_color>
       <color name="Grid" red="128" green="128" blue="128">
@@ -205,7 +156,7 @@
     <text>Channels</text>
     <x>300</x>
     <y>60</y>
-    <width>80</width>
+    <width>64</width>
     <height>16</height>
     <font>
       <font family="Liberation Sans" style="BOLD" size="14.0">
@@ -220,9 +171,9 @@
       <C>101</C>
     </macros>
     <x>320</x>
-    <y>106</y>
+    <y>90</y>
     <width>610</width>
-    <height>30</height>
+    <height>20</height>
   </widget>
   <widget type="embedded" version="2.0.0">
     <name>Embedded Display_1</name>
@@ -231,9 +182,9 @@
       <C>102</C>
     </macros>
     <x>320</x>
-    <y>150</y>
+    <y>124</y>
     <width>610</width>
-    <height>30</height>
+    <height>20</height>
   </widget>
   <widget type="embedded" version="2.0.0">
     <name>Embedded Display_2</name>
@@ -242,9 +193,9 @@
       <C>103</C>
     </macros>
     <x>320</x>
-    <y>190</y>
+    <y>154</y>
     <width>610</width>
-    <height>30</height>
+    <height>20</height>
   </widget>
   <widget type="embedded" version="2.0.0">
     <name>Embedded Display_3</name>
@@ -253,9 +204,9 @@
       <C>104</C>
     </macros>
     <x>320</x>
-    <y>230</y>
+    <y>184</y>
     <width>610</width>
-    <height>30</height>
+    <height>20</height>
   </widget>
   <widget type="embedded" version="2.0.0">
     <name>Embedded Display_4</name>
@@ -264,9 +215,9 @@
       <C>105</C>
     </macros>
     <x>320</x>
-    <y>270</y>
+    <y>214</y>
     <width>610</width>
-    <height>30</height>
+    <height>20</height>
   </widget>
   <widget type="embedded" version="2.0.0">
     <name>Embedded Display_5</name>
@@ -275,9 +226,9 @@
       <C>106</C>
     </macros>
     <x>320</x>
-    <y>310</y>
+    <y>244</y>
     <width>610</width>
-    <height>30</height>
+    <height>20</height>
   </widget>
   <widget type="embedded" version="2.0.0">
     <name>Embedded Display_6</name>
@@ -286,9 +237,9 @@
       <C>107</C>
     </macros>
     <x>320</x>
-    <y>350</y>
+    <y>274</y>
     <width>610</width>
-    <height>30</height>
+    <height>20</height>
   </widget>
   <widget type="embedded" version="2.0.0">
     <name>Embedded Display_7</name>
@@ -297,9 +248,9 @@
       <C>108</C>
     </macros>
     <x>320</x>
-    <y>390</y>
+    <y>304</y>
     <width>610</width>
-    <height>30</height>
+    <height>20</height>
   </widget>
   <widget type="embedded" version="2.0.0">
     <name>Embedded Display_8</name>
@@ -308,9 +259,9 @@
       <C>109</C>
     </macros>
     <x>320</x>
-    <y>430</y>
+    <y>334</y>
     <width>610</width>
-    <height>30</height>
+    <height>20</height>
   </widget>
   <widget type="embedded" version="2.0.0">
     <name>Embedded Display_9</name>
@@ -319,267 +270,396 @@
       <C>110</C>
     </macros>
     <x>320</x>
-    <y>470</y>
+    <y>364</y>
     <width>610</width>
-    <height>30</height>
+    <height>20</height>
   </widget>
-  <widget type="rectangle" version="2.0.0">
-    <name>Rectangle_3</name>
+  <widget type="embedded" version="2.0.0">
+    <name>Embedded Display_10</name>
+    <file>KS34902_channel.bob</file>
+    <macros>
+      <C>111</C>
+    </macros>
+    <x>320</x>
+    <y>394</y>
+    <width>610</width>
+    <height>20</height>
+  </widget>
+  <widget type="embedded" version="2.0.0">
+    <name>Embedded Display_11</name>
+    <file>KS34902_channel.bob</file>
+    <macros>
+      <C>112</C>
+    </macros>
+    <x>320</x>
+    <y>424</y>
+    <width>610</width>
+    <height>20</height>
+  </widget>
+  <widget type="embedded" version="2.0.0">
+    <name>Embedded Display_12</name>
+    <file>KS34902_channel.bob</file>
+    <macros>
+      <C>113</C>
+    </macros>
+    <x>320</x>
+    <y>454</y>
+    <width>610</width>
+    <height>20</height>
+  </widget>
+  <widget type="embedded" version="2.0.0">
+    <name>Embedded Display_13</name>
+    <file>KS34902_channel.bob</file>
+    <macros>
+      <C>114</C>
+    </macros>
+    <x>320</x>
+    <y>484</y>
+    <width>610</width>
+    <height>20</height>
+  </widget>
+  <widget type="embedded" version="2.0.0">
+    <name>Embedded Display_14</name>
+    <file>KS34902_channel.bob</file>
+    <macros>
+      <C>115</C>
+    </macros>
+    <x>320</x>
+    <y>514</y>
+    <width>610</width>
+    <height>20</height>
+  </widget>
+  <widget type="group" version="2.0.0">
+    <name>Group</name>
     <x>290</x>
-    <y>580</y>
+    <y>606</y>
     <width>660</width>
     <height>350</height>
-    <line_width>1</line_width>
-    <line_color>
-      <color name="Grid" red="128" green="128" blue="128">
-      </color>
-    </line_color>
-    <background_color>
-      <color name="Button_Background" red="210" green="210" blue="210">
-      </color>
-    </background_color>
-    <corner_width>5</corner_width>
-    <corner_height>5</corner_height>
-  </widget>
-  <widget type="label" version="2.0.0">
-    <name>Label_8</name>
-    <text>Scan control</text>
-    <x>300</x>
-    <y>590</y>
-    <width>230</width>
-    <height>16</height>
-    <font>
-      <font family="Liberation Sans" style="BOLD" size="14.0">
+    <style>3</style>
+    <transparent>true</transparent>
+    <widget type="rectangle" version="2.0.0">
+      <name>Rectangle_3</name>
+      <width>660</width>
+      <height>350</height>
+      <line_width>1</line_width>
+      <line_color>
+        <color name="Grid" red="128" green="128" blue="128">
+        </color>
+      </line_color>
+      <background_color>
+        <color name="Button_Background" red="210" green="210" blue="210">
+        </color>
+      </background_color>
+      <corner_width>5</corner_width>
+      <corner_height>5</corner_height>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_14</name>
+      <text>Trigger source</text>
+      <x>10</x>
+      <y>40</y>
+      <width>91</width>
+      <height>16</height>
+      <auto_size>true</auto_size>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_15</name>
+      <text>Scan interval</text>
+      <x>10</x>
+      <y>70</y>
+      <width>81</width>
+      <height>16</height>
+      <auto_size>true</auto_size>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_16</name>
+      <text>Scan count</text>
+      <x>10</x>
+      <y>100</y>
+      <width>71</width>
+      <height>16</height>
+      <auto_size>true</auto_size>
+    </widget>
+    <widget type="combo" version="2.0.0">
+      <name>Combo Box</name>
+      <pv_name>$(P)$(R)TrigSrc_SEL</pv_name>
+      <x>130</x>
+      <y>40</y>
+      <height>16</height>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Entry</name>
+      <pv_name>$(P)$(R)ScanInterval_SP</pv_name>
+      <x>130</x>
+      <y>70</y>
+    </widget>
+    <widget type="textentry" version="3.0.0">
+      <name>Text Entry_1</name>
+      <pv_name>$(P)$(R)ScanCount_SP</pv_name>
+      <x>130</x>
+      <y>100</y>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_19</name>
+      <text>Scan continuously</text>
+      <x>10</x>
+      <y>130</y>
+      <width>114</width>
+      <height>16</height>
+      <auto_size>true</auto_size>
+    </widget>
+    <widget type="checkbox" version="2.0.0">
+      <name>Check Box</name>
+      <pv_name>$(P)$(R)ScanContinuous_SEL</pv_name>
+      <label></label>
+      <x>130</x>
+      <y>130</y>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_20</name>
+      <text>Data points stored</text>
+      <x>10</x>
+      <y>160</y>
+      <width>114</width>
+      <height>16</height>
+      <auto_size>true</auto_size>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update_11</name>
+      <pv_name>$(P)$(R)NumDataPoints_RBV</pv_name>
+      <x>130</x>
+      <y>160</y>
+    </widget>
+    <widget type="action_button" version="3.0.0">
+      <name>Action Button_1</name>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(pv_name)</pv_name>
+          <value>1</value>
+          <description>Write PV</description>
+        </action>
+      </actions>
+      <pv_name>$(P)$(R)ScanStart_CMD</pv_name>
+      <text>START</text>
+      <x>130</x>
+      <y>190</y>
+      <height>20</height>
+      <background_color>
+        <color name="Off" red="60" green="100" blue="60">
+        </color>
+      </background_color>
+      <tooltip>$(actions)</tooltip>
+    </widget>
+    <widget type="action_button" version="3.0.0">
+      <name>Action Button_2</name>
+      <actions>
+        <action type="write_pv">
+          <pv_name>$(pv_name)</pv_name>
+          <value>1</value>
+          <description>Write PV</description>
+        </action>
+      </actions>
+      <pv_name>$(P)$(R)ScanAbort_CMD</pv_name>
+      <text>ABORT</text>
+      <x>130</x>
+      <y>226</y>
+      <height>20</height>
+      <background_color>
+        <color name="MAJOR" red="255" green="0" blue="0">
+        </color>
+      </background_color>
+      <tooltip>$(actions)</tooltip>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_8</name>
+      <text>Scan control</text>
+      <x>10</x>
+      <y>10</y>
+      <width>230</width>
+      <height>16</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
       </font>
-    </font>
+    </widget>
   </widget>
-  <widget type="textupdate" version="2.0.0">
-    <name>Text Update_1</name>
-    <pv_name>$(P)$(R)SN_RBV</pv_name>
-    <x>150</x>
-    <y>620</y>
-    <width>90</width>
-  </widget>
-  <widget type="label" version="2.0.0">
-    <name>Label_9</name>
-    <text>Serial number</text>
-    <x>30</x>
-    <y>620</y>
-    <width>88</width>
-    <height>16</height>
-    <auto_size>true</auto_size>
-  </widget>
-  <widget type="label" version="2.0.0">
-    <name>Label_10</name>
-    <text>Model</text>
-    <x>30</x>
-    <y>650</y>
-    <width>39</width>
-    <height>16</height>
-    <auto_size>true</auto_size>
-  </widget>
-  <widget type="textupdate" version="2.0.0">
-    <name>Text Update_2</name>
-    <pv_name>$(P)$(R)Model_RBV</pv_name>
-    <x>150</x>
-    <y>650</y>
-    <width>90</width>
-  </widget>
-  <widget type="label" version="2.0.0">
-    <name>Label_11</name>
-    <text>Card 1</text>
-    <x>30</x>
-    <y>680</y>
-    <width>43</width>
-    <height>16</height>
-    <auto_size>true</auto_size>
-  </widget>
-  <widget type="textupdate" version="2.0.0">
-    <name>Text Update_3</name>
-    <pv_name>$(P)$(R)Card1Type_RBV</pv_name>
-    <x>150</x>
-    <y>680</y>
-    <width>90</width>
-  </widget>
-  <widget type="textupdate" version="2.0.0">
-    <name>Text Update_4</name>
-    <pv_name>$(P)$(R)Card2Type_RBV</pv_name>
-    <x>150</x>
-    <y>710</y>
-    <width>90</width>
-  </widget>
-  <widget type="label" version="2.0.0">
-    <name>Label_12</name>
-    <text>Card 2</text>
-    <x>30</x>
-    <y>710</y>
-    <width>43</width>
-    <height>16</height>
-    <auto_size>true</auto_size>
-  </widget>
-  <widget type="textupdate" version="2.0.0">
-    <name>Text Update_5</name>
-    <pv_name>$(P)$(R)Card3Type_RBV</pv_name>
-    <x>150</x>
-    <y>740</y>
-    <width>90</width>
-  </widget>
-  <widget type="label" version="2.0.0">
-    <name>Label_13</name>
-    <text>Card 3</text>
-    <x>30</x>
-    <y>740</y>
-    <width>43</width>
-    <height>16</height>
-    <auto_size>true</auto_size>
-  </widget>
-  <widget type="label" version="2.0.0">
-    <name>Label_14</name>
-    <text>Trigger source</text>
-    <x>300</x>
-    <y>620</y>
-    <width>91</width>
-    <height>16</height>
-    <auto_size>true</auto_size>
-  </widget>
-  <widget type="label" version="2.0.0">
-    <name>Label_15</name>
-    <text>Scan interval</text>
-    <x>300</x>
-    <y>650</y>
-    <width>81</width>
-    <height>16</height>
-    <auto_size>true</auto_size>
-  </widget>
-  <widget type="label" version="2.0.0">
-    <name>Label_16</name>
-    <text>Scan count</text>
-    <x>300</x>
-    <y>680</y>
-    <width>71</width>
-    <height>16</height>
-    <auto_size>true</auto_size>
-  </widget>
-  <widget type="label" version="2.0.0">
-    <name>Label_17</name>
-    <text>Current status message</text>
-    <x>30</x>
-    <y>770</y>
-    <width>149</width>
-    <height>16</height>
-    <auto_size>true</auto_size>
-  </widget>
-  <widget type="textupdate" version="2.0.0">
-    <name>Text Update_9</name>
-    <pv_name>$(P)$(R)ErrorMessage_RBV</pv_name>
-    <x>30</x>
-    <y>786</y>
-    <width>210</width>
-  </widget>
-  <widget type="label" version="2.0.0">
-    <name>Label_18</name>
-    <text>Last error message</text>
-    <x>30</x>
-    <y>820</y>
-    <width>121</width>
-    <height>16</height>
-    <auto_size>true</auto_size>
-  </widget>
-  <widget type="textupdate" version="2.0.0">
-    <name>Text Update_10</name>
-    <pv_name>$(P)$(R)LastErrorMessage_RBV</pv_name>
-    <x>30</x>
-    <y>836</y>
-    <width>210</width>
-  </widget>
-  <widget type="combo" version="2.0.0">
-    <name>Combo Box</name>
-    <pv_name>$(P)$(R)TrigSrc_SEL</pv_name>
-    <x>420</x>
-    <y>620</y>
-    <height>16</height>
-  </widget>
-  <widget type="textentry" version="3.0.0">
-    <name>Text Entry</name>
-    <pv_name>$(P)$(R)ScanInterval_SP</pv_name>
-    <x>420</x>
-    <y>650</y>
-  </widget>
-  <widget type="textentry" version="3.0.0">
-    <name>Text Entry_1</name>
-    <pv_name>$(P)$(R)ScanCount_SP</pv_name>
-    <x>420</x>
-    <y>680</y>
-  </widget>
-  <widget type="label" version="2.0.0">
-    <name>Label_19</name>
-    <text>Scan continuously</text>
-    <x>300</x>
-    <y>710</y>
-    <width>114</width>
-    <height>16</height>
-    <auto_size>true</auto_size>
-  </widget>
-  <widget type="checkbox" version="2.0.0">
-    <name>Check Box</name>
-    <pv_name>$(P)$(R)ScanContinuous_SEL</pv_name>
-    <label></label>
-    <x>420</x>
-    <y>710</y>
-  </widget>
-  <widget type="label" version="2.0.0">
-    <name>Label_20</name>
-    <text>Data points stored</text>
-    <x>300</x>
-    <y>740</y>
-    <width>114</width>
-    <height>16</height>
-    <auto_size>true</auto_size>
-  </widget>
-  <widget type="textupdate" version="2.0.0">
-    <name>Text Update_11</name>
-    <pv_name>$(P)$(R)NumDataPoints_RBV</pv_name>
-    <x>420</x>
-    <y>740</y>
-  </widget>
-  <widget type="action_button" version="3.0.0">
-    <name>Action Button_1</name>
-    <actions>
-      <action type="write_pv">
-        <pv_name>$(pv_name)</pv_name>
-        <value>1</value>
-        <description>Write PV</description>
-      </action>
-    </actions>
-    <pv_name>$(P)$(R)ScanStart_CMD</pv_name>
-    <text>START</text>
-    <x>420</x>
-    <y>770</y>
+  <widget type="embedded" version="2.0.0">
+    <name>Embedded Display_15</name>
+    <file>KS34902_channel.bob</file>
+    <macros>
+      <C>110</C>
+    </macros>
+    <x>320</x>
+    <y>544</y>
+    <width>610</width>
     <height>20</height>
-    <background_color>
-      <color name="Off" red="60" green="100" blue="60">
-      </color>
-    </background_color>
-    <tooltip>$(actions)</tooltip>
   </widget>
-  <widget type="action_button" version="3.0.0">
-    <name>Action Button_2</name>
-    <actions>
-      <action type="write_pv">
-        <pv_name>$(pv_name)</pv_name>
-        <value>1</value>
-        <description>Write PV</description>
-      </action>
-    </actions>
-    <pv_name>$(P)$(R)ScanAbort_CMD</pv_name>
-    <text>ABORT</text>
-    <x>420</x>
-    <y>806</y>
-    <height>20</height>
-    <background_color>
-      <color name="MAJOR" red="255" green="0" blue="0">
-      </color>
-    </background_color>
-    <tooltip>$(actions)</tooltip>
+  <widget type="group" version="2.0.0">
+    <name>Group</name>
+    <x>20</x>
+    <y>606</y>
+    <width>250</width>
+    <height>350</height>
+    <style>3</style>
+    <transparent>true</transparent>
+    <widget type="rectangle" version="2.0.0">
+      <name>Rectangle_1</name>
+      <width>250</width>
+      <height>350</height>
+      <line_width>1</line_width>
+      <line_color>
+        <color name="Grid" red="128" green="128" blue="128">
+        </color>
+      </line_color>
+      <background_color>
+        <color name="Button_Background" red="210" green="210" blue="210">
+        </color>
+      </background_color>
+      <corner_width>5</corner_width>
+      <corner_height>5</corner_height>
+    </widget>
+    <widget type="action_button" version="3.0.0">
+      <name>Action Button</name>
+      <actions>
+        <action type="open_display">
+          <file>/usr/local/epics/R3.15.4/modules/soft/synApps_5_8/support/asyn4-30/opi/boy/asynRecord.opi</file>
+          <macros>
+            <P>$(P)</P>
+            <R>$(R)Asyn</R>
+          </macros>
+          <target>tab</target>
+          <description>Open Display</description>
+        </action>
+      </actions>
+      <text>asyn record...</text>
+      <x>10</x>
+      <y>310</y>
+      <height>20</height>
+      <tooltip>$(actions)</tooltip>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_6</name>
+      <text>Controller</text>
+      <x>10</x>
+      <y>10</y>
+      <width>230</width>
+      <height>16</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </font>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update_1</name>
+      <pv_name>$(P)$(R)SN_RBV</pv_name>
+      <x>130</x>
+      <y>40</y>
+      <width>90</width>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_9</name>
+      <text>Serial number</text>
+      <x>10</x>
+      <y>40</y>
+      <width>88</width>
+      <height>16</height>
+      <auto_size>true</auto_size>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_10</name>
+      <text>Model</text>
+      <x>10</x>
+      <y>70</y>
+      <width>39</width>
+      <height>16</height>
+      <auto_size>true</auto_size>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update_2</name>
+      <pv_name>$(P)$(R)Model_RBV</pv_name>
+      <x>130</x>
+      <y>70</y>
+      <width>90</width>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_11</name>
+      <text>Card 1</text>
+      <x>10</x>
+      <y>100</y>
+      <width>43</width>
+      <height>16</height>
+      <auto_size>true</auto_size>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update_3</name>
+      <pv_name>$(P)$(R)Card1Type_RBV</pv_name>
+      <x>130</x>
+      <y>100</y>
+      <width>90</width>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update_4</name>
+      <pv_name>$(P)$(R)Card2Type_RBV</pv_name>
+      <x>130</x>
+      <y>130</y>
+      <width>90</width>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_12</name>
+      <text>Card 2</text>
+      <x>10</x>
+      <y>130</y>
+      <width>43</width>
+      <height>16</height>
+      <auto_size>true</auto_size>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update_5</name>
+      <pv_name>$(P)$(R)Card3Type_RBV</pv_name>
+      <x>130</x>
+      <y>160</y>
+      <width>90</width>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_13</name>
+      <text>Card 3</text>
+      <x>10</x>
+      <y>160</y>
+      <width>43</width>
+      <height>16</height>
+      <auto_size>true</auto_size>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_17</name>
+      <text>Current status message</text>
+      <x>10</x>
+      <y>190</y>
+      <width>149</width>
+      <height>16</height>
+      <auto_size>true</auto_size>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update_9</name>
+      <pv_name>$(P)$(R)ErrorMessage_RBV</pv_name>
+      <x>10</x>
+      <y>206</y>
+      <width>210</width>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_18</name>
+      <text>Last error message</text>
+      <x>10</x>
+      <y>240</y>
+      <width>121</width>
+      <height>16</height>
+      <auto_size>true</auto_size>
+    </widget>
+    <widget type="textupdate" version="2.0.0">
+      <name>Text Update_10</name>
+      <pv_name>$(P)$(R)LastErrorMessage_RBV</pv_name>
+      <x>10</x>
+      <y>256</y>
+      <width>210</width>
+    </widget>
   </widget>
 </display>
