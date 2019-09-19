@@ -14,7 +14,7 @@ ExecStart=/usr/bin/procServ \
                     --chdir=/usr/local/epics/iocs/alstestlab-ps-mux1/iocBoot/iocKS34972A \
                     --name=alstestlab-ps-mux1 \
                     --port=unix:/run/ioc@alstestlab-ps-mux1/control \
-                    st.cmd
+                    /usr/local/epics/iocs/alstestlab-ps-mux1/iocBoot/iocKS34972A/st.cmd
 SyslogIdentifier=ioc@alstestlab-ps-mux1
 RuntimeDirectory=ioc@alstestlab-ps-mux1
 RuntimeDirectoryMode=0755
