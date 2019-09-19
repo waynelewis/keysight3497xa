@@ -1,0 +1,26 @@
+[Unit]
+Description=procServ for alstestlab-ps-mux1
+After=network.target remote-fs.target
+ConditionPathIsDirectory=/usr/local/epics/iocs/alstestlab-ps-mux1
+ConditionHost=pwrsupplylab
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/procServ \
+                    --foreground \
+                    --logfile=/var/log/procServ/out-alstestlab-ps-mux1 \
+                    --info-file=/run/ioc@alstestlab-ps-mux1/info \
+                    --ignore=^C^D \
+                    --chdir=/usr/local/epics/iocs/alstestlab-ps-mux1/iocBoot/iocKS34972A \
+                    --name=alstestlab-ps-mux1 \
+                    --port=unix:/run/ioc@alstestlab-ps-mux1/control \
+                    st.cmd
+SyslogIdentifier=ioc@alstestlab-ps-mux1
+RuntimeDirectory=ioc@alstestlab-ps-mux1
+RuntimeDirectoryMode=0755
+
+User=wlewis
+Group=alsu
+
+[Install]
+WantedBy=multi-user.target
