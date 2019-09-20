@@ -118,7 +118,8 @@ private:
     asynStatus read_monitor_data(void);
     asynStatus set_scan_interval(void);
     asynStatus set_scan_count(void);
-    asynStatus set_trigger_source(epicsInt32 source);
+    asynStatus set_trigger_source(void);
+    asynStatus setup_scan(void);
     asynStatus scan_start(void);
     asynStatus scan_abort(void);
     void select_inputs(int card, int flags);

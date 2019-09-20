@@ -473,7 +473,7 @@ asynStatus KS3497xA::writeInt32(asynUser *pasynUser, epicsInt32 value)
 		status = set_scan_count();
 	}
     else if (function == KS3497xATriggerSource) {
-		status = set_trigger_source(value);
+		status = set_trigger_source();
 	}
     else if (function == KS3497xAScanStart) {
 		if (value == SCAN_START)
@@ -815,14 +815,16 @@ asynStatus KS3497xA::set_scan_count(void) {
 	return status;
 }
 
-asynStatus KS3497xA::set_trigger_source(epicsInt32 source) {
+asynStatus KS3497xA::set_trigger_source(void) {
 	asynStatus status = asynSuccess;
-
+	epicsInt32 source;
 	std::stringstream command_stream;
 	const char *functionName = "set_trigger_source";
 
 	asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
 			"%s:%s: entering\n", driverName, functionName);
+
+	getIntegerParam(KS3497xATriggerSource, &source);
 
 	command_stream << "TRIG:SOURCE ";
 	command_stream << KS3497xA::TRIGGER_TYPES[source];
@@ -840,6 +842,11 @@ asynStatus KS3497xA::scan_start(void) {
 
 	asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
 			"%s:%s: entering\n", driverName, functionName);
+
+	// Setup the scan
+	status = setup_scan();
+	if (status == asynError)
+		return status;
 
 	// Start the scan and enable the monitoring state machine	
 	command = "INIT;*OPC";
@@ -880,12 +887,58 @@ void KS3497xA::update_scanning_status(void) {
 	return;
 }
 
+asynStatus KS3497xA::setup_scan(void) {
+	asynStatus status = asynSuccess;
+	const char *functionName = "setup_scan";
+
+	asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+			"%s:%s: entering\n", driverName, functionName);
+
+	status = update_scan_list();
+
+	if (status == asynError) {
+		asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR,
+				"%s:%s: failed to update scan list\n",
+				driverName, functionName);
+		return status;
+	}
+
+	status = set_scan_interval();
+
+	if (status == asynError) {
+		asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR,
+				"%s:%s: failed to set scan interval\n",
+				driverName, functionName);
+		return status;
+	}
+
+	status = set_scan_count();
+
+	if (status == asynError) {
+		asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR,
+				"%s:%s: failed to set scan count\n",
+				driverName, functionName);
+		return status;
+	}
+
+	status = set_trigger_source();
+
+	if (status == asynError) {
+		asynPrint(this->pasynUserSelf, ASYN_TRACE_ERROR,
+				"%s:%s: failed to set trigger source\n",
+				driverName, functionName);
+		return status;
+	}
+
+	return status;
+}
+
+
 asynStatus KS3497xA::update_scan_list(void) {
 	asynStatus status = asynSuccess;
 
 	std::string command;
 	std::stringstream command_stream;
-	bool scan_requested = false;
 	bool first_scan_channel = true;
 	const char *functionName = "update_scan_list";
 
@@ -896,7 +949,6 @@ asynStatus KS3497xA::update_scan_list(void) {
 	for (i = 0; i < MAX_CARDS; i++) {
 		for (j = 0; j < MAX_INPUTS; j++) {
 			if (card_input_active[i][j]) {
-				scan_requested = true;
 				if (!first_scan_channel)
 					command_stream << ",";
 				else
@@ -907,21 +959,13 @@ asynStatus KS3497xA::update_scan_list(void) {
 		}
 	}
 
-	if (scan_requested) {
-		command_stream << ")";
+	command_stream << ")";
+	command = command_stream.str();
+	status = write_command(command.c_str());
 
-		asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
-				"%s:%s: command = %s\n",
-				driverName, functionName, command.c_str());
-
-		command = command_stream.str();
-		status = write_command(command.c_str());
-	}
-	else {
-		asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
-				"%s:%s: no channels selected for scan\n", 
-				driverName, functionName);
-	}
+	asynPrint(this->pasynUserSelf, ASYN_TRACE_FLOW,
+			"%s:%s: command = %s\n",
+			driverName, functionName, command.c_str());
 
 	return status;
 }
