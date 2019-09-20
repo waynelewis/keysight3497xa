@@ -263,8 +263,6 @@ asynStatus KS3497xA::read_current_data(void)
         "%s:%s: [%s]: entering\n",
         driverName, functionName, this->portName);
 
-	std::cout << "read_current_data: entering" << std::endl;
-
 	int i, j;
 	for (i = 0; i < MAX_CARDS; i++) {
 		for (j = 0; j < MAX_INPUTS; j++) {
@@ -281,13 +279,6 @@ asynStatus KS3497xA::read_current_data(void)
 				status = writeread_command(command_stream.str().c_str(), response);
 
 				status = setDoubleParam(channel, KS3497xAValueRead, atof(response));
-
-				std::cout 
-					<< "read_current_data: channel = " 
-					<< channel 
-					<< ", value = " 
-					<< atof(response) 
-					<< std::endl;
 
 				callParamCallbacks(channel, channel);
 			}
