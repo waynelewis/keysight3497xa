@@ -13,7 +13,7 @@ epicsEnvSet("DEV_SUP_ASYN_PORT", "MUX1")
 epicsEnvSet("PREFIX", "MMT:")
 epicsEnvSet("DEVICE", "MUX1:")
 
-epicsEnvSet("AUTOSAVE_PATH", "$(TOP)/as")
+epicsEnvSet("AUTOSAVE_PATH", "/usr/local/autosave/$(IOC)")
 
 cd "$(TOP)"
 
@@ -45,8 +45,8 @@ save_restoreSet_DatedBackupFiles(1)
 set_savefile_path("$(AUTOSAVE_PATH)","/save")
 set_requestfile_path("$(AUTOSAVE_PATH)","/req")
 
-system("install -m 777 -d $(AUTOSAVE_PATH)/save")
-system("install -m 777 -d $(AUTOSAVE_PATH)/req")
+system("install -m 755 -d $(AUTOSAVE_PATH)/save")
+system("install -m 755 -d $(AUTOSAVE_PATH)/req")
 
 set_pass0_restoreFile("info_positions.sav")
 set_pass0_restoreFile("info_settings.sav")
