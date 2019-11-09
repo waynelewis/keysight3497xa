@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<display version="2.0.0">
+  <name>Display</name>
+  <widget type="databrowser" version="2.0.0">
+    <name>Data Browser</name>
+    <file>_KS3497xA_slot_plot.plt</file>
+    <x>20</x>
+    <y>20</y>
+    <width>760</width>
+    <height>560</height>
+  </widget>
+</display>
