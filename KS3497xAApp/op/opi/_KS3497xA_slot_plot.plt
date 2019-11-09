@@ -155,8 +155,8 @@
       <name>$(P)$(R)Ch$(Slot)04_RBV</name>
       <axis>0</axis>
       <color>
-        <red>255</red>
-        <green>0</green>
+        <red>128</red>
+        <green>128</green>
         <blue>0</blue>
       </color>
       <trace_type>AREA</trace_type>
@@ -183,9 +183,9 @@
       <name>$(P)$(R)Ch$(Slot)05_RBV</name>
       <axis>0</axis>
       <color>
-        <red>255</red>
+        <red>128</red>
         <green>0</green>
-        <blue>0</blue>
+        <blue>128</blue>
       </color>
       <trace_type>AREA</trace_type>
       <linewidth>2</linewidth>
@@ -211,9 +211,9 @@
       <name>$(P)$(R)Ch$(Slot)06_RBV</name>
       <axis>0</axis>
       <color>
-        <red>255</red>
-        <green>0</green>
-        <blue>0</blue>
+        <red>0</red>
+        <green>128</green>
+        <blue>128</blue>
       </color>
       <trace_type>AREA</trace_type>
       <linewidth>2</linewidth>
@@ -239,8 +239,8 @@
       <name>$(P)$(R)Ch$(Slot)07_RBV</name>
       <axis>0</axis>
       <color>
-        <red>255</red>
-        <green>0</green>
+        <red>128</red>
+        <green>255</green>
         <blue>0</blue>
       </color>
       <trace_type>AREA</trace_type>
@@ -268,7 +268,7 @@
       <axis>0</axis>
       <color>
         <red>255</red>
-        <green>0</green>
+        <green>128</green>
         <blue>0</blue>
       </color>
       <trace_type>AREA</trace_type>
@@ -297,7 +297,7 @@
       <color>
         <red>255</red>
         <green>0</green>
-        <blue>0</blue>
+        <blue>128</blue>
       </color>
       <trace_type>AREA</trace_type>
       <linewidth>2</linewidth>
@@ -323,9 +323,9 @@
       <name>$(P)$(R)Ch$(Slot)10_RBV</name>
       <axis>0</axis>
       <color>
-        <red>255</red>
+        <red>128</red>
         <green>0</green>
-        <blue>0</blue>
+        <blue>255</blue>
       </color>
       <trace_type>AREA</trace_type>
       <linewidth>2</linewidth>
@@ -351,9 +351,9 @@
       <name>$(P)$(R)Ch$(Slot)11_RBV</name>
       <axis>0</axis>
       <color>
-        <red>255</red>
-        <green>0</green>
-        <blue>0</blue>
+        <red>0</red>
+        <green>128</green>
+        <blue>255</blue>
       </color>
       <trace_type>AREA</trace_type>
       <linewidth>2</linewidth>
@@ -379,9 +379,9 @@
       <name>$(P)$(R)Ch$(Slot)12_RBV</name>
       <axis>0</axis>
       <color>
-        <red>255</red>
-        <green>0</green>
-        <blue>0</blue>
+        <red>0</red>
+        <green>255</green>
+        <blue>128</blue>
       </color>
       <trace_type>AREA</trace_type>
       <linewidth>2</linewidth>
@@ -407,9 +407,9 @@
       <name>$(P)$(R)Ch$(Slot)13_RBV</name>
       <axis>0</axis>
       <color>
-        <red>255</red>
-        <green>0</green>
-        <blue>0</blue>
+        <red>128</red>
+        <green>128</green>
+        <blue>192</blue>
       </color>
       <trace_type>AREA</trace_type>
       <linewidth>2</linewidth>
@@ -435,9 +435,9 @@
       <name>$(P)$(R)Ch$(Slot)14_RBV</name>
       <axis>0</axis>
       <color>
-        <red>255</red>
-        <green>0</green>
-        <blue>0</blue>
+        <red>128</red>
+        <green>192</green>
+        <blue>128</blue>
       </color>
       <trace_type>AREA</trace_type>
       <linewidth>2</linewidth>
@@ -463,9 +463,9 @@
       <name>$(P)$(R)Ch$(Slot)15_RBV</name>
       <axis>0</axis>
       <color>
-        <red>255</red>
-        <green>0</green>
-        <blue>0</blue>
+        <red>192</red>
+        <green>128</green>
+        <blue>128</blue>
       </color>
       <trace_type>AREA</trace_type>
       <linewidth>2</linewidth>
@@ -491,9 +491,9 @@
       <name>$(P)$(R)Ch$(Slot)16_RBV</name>
       <axis>0</axis>
       <color>
-        <red>255</red>
-        <green>0</green>
-        <blue>0</blue>
+        <red>192</red>
+        <green>128</green>
+        <blue>64</blue>
       </color>
       <trace_type>AREA</trace_type>
       <linewidth>2</linewidth>

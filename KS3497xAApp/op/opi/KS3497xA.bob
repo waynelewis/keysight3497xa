@@ -570,10 +570,11 @@
       <name>Action Button_3</name>
       <actions>
         <action type="open_display">
-          <file>/usr/local/epics/R3.15.4/modules/soft/synApps_5_8/support/asyn4-30/opi/boy/asynRecord.opi</file>
+          <file>_KS3497xA_slot_plot.bob</file>
           <macros>
             <P>$(P)</P>
-            <R>$(R)Asyn</R>
+            <R>$(R)</R>
+            <Slot>1</Slot>
           </macros>
           <target>tab</target>
           <description>Open Display</description>
@@ -589,10 +590,11 @@
       <name>Action Button_4</name>
       <actions>
         <action type="open_display">
-          <file>/usr/local/epics/R3.15.4/modules/soft/synApps_5_8/support/asyn4-30/opi/boy/asynRecord.opi</file>
+          <file>_KS3497xA_slot_plot.bob</file>
           <macros>
             <P>$(P)</P>
-            <R>$(R)Asyn</R>
+            <R>$(R)</R>
+            <Slot>2</Slot>
           </macros>
           <target>tab</target>
           <description>Open Display</description>
@@ -608,10 +610,11 @@
       <name>Action Button_5</name>
       <actions>
         <action type="open_display">
-          <file>/usr/local/epics/R3.15.4/modules/soft/synApps_5_8/support/asyn4-30/opi/boy/asynRecord.opi</file>
+          <file>_KS3497xA_slot_plot.bob</file>
           <macros>
             <P>$(P)</P>
-            <R>$(R)Asyn</R>
+            <R>$(R)</R>
+            <Slot>3</Slot>
           </macros>
           <target>tab</target>
           <description>Open Display</description>
