@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<display version="2.0.0">
+  <name>Display</name>
+  <width>670</width>
+  <height>530</height>
+  <widget type="rectangle" version="2.0.0">
+    <name>Rectangle_2</name>
+    <width>670</width>
+    <height>530</height>
+    <line_width>1</line_width>
+    <line_color>
+      <color name="Grid" red="128" green="128" blue="128">
+      </color>
+    </line_color>
+    <background_color>
+      <color name="Button_Background" red="210" green="210" blue="210">
+      </color>
+    </background_color>
+    <corner_width>5</corner_width>
+    <corner_height>5</corner_height>
+  </widget>
+  <widget type="label" version="2.0.0">
+    <name>Label_7</name>
+    <text>Channels</text>
+    <x>10</x>
+    <y>10</y>
+    <width>64</width>
+    <height>16</height>
+    <font>
+      <font family="Liberation Sans" style="BOLD" size="14.0">
+      </font>
+    </font>
+    <auto_size>true</auto_size>
+  </widget>
+  <widget type="embedded" version="2.0.0">
+    <name>Embedded Display</name>
+    <file>KS34902_channel.bob</file>
+    <macros>
+      <C>$(Slot)01</C>
+    </macros>
+    <x>10</x>
+    <y>40</y>
+    <width>650</width>
+    <height>20</height>
+  </widget>
+  <widget type="embedded" version="2.0.0">
+    <name>Embedded Display_1</name>
+    <file>KS34902_channel.bob</file>
+    <macros>
+      <C>$(Slot)02</C>
+    </macros>
+    <x>10</x>
+    <y>74</y>
+    <width>650</width>
+    <height>20</height>
+  </widget>
+  <widget type="embedded" version="2.0.0">
+    <name>Embedded Display_2</name>
+    <file>KS34902_channel.bob</file>
+    <macros>
+      <C>$(Slot)03</C>
+    </macros>
+    <x>10</x>
+    <y>104</y>
+    <width>650</width>
+    <height>20</height>
+  </widget>
+  <widget type="embedded" version="2.0.0">
+    <name>Embedded Display_3</name>
+    <file>KS34902_channel.bob</file>
+    <macros>
+      <C>$(Slot)04</C>
+    </macros>
+    <x>10</x>
+    <y>134</y>
+    <width>650</width>
+    <height>20</height>
+  </widget>
+  <widget type="embedded" version="2.0.0">
+    <name>Embedded Display_4</name>
+    <file>KS34902_channel.bob</file>
+    <macros>
+      <C>$(Slot)05</C>
+    </macros>
+    <x>10</x>
+    <y>164</y>
+    <width>650</width>
+    <height>20</height>
+  </widget>
+  <widget type="embedded" version="2.0.0">
+    <name>Embedded Display_5</name>
+    <file>KS34902_channel.bob</file>
+    <macros>
+      <C>$(Slot)06</C>
+    </macros>
+    <x>10</x>
+    <y>194</y>
+    <width>650</width>
+    <height>20</height>
+  </widget>
+  <widget type="embedded" version="2.0.0">
+    <name>Embedded Display_6</name>
+    <file>KS34902_channel.bob</file>
+    <macros>
+      <C>$(Slot)07</C>
+    </macros>
+    <x>10</x>
+    <y>224</y>
+    <width>650</width>
+    <height>20</height>
+  </widget>
+  <widget type="embedded" version="2.0.0">
+    <name>Embedded Display_7</name>
+    <file>KS34902_channel.bob</file>
+    <macros>
+      <C>$(Slot)08</C>
+    </macros>
+    <x>10</x>
+    <y>254</y>
+    <width>650</width>
+    <height>20</height>
+  </widget>
+  <widget type="embedded" version="2.0.0">
+    <name>Embedded Display_8</name>
+    <file>KS34902_channel.bob</file>
+    <macros>
+      <C>$(Slot)09</C>
+    </macros>
+    <x>10</x>
+    <y>284</y>
+    <width>650</width>
+    <height>20</height>
+  </widget>
+  <widget type="embedded" version="2.0.0">
+    <name>Embedded Display_9</name>
+    <file>KS34902_channel.bob</file>
+    <macros>
+      <C>$(Slot)10</C>
+    </macros>
+    <x>10</x>
+    <y>314</y>
+    <width>650</width>
+    <height>20</height>
+  </widget>
+  <widget type="embedded" version="2.0.0">
+    <name>Embedded Display_10</name>
+    <file>KS34902_channel.bob</file>
+    <macros>
+      <C>$(Slot)11</C>
+    </macros>
+    <x>10</x>
+    <y>344</y>
+    <width>650</width>
+    <height>20</height>
+  </widget>
+  <widget type="embedded" version="2.0.0">
+    <name>Embedded Display_11</name>
+    <file>KS34902_channel.bob</file>
+    <macros>
+      <C>$(Slot)12</C>
+    </macros>
+    <x>10</x>
+    <y>374</y>
+    <width>650</width>
+    <height>20</height>
+  </widget>
+  <widget type="embedded" version="2.0.0">
+    <name>Embedded Display_12</name>
+    <file>KS34902_channel.bob</file>
+    <macros>
+      <C>$(Slot)13</C>
+    </macros>
+    <x>10</x>
+    <y>404</y>
+    <width>650</width>
+    <height>20</height>
+  </widget>
+  <widget type="embedded" version="2.0.0">
+    <name>Embedded Display_13</name>
+    <file>KS34902_channel.bob</file>
+    <macros>
+      <C>$(Slot)14</C>
+    </macros>
+    <x>10</x>
+    <y>434</y>
+    <width>650</width>
+    <height>20</height>
+  </widget>
+  <widget type="embedded" version="2.0.0">
+    <name>Embedded Display_14</name>
+    <file>KS34902_channel.bob</file>
+    <macros>
+      <C>$(Slot)15</C>
+    </macros>
+    <x>10</x>
+    <y>464</y>
+    <width>650</width>
+    <height>20</height>
+  </widget>
+  <widget type="embedded" version="2.0.0">
+    <name>Embedded Display_15</name>
+    <file>KS34902_channel.bob</file>
+    <macros>
+      <C>$(Slot)16</C>
+    </macros>
+    <x>10</x>
+    <y>494</y>
+    <width>650</width>
+    <height>20</height>
+  </widget>
+</display>

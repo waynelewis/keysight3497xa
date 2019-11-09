@@ -29,8 +29,8 @@
     <name>Rectangle</name>
     <x>20</x>
     <y>50</y>
-    <width>240</width>
-    <height>540</height>
+    <width>250</width>
+    <height>580</height>
     <line_width>1</line_width>
     <line_color>
       <color name="Grid" red="128" green="128" blue="128">
@@ -133,224 +133,17 @@
     <height>16</height>
     <auto_size>true</auto_size>
   </widget>
-  <widget type="rectangle" version="2.0.0">
-    <name>Rectangle_2</name>
-    <x>290</x>
-    <y>50</y>
-    <width>670</width>
-    <height>540</height>
-    <line_width>1</line_width>
-    <line_color>
-      <color name="Grid" red="128" green="128" blue="128">
-      </color>
-    </line_color>
-    <background_color>
-      <color name="Button_Background" red="210" green="210" blue="210">
-      </color>
-    </background_color>
-    <corner_width>5</corner_width>
-    <corner_height>5</corner_height>
-  </widget>
-  <widget type="label" version="2.0.0">
-    <name>Label_7</name>
-    <text>Channels</text>
-    <x>300</x>
-    <y>60</y>
-    <width>64</width>
-    <height>16</height>
-    <font>
-      <font family="Liberation Sans" style="BOLD" size="14.0">
-      </font>
-    </font>
-    <auto_size>true</auto_size>
-  </widget>
-  <widget type="embedded" version="2.0.0">
-    <name>Embedded Display</name>
-    <file>KS34902_channel.bob</file>
-    <macros>
-      <C>101</C>
-    </macros>
-    <x>300</x>
-    <y>90</y>
-    <width>650</width>
-    <height>20</height>
-  </widget>
-  <widget type="embedded" version="2.0.0">
-    <name>Embedded Display_1</name>
-    <file>KS34902_channel.bob</file>
-    <macros>
-      <C>102</C>
-    </macros>
-    <x>300</x>
-    <y>124</y>
-    <width>650</width>
-    <height>20</height>
-  </widget>
-  <widget type="embedded" version="2.0.0">
-    <name>Embedded Display_2</name>
-    <file>KS34902_channel.bob</file>
-    <macros>
-      <C>103</C>
-    </macros>
-    <x>300</x>
-    <y>154</y>
-    <width>650</width>
-    <height>20</height>
-  </widget>
-  <widget type="embedded" version="2.0.0">
-    <name>Embedded Display_3</name>
-    <file>KS34902_channel.bob</file>
-    <macros>
-      <C>104</C>
-    </macros>
-    <x>300</x>
-    <y>184</y>
-    <width>650</width>
-    <height>20</height>
-  </widget>
-  <widget type="embedded" version="2.0.0">
-    <name>Embedded Display_4</name>
-    <file>KS34902_channel.bob</file>
-    <macros>
-      <C>105</C>
-    </macros>
-    <x>300</x>
-    <y>214</y>
-    <width>650</width>
-    <height>20</height>
-  </widget>
-  <widget type="embedded" version="2.0.0">
-    <name>Embedded Display_5</name>
-    <file>KS34902_channel.bob</file>
-    <macros>
-      <C>106</C>
-    </macros>
-    <x>300</x>
-    <y>244</y>
-    <width>650</width>
-    <height>20</height>
-  </widget>
-  <widget type="embedded" version="2.0.0">
-    <name>Embedded Display_6</name>
-    <file>KS34902_channel.bob</file>
-    <macros>
-      <C>107</C>
-    </macros>
-    <x>300</x>
-    <y>274</y>
-    <width>650</width>
-    <height>20</height>
-  </widget>
-  <widget type="embedded" version="2.0.0">
-    <name>Embedded Display_7</name>
-    <file>KS34902_channel.bob</file>
-    <macros>
-      <C>108</C>
-    </macros>
-    <x>300</x>
-    <y>304</y>
-    <width>650</width>
-    <height>20</height>
-  </widget>
-  <widget type="embedded" version="2.0.0">
-    <name>Embedded Display_8</name>
-    <file>KS34902_channel.bob</file>
-    <macros>
-      <C>109</C>
-    </macros>
-    <x>300</x>
-    <y>334</y>
-    <width>650</width>
-    <height>20</height>
-  </widget>
-  <widget type="embedded" version="2.0.0">
-    <name>Embedded Display_9</name>
-    <file>KS34902_channel.bob</file>
-    <macros>
-      <C>110</C>
-    </macros>
-    <x>300</x>
-    <y>364</y>
-    <width>650</width>
-    <height>20</height>
-  </widget>
-  <widget type="embedded" version="2.0.0">
-    <name>Embedded Display_10</name>
-    <file>KS34902_channel.bob</file>
-    <macros>
-      <C>111</C>
-    </macros>
-    <x>300</x>
-    <y>394</y>
-    <width>650</width>
-    <height>20</height>
-  </widget>
-  <widget type="embedded" version="2.0.0">
-    <name>Embedded Display_11</name>
-    <file>KS34902_channel.bob</file>
-    <macros>
-      <C>112</C>
-    </macros>
-    <x>300</x>
-    <y>424</y>
-    <width>650</width>
-    <height>20</height>
-  </widget>
-  <widget type="embedded" version="2.0.0">
-    <name>Embedded Display_12</name>
-    <file>KS34902_channel.bob</file>
-    <macros>
-      <C>113</C>
-    </macros>
-    <x>300</x>
-    <y>454</y>
-    <width>650</width>
-    <height>20</height>
-  </widget>
-  <widget type="embedded" version="2.0.0">
-    <name>Embedded Display_13</name>
-    <file>KS34902_channel.bob</file>
-    <macros>
-      <C>114</C>
-    </macros>
-    <x>300</x>
-    <y>484</y>
-    <width>650</width>
-    <height>20</height>
-  </widget>
-  <widget type="embedded" version="2.0.0">
-    <name>Embedded Display_14</name>
-    <file>KS34902_channel.bob</file>
-    <macros>
-      <C>115</C>
-    </macros>
-    <x>300</x>
-    <y>514</y>
-    <width>650</width>
-    <height>20</height>
-  </widget>
-  <widget type="embedded" version="2.0.0">
-    <name>Embedded Display_15</name>
-    <file>KS34902_channel.bob</file>
-    <macros>
-      <C>116</C>
-    </macros>
-    <x>300</x>
-    <y>544</y>
-    <width>650</width>
-    <height>20</height>
-  </widget>
   <widget type="group" version="2.0.0">
     <name>Group</name>
     <x>290</x>
-    <y>606</y>
-    <width>670</width>
+    <y>646</y>
+    <width>330</width>
     <height>350</height>
     <style>3</style>
     <transparent>true</transparent>
     <widget type="rectangle" version="2.0.0">
       <name>Rectangle_3</name>
-      <width>670</width>
+      <width>330</width>
       <height>350</height>
       <line_width>1</line_width>
       <line_color>
@@ -513,7 +306,7 @@
   <widget type="group" version="2.0.0">
     <name>Group</name>
     <x>20</x>
-    <y>606</y>
+    <y>646</y>
     <width>250</width>
     <height>350</height>
     <style>3</style>
@@ -676,6 +469,159 @@
       <x>10</x>
       <y>256</y>
       <width>210</width>
+    </widget>
+  </widget>
+  <widget type="tabs" version="2.0.0">
+    <name>Tabs</name>
+    <tabs>
+      <tab>
+        <name>Slot 1</name>
+        <children>
+          <widget type="embedded" version="2.0.0">
+            <name>Embedded Display_32</name>
+            <file>_KS3497xA_16_channels.bob</file>
+            <macros>
+              <Slot>1</Slot>
+            </macros>
+            <x>10</x>
+            <width>670</width>
+            <height>530</height>
+            <resize>2</resize>
+          </widget>
+        </children>
+      </tab>
+      <tab>
+        <name>Slot 2</name>
+        <children>
+          <widget type="embedded" version="2.0.0">
+            <name>Embedded Display_33</name>
+            <file>_KS3497xA_16_channels.bob</file>
+            <macros>
+              <Slot>2</Slot>
+            </macros>
+            <x>8</x>
+            <y>1</y>
+            <width>670</width>
+            <height>530</height>
+            <resize>2</resize>
+          </widget>
+        </children>
+      </tab>
+      <tab>
+        <name>Slot 3</name>
+        <children>
+          <widget type="embedded" version="2.0.0">
+            <name>Embedded Display_34</name>
+            <file>_KS3497xA_16_channels.bob</file>
+            <macros>
+              <Slot>3</Slot>
+            </macros>
+            <x>8</x>
+            <y>1</y>
+            <width>670</width>
+            <height>530</height>
+            <resize>2</resize>
+          </widget>
+        </children>
+      </tab>
+    </tabs>
+    <x>280</x>
+    <y>50</y>
+    <width>690</width>
+    <height>580</height>
+  </widget>
+  <widget type="group" version="2.0.0">
+    <name>Group</name>
+    <x>640</x>
+    <y>646</y>
+    <width>330</width>
+    <height>350</height>
+    <style>3</style>
+    <transparent>true</transparent>
+    <widget type="rectangle" version="2.0.0">
+      <name>Rectangle_4</name>
+      <width>330</width>
+      <height>350</height>
+      <line_width>1</line_width>
+      <line_color>
+        <color name="Grid" red="128" green="128" blue="128">
+        </color>
+      </line_color>
+      <background_color>
+        <color name="Button_Background" red="210" green="210" blue="210">
+        </color>
+      </background_color>
+      <corner_width>5</corner_width>
+      <corner_height>5</corner_height>
+    </widget>
+    <widget type="label" version="2.0.0">
+      <name>Label_22</name>
+      <text>Plots</text>
+      <x>10</x>
+      <y>10</y>
+      <width>60</width>
+      <height>16</height>
+      <font>
+        <font family="Liberation Sans" style="BOLD" size="14.0">
+        </font>
+      </font>
+    </widget>
+    <widget type="action_button" version="3.0.0">
+      <name>Action Button_3</name>
+      <actions>
+        <action type="open_display">
+          <file>/usr/local/epics/R3.15.4/modules/soft/synApps_5_8/support/asyn4-30/opi/boy/asynRecord.opi</file>
+          <macros>
+            <P>$(P)</P>
+            <R>$(R)Asyn</R>
+          </macros>
+          <target>tab</target>
+          <description>Open Display</description>
+        </action>
+      </actions>
+      <text>Slot 1...</text>
+      <x>10</x>
+      <y>40</y>
+      <height>20</height>
+      <tooltip>$(actions)</tooltip>
+    </widget>
+    <widget type="action_button" version="3.0.0">
+      <name>Action Button_4</name>
+      <actions>
+        <action type="open_display">
+          <file>/usr/local/epics/R3.15.4/modules/soft/synApps_5_8/support/asyn4-30/opi/boy/asynRecord.opi</file>
+          <macros>
+            <P>$(P)</P>
+            <R>$(R)Asyn</R>
+          </macros>
+          <target>tab</target>
+          <description>Open Display</description>
+        </action>
+      </actions>
+      <text>Slot 2...</text>
+      <x>10</x>
+      <y>70</y>
+      <height>20</height>
+      <tooltip>$(actions)</tooltip>
+    </widget>
+    <widget type="action_button" version="3.0.0">
+      <name>Action Button_5</name>
+      <actions>
+        <action type="open_display">
+          <file>/usr/local/epics/R3.15.4/modules/soft/synApps_5_8/support/asyn4-30/opi/boy/asynRecord.opi</file>
+          <macros>
+            <P>$(P)</P>
+            <R>$(R)Asyn</R>
+          </macros>
+          <target>tab</target>
+          <description>Open Display</description>
+        </action>
+      </actions>
+      <text>Slot 3...</text>
+      <x>10</x>
+      <y>100</y>
+      <height>20</height>
+      <tooltip>$(actions)</tooltip>
     </widget>
   </widget>
 </display>
